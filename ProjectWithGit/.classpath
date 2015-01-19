@@ -11,5 +11,10 @@
 	<classpathentry kind="lib" path="/home/behshad/Downloads/itext-5.5.4/itext-xtra-5.5.4.jar"/>
 	<classpathentry kind="lib" path="/home/behshad/Downloads/itext-5.5.4/itext-xtra-5.5.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="/home/behshad/Downloads/itext-5.5.4/itext-xtra-5.5.4-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/me/Google Drive/WINTER 2015 Notes/EECS2311/iText/itextpdf-5.5.4.jar" sourcepath="C:/Users/me/Google Drive/WINTER 2015 Notes/EECS2311/iText/itextpdf-5.5.4-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/me/Google%20Drive/WINTER%202015%20Notes/EECS2311/iText/itextpdf-5.5.4-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
