@@ -14,7 +14,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "C:/Users/me/Desktop/tester.pdf";
+	public static final String DEST = "C:/Users/Rami/Desktop/tester.pdf";
 	
 	public static final String TITLE_STRING = "Moonlight Sonata";
 	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
