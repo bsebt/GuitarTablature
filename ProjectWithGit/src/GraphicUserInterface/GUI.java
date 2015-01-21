@@ -1,7 +1,5 @@
 package GraphicUserInterface;
 
-
-
 import javax.swing.*;
 
 import com.itextpdf.text.Document;
@@ -21,6 +19,9 @@ public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	final static JProgressBar barDo = new JProgressBar(0, 100);
 	JTextField filename2 = new JTextField();
+	JTextField dir2 = new JTextField();
+	JTextField dest = new JTextField();
+	StringBuffer s = new StringBuffer ();
 
 	public GUI() {
 		frame();
@@ -103,9 +104,10 @@ public class GUI extends JFrame {
 					panel.add(filename);
 					filename.setText("Input name: "
 							+ fc.getSelectedFile().getName());
-					filename2.setText(filename.getText());
+					filename2.setText(fc.getSelectedFile().getName());
 					dir.setText("Input directory: "
 							+ fc.getCurrentDirectory().toString());
+					dir2.setText(fc.getCurrentDirectory().toString());
 					panel.add(b1);
 					panel.add(filename);
 					panel.add(dir);
@@ -131,6 +133,8 @@ public class GUI extends JFrame {
 				if (chooser.showOpenDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
 					destination.setText(chooser.getCurrentDirectory()
 							.toString());
+					dest.setText(chooser.getCurrentDirectory()
+							.toString());
 				}
 			}
 		});
@@ -140,7 +144,12 @@ public class GUI extends JFrame {
 		convert.addActionListener(new ActionListener()  {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					new GUI().createPdf();
+					s.append(dir2.getText());
+					s.append("\\");
+					s.append(filename2.getText());
+					System.out.println(dest.getText()+"\\Converted.pdf");
+					System.out.println(s.toString());
+					new GUI().createPdf(dest.getText()+"\\Converted.pdf",s.toString());
 				} catch (DocumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -152,15 +161,15 @@ public class GUI extends JFrame {
 		});
 	}
 	
-	public void createPdf()
+	public void createPdf(String des, String source)
 			throws DocumentException, IOException {
 		BufferedReader input = null;
 		Document output = null;
     
 		try{
-			input = new BufferedReader (new FileReader("Test.txt"));
+			input = new BufferedReader (new FileReader(source));
 			output = new Document();
-			PdfWriter.getInstance(output, new FileOutputStream("Test.pdf"));
+			PdfWriter.getInstance(output, new FileOutputStream(des));
     	
 			output.open();
     	
@@ -188,7 +197,7 @@ public class GUI extends JFrame {
 			new Thread(new thread1()).start(); // Start the thread
 		}
 	}
-
+	
 	// The thread
 	public static class thread1 implements Runnable {
 		public void run() {
