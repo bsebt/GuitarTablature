@@ -68,7 +68,7 @@ public class BarLinesPDF
 			cb.lineTo(marginLeft, j+ 5*barSpacing);
 			for(int i = 0; i < barSpacing*6; i += barSpacing) //Individual bars
 			{
-				line.drawLine(cb, 0f, pageWidth, j + i); //Draw the bar lines, co-ords are from botom left = 0,0. j is the group of lines, i is the line.
+				line.drawLine(cb, 0f, pageWidth, j + i); //Draw the bar lines, co-ords are from bottom left = 0,0. j is the group of lines, i is the line.
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					if ((q + givenSpacing >= pageWidth - (int)marginLeft - givenSpacing)) //If the next character doesn't fit, and we are one the last bar, draw a bar line
