@@ -33,9 +33,11 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static int noteFontSize = 8; //Size of the characters to be written to the page
-	private static int givenSpacing = 20; //The spacing given at the start of the program, change to variable once we read it in
-	private static int barSpacing = 10;
-	private static int groupBarSpacing = 100;
+	private static int givenSpacing = 30; //The spacing given at the start of the program, change to variable once we read it in
+	private static int barSpacing = 10; //Space between individual lines to be drawn
+	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
+	private static int groupBarSpacing = 100; //Spaces between the groups of 6 lines
+	private static int topVoidSpace = 100; //Space at the top of the page for info.
 	private static int pageHeight = 800;
 	private static int pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
@@ -62,27 +64,33 @@ public class BarLinesPDF
 		document.add(title);
 		document.add(composer);
 		ColumnText column = new ColumnText(cb);
-		for (int j = (int)marginBottom; j < pageHeight - 100; j += groupBarSpacing) //Groups of bars, 100 is void space at the top for title
+		int lineStart;
+		for (int j = (int)marginBottom; j <= pageHeight - topVoidSpace; j += groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
 			cb.moveTo(marginLeft, j);
-			cb.lineTo(marginLeft, j+ 5*barSpacing);
-			for(int i = 0; i < barSpacing*6; i += barSpacing) //Individual bars
+			cb.lineTo(marginLeft, j+ 5*barSpacing); //Far left vertical bar
+			for(int i = 0; i < barSpacing*6; i += barSpacing) //Individual horizontal bars
 			{
-				line.drawLine(cb, 0f, pageWidth, j + i); //Draw the bar lines, co-ords are from bottom left = 0,0. j is the group of lines, i is the line.
+				lineStart = 0;
+				line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					if ((q + givenSpacing >= pageWidth - (int)marginLeft - givenSpacing)) //If the next character doesn't fit, and we are one the last bar, draw a bar line
 			        {
+						cb.moveTo(lineStart, i + j);
+						cb.lineTo(pageWidth , i + j );
 			        	cb.moveTo(q, j);
 						cb.lineTo(q, j+ 5*barSpacing);
 			        }
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
-					Phrase currentChar = new Phrase("|"); //Replace this with the character from the array we are currently proccessing.
-		
-					//column.setSimpleColumn(currentChar, 0, 0, 100, 100, 18, Element.ALIGN_CENTER);
-					column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
-			        column.go();
+						//TODO - Check the char to be written, ignore - and move on, otherwise write it down and place the line correctly.
+						cb.moveTo(lineStart, i + j);
+						cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+						lineStart = q + whiteSpace;
+						Phrase currentChar = new Phrase("3"); //Replace this with the character from the array we are currently proccessing.
+						column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+				        column.go();
 					}
 				}
 			}
