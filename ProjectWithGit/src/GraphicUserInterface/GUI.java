@@ -6,9 +6,6 @@ import java.awt.event.*;
 
 public class GUI extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	final static JProgressBar barDo = new JProgressBar(0, 100);
 
@@ -17,8 +14,8 @@ public class GUI extends JFrame {
 	}
 
 	public void frame() {
+		
 		// creating an empty frame
-
 		final JPanel panel = new JPanel(new GridLayout(8, 10));
 		final JTextField filename = new JTextField();
 		final JTextField dir = new JTextField();
@@ -26,7 +23,8 @@ public class GUI extends JFrame {
 		final JTextField destination = new JTextField();
 		final JButton convert = new JButton("Convert");
 		final JButton b1 = new JButton("Select your file");
-		
+		JMenuItem open = new JMenuItem("Open");
+		JMenuItem exit = new JMenuItem("Exit");
 
 		final JFrame frame = new JFrame();
 		frame.setVisible(true);
@@ -53,12 +51,13 @@ public class GUI extends JFrame {
 		panel.add(destination);
 		panel.add(convert);
 		panel.add(barDo);
+		file.add(open);
+		file.add(exit);
 		filename.setEditable(false);
 		dir.setEditable(false);
 		destination.setEditable(false);
 
 		// making menu options
-		JMenuItem open = new JMenuItem("Open");
 		open.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,15 +73,12 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		file.add(open);
 
-		JMenuItem exit = new JMenuItem("Exit");
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
 		});
-		file.add(exit);
 
 		b1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -124,24 +120,28 @@ public class GUI extends JFrame {
 			}
 		});
 
-		convert.addActionListener(new btnDoAction()); //Add the button's action
+		convert.addActionListener(new btnDoAction()); // Add the button's action
 	}
 
-	//The action
-	public static class btnDoAction implements ActionListener{
-		public void actionPerformed (ActionEvent e){
-			new Thread(new thread1()).start(); //Start the thread
+	// The action
+	public static class btnDoAction implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			new Thread(new thread1()).start(); // Start the thread
 		}
 	}
 
-	//The thread
-	public static class thread1 implements Runnable{
-		public void run(){
-			for (int i=0; i<=100; i++){ //Progressively increment variable i
-				barDo.setValue(i); //Set value
-				barDo.repaint(); //Refresh graphics
-				try{Thread.sleep(50);} //Sleep 50 milliseconds
-				catch (InterruptedException err){}
+	// The thread
+	public static class thread1 implements Runnable {
+		public void run() {
+			for (int i = 0; i <= 100; i++) { // Progressively increment variable
+												// i
+				barDo.setValue(i); // Set value
+				barDo.repaint(); // Refresh graphics
+				try {
+					Thread.sleep(50);
+				} // Sleep 50 milliseconds
+				catch (InterruptedException err) {
+				}
 			}
 		}
 	}
