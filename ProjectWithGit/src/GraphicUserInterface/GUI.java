@@ -1,13 +1,26 @@
 package GraphicUserInterface;
 
+
+
 import javax.swing.*;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class GUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	final static JProgressBar barDo = new JProgressBar(0, 100);
+	JTextField filename2 = new JTextField();
 
 	public GUI() {
 		frame();
@@ -79,7 +92,8 @@ public class GUI extends JFrame {
 				System.exit(1);
 			}
 		});
-
+		
+		
 		b1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final JFileChooser fc = new JFileChooser();
@@ -89,6 +103,7 @@ public class GUI extends JFrame {
 					panel.add(filename);
 					filename.setText("Input name: "
 							+ fc.getSelectedFile().getName());
+					filename2.setText(filename.getText());
 					dir.setText("Input directory: "
 							+ fc.getCurrentDirectory().toString());
 					panel.add(b1);
@@ -120,7 +135,51 @@ public class GUI extends JFrame {
 			}
 		});
 
-		convert.addActionListener(new btnDoAction()); // Add the button's action
+		//convert.addActionListener(new btnDoAction()); // Add the button's action
+		
+		convert.addActionListener(new ActionListener()  {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					new GUI().createPdf();
+				} catch (DocumentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}				
+			}
+		});
+	}
+	
+	public void createPdf()
+			throws DocumentException, IOException {
+		BufferedReader input = null;
+		Document output = null;
+    
+		try{
+			input = new BufferedReader (new FileReader("Test.txt"));
+			output = new Document();
+			PdfWriter.getInstance(output, new FileOutputStream("Test.pdf"));
+    	
+			output.open();
+    	
+			String line = "";
+			while(null != (line = input.readLine())){
+				System.out.println(line);
+				Paragraph p = new Paragraph(line);
+				output.add(p);
+			}
+    	
+			System.out.println("Done.");
+			output.close();
+			input.close();
+			System.exit(0);
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	// The action
