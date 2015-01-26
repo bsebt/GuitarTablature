@@ -8,19 +8,22 @@ import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "C:/Users/Rami/Desktop/tester.pdf";
+	public static final String DEST = "/cs/home/flexo735/Desktop/eclipse/tester.pdf";
 	
 	public static final String TITLE_STRING = "Moonlight Sonata";
 	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
 	
-	private static final float marginLeft = 0.0f; //Note original margins are 36.0f for letter size
-	private static final float marginRight = 0.0f;
+	private static final float marginLeft = 50.0f; //Note original margins are 36.0f for letter size
+	private static final float marginRight = 50.0f;
 	private static final float marginTop = 0.0f;
 	private static final float marginBottom = 0.0f;
 	
@@ -29,12 +32,23 @@ public class BarLinesPDF
 	private static Paragraph title = new Paragraph(TITLE_STRING, titleFont);
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
+	private static int noteFontSize = 8; //Size of the characters to be written to the page
+	private static int givenSpacing = 20; //The spacing given at the start of the program, change to variable once we read it in
+	private static int barSpacing = 10; //Space between individual lines to be drawn
+	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
+	private static int groupBarSpacing = 100; //Spaces between the groups of 6 lines
+	private static int topVoidSpace = 200; //Space at the top of the page for info.
+	private static int pageHeight = 800;
+	private static int pageWidth = 620;
+	//Note, standard page is 620 units wide and 800 units tall.
+	
 	private static LineSeparator line = new LineSeparator();
+	
 
 	public static void main (String args[]) throws DocumentException, IOException
-	{
+	{		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
-		PdfWriter.getInstance(document, new FileOutputStream(DEST));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
 		//Header/Meta Data:
 		document.addCreator("Kevin");
 		document.addAuthor("Kevin Arindaeng");
@@ -46,18 +60,54 @@ public class BarLinesPDF
 
 		//Creating the document:
 		document.open();
+		PdfContentByte cb = writer.getDirectContent(); //writer to draw lines
 		document.add(title);
 		document.add(composer);
-		for(int i = 0; i < 5; i ++)
+		ColumnText column = new ColumnText(cb);
+		int lineStart = 0;
+		char arrayChar = 'a'; //TODO - Replace with current array char
+		
+		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
-			for(int j = 0; j < 2; j++)
+			for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
 			{
-				document.add(new Paragraph(" "));
-			}
-			for(int j = 0; j < 5; j++)
-			{
-				document.add(line);
-				document.add(new Paragraph(" "));
+				lineStart = 0;
+				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
+				{
+					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
+					{
+						if (arrayChar == '|')
+						{
+							if(i - barSpacing > 0)
+							{
+								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+								cb.moveTo(q, i + j);
+								cb.lineTo(q, i + j - barSpacing);
+							}
+						}
+						else if (arrayChar == '-')
+						{
+							
+						}
+						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
+						{
+							//TODO - Check the char to be written, ignore - and move on, otherwise write it down and place the line correctly.
+							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+							cb.moveTo(lineStart, i + j);
+							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+							lineStart = q + whiteSpace;
+							Phrase currentChar = new Phrase("" + arrayChar); //Replace this with the character from the array we are currently proccessing.
+							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+					        column.go();
+						}
+					}
+					if ((q + givenSpacing*2 >= pageWidth - (int)marginLeft - givenSpacing)) //If the next character doesn't fit, and we are at the end and need to draw a line to the end
+			        {
+						line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+						cb.moveTo(lineStart, i + j);
+						cb.lineTo(pageWidth , i + j );
+			        }
+				}
 			}
 		}
 		document.close();
@@ -70,5 +120,70 @@ public class BarLinesPDF
 		System.out.println("title alignment: " + title.getAlignment());
 		System.out.println("composer alignment: " + composer.getAlignment());
 		System.out.println("line width: " + line.getLineWidth());
+	}
+	
+	public static boolean SetGroupBarSpacing(int newSpacing)
+	{
+		if (newSpacing <0)
+		{
+			return false; //Could not change spacing
+		}
+		else
+		{
+			groupBarSpacing = newSpacing;
+			return true;
+		}
+	}
+	
+	public static boolean SetWhiteSpace(int newSpacing)
+	{
+		if (newSpacing <0)
+		{
+			return false; //Could not change spacing
+		}
+		else
+		{
+			whiteSpace = newSpacing;
+			return true;
+		}
+	}
+	
+	public static boolean SetBarSpacing(int newSpacing)
+	{
+		if (newSpacing <0)
+		{
+			return false; //Could not change spacing
+		}
+		else
+		{
+			barSpacing = newSpacing;
+			return true;
+		}
+	}
+	
+	public static boolean SetGivenSpacing(int newSpacing)
+	{
+		if (newSpacing <0)
+		{
+			return false; //Could not change spacing
+		}
+		else
+		{
+			givenSpacing = newSpacing;
+			return true;
+		}
+	}
+	
+	public static boolean SetNoteFontSize(int newSpacing)
+	{
+		if (newSpacing < 0)
+		{
+			return false; //Could not change spacing
+		}
+		else
+		{
+			noteFontSize = newSpacing;
+			return true;
+		}
 	}
 }
