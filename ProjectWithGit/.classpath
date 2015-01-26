@@ -11,5 +11,6 @@
 	<classpathentry kind="lib" path="/cs/home/flexo735/Desktop/eclipse/Libraries/itext-xtra-5.5.4.jar"/>
 	<classpathentry kind="lib" path="/cs/home/flexo735/Desktop/eclipse/Libraries/itext-xtra-5.5.4-javadoc.jar"/>
 	<classpathentry kind="lib" path="/cs/home/flexo735/Desktop/eclipse/Libraries/itext-xtra-5.5.4-sources.jar"/>
+	<classpathentry kind="lib" path="/cs/home/flexo735/junit-4.10.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
