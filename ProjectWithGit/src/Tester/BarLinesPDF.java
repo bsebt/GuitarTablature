@@ -1,5 +1,6 @@
 package Tester;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -20,10 +21,10 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "tester.pdf";
+	private String DEST = "tester.pdf";
 	
-	public static final String TITLE_STRING = "Moonlight Sonata";
-	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
+	private static String TITLE_STRING = "Moonlight Sonata";
+	private static String COMPOSER_STRING = "Ludwig Van Beethoven";
 	
 	private static final float marginLeft = 50.0f; //Note original margins are 36.0f for letter size
 	private static final float marginRight = 50.0f;
@@ -49,21 +50,17 @@ public class BarLinesPDF
 	
 	public BarLinesPDF()
 	{
+		this.DEST = "tester.pdf";
+	}
+	public BarLinesPDF(String dest)
+	{
+		this.DEST = dest;
 	}
 	
-	public static Rectangle getMargins()
-	{
-		return new Rectangle(marginLeft, marginRight, marginTop, marginBottom);
-	}
-	public static String getTitle()
-	{
-		return TITLE_STRING;
-	}
-
-	public static void main (String args[]) throws DocumentException, IOException
+	public static Boolean pdfWriter(BarLinesPDF b) throws DocumentException, FileNotFoundException
 	{
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(b.DEST));
 		//Header/Meta Data:
 		document.addCreator("Kevin");
 		document.addAuthor("Kevin Arindaeng");
@@ -120,5 +117,12 @@ public class BarLinesPDF
 		System.out.println("title alignment: " + title.getAlignment());
 		System.out.println("composer alignment: " + composer.getAlignment());
 		System.out.println("line width: " + line.getLineWidth());
+		return true;
 	}
+	public static void main (String args[]) throws DocumentException, IOException
+	{
+		BarLinesPDF k = new BarLinesPDF();
+		BarLinesPDF.pdfWriter(k);
+	}
+	
 }

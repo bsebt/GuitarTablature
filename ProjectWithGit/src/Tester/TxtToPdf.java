@@ -15,6 +15,9 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 public class TxtToPdf {
 	
+	private String textFile;
+	private String pdfFile;
+	
 	private static char[][] c;
 	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
@@ -22,42 +25,47 @@ public class TxtToPdf {
 	
 	public TxtToPdf()
 	{
-		
+		this.textFile = "Test.txt";
+		this.pdfFile = "Test.pdf";
 	}
 	
-	public void createPdf()
-			throws DocumentException, IOException {
+	public String getTextFile()
+	{
+		return this.textFile;
+	}
+	public String getPDFFile()
+	{
+		return this.pdfFile;
+	}
+	public Boolean createPdf() throws DocumentException, IOException
+	{
 		BufferedReader input = null;
 		Document output = null;
     
-		try{
-			input = new BufferedReader (new FileReader("Test.txt"));
+		try
+		{
+			input = new BufferedReader (new FileReader(textFile));	//The txt file
 			output = new Document();
-			PdfWriter.getInstance(output, new FileOutputStream("Test.pdf"));
+			PdfWriter.getInstance(output, new FileOutputStream(pdfFile)); //The pdf title
     	
-			output.open();
-			
+			output.open(); //Open the document
 			
 			String line = "";	
-			while(null != (line = input.readLine())){
-				
-				
+			while(null != (line = input.readLine()))	//While the line has an input
+			{
 				if (line.trim().length() == 0)
 				{
-					continue;
+					continue; //If the line is empty, just keep going to the next one
 				}
 				
+				//Add the line to the array list
 				lines.add(line);			
 				Paragraph p = new Paragraph(line);
 				output.add(p);
 			}
-			
-			
-			
+
 			System.out.println(lines.size());
-			
 			System.out.println(lines.get(0).length());
-			
 			
 			//Read the lines from the array list put them into 2d array list
 			for(int z = 0; z<lines.size(); z = z + 6)
@@ -65,7 +73,7 @@ public class TxtToPdf {
 				int col = lines.get(z).length();
 				System.out.println(col);
 				c = new char[6][col];
-				c = new char[6][53];  /* NOT SURE WHY VARIABLE DECLERATION (ie using col) WONT WORK NEED TO FIX*/
+				System.out.println(col);
 				int temp = z;
 				for (int i = 0; i<6; i++, temp++)
 				{
@@ -97,17 +105,21 @@ public class TxtToPdf {
 			output.close();
 			input.close();
 			System.exit(0);
+			return true;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
+			return false;
 		}
 	}
 	
-	public static void main(String[] args)
-	    	throws DocumentException, IOException {
-	    	new TxtToPdf().createPdf();
-	    }
+	public static void main(String[] args) throws DocumentException, IOException
+	{
+		TxtToPdf k = new TxtToPdf();
+		k.createPdf();
+		
+	}
 }
 
     
