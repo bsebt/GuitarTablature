@@ -18,8 +18,9 @@ public class TxtToPdf {
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	
 	
-	public void createPdf()
-			throws DocumentException, IOException {
+	public static ArrayList<char[][]> createPdf()
+			throws DocumentException, IOException 
+			{
 		BufferedReader input = null;
 		Document output = null;
     
@@ -89,18 +90,13 @@ public class TxtToPdf {
 			System.out.println("Done.");
 			output.close();
 			input.close();
-			System.exit(0);
+			return chars;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.exit(1);
+			return null;
 		}
 	}
-	
-	public static void main(String[] args)
-	    	throws DocumentException, IOException {
-	    	new TxtToPdf().createPdf();
-	    }
 }
 
     
