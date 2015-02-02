@@ -39,7 +39,7 @@ public class BarLinesPDF
 	
 	private static Phrase currentChar;
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = 12; //The spacing given at the start of the program, change to variable once we read it in
+	private static int givenSpacing = 13; //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
 	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
 	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
