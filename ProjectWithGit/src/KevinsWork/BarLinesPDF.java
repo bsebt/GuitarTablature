@@ -33,12 +33,14 @@ public class BarLinesPDF
 	
 	private static Font titleFont = new Font(FontFamily.HELVETICA, 30);
 	private static Font composerFont = new Font(FontFamily.HELVETICA, 14);
+	private static Font numberFont = new Font(FontFamily.HELVETICA, 9);
 	private static Paragraph title = new Paragraph(TITLE_STRING, titleFont);
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
+	private static Phrase currentChar;
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = 16; //The spacing given at the start of the program, change to variable once we read it in
-	private static int barSpacing = 10; //Space between individual lines to be drawn
+	private static int givenSpacing = 12; //The spacing given at the start of the program, change to variable once we read it in
+	private static int barSpacing = 7; //Space between individual lines to be drawn
 	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
 	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
 	private static int topVoidSpace = 160; //Space at the top of the page for info. 
@@ -174,7 +176,7 @@ public class BarLinesPDF
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
 							lineStart = q + whiteSpace;
-							Phrase currentChar = new Phrase("" + arrayChar); //Replace this with the character from the array we are currently proccessing.
+							currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 					        column.go();
 					      
