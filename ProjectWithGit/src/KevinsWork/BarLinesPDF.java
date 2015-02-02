@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "tester.pdf";
+	public static final String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
 	
 	public static final String TITLE_STRING = "Moonlight Sonata";
 	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
@@ -45,13 +45,14 @@ public class BarLinesPDF
 	private static int pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
 	
+	private static ArrayList<char[][]> chars;	// This contains all the chars from TxtToPDF .get(bar)[row][col]
+	
 	private static LineSeparator line = new LineSeparator();
 	
 
 	public static void main (String args[]) throws DocumentException, IOException
 	{		
-		ArrayList<char[][]> chars = new ArrayList<char[][]>();
-		chars = TxtToPdf.createPdf(); // TODO Add check to make sure TxtToPdf didn't run into an error
+		chars = DataToArray.textToArray(); // Gets the
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
@@ -59,7 +60,7 @@ public class BarLinesPDF
 		document.addCreator("Kevin");
 		document.addAuthor("Kevin Arindaeng");
 		
-		//Changing some object features:
+		//Changing some object features: (alignment for text)
 		title.setAlignment(Element.ALIGN_CENTER);
 		composer.setAlignment(Element.ALIGN_CENTER);
 		line.setAlignment(Element.ALIGN_MIDDLE);
@@ -69,18 +70,30 @@ public class BarLinesPDF
 		PdfContentByte cb = writer.getDirectContent(); //writer to draw lines
 		document.add(title);
 		document.add(composer);
-		ColumnText column = new ColumnText(cb);
+		ColumnText column = new ColumnText(cb); //text bound left and right on a series of lines
 		int lineStart = 0;
 		int rowPos = 0;
 		int colPos = 0;
 		int barPos = 0;
 		boolean doneWriting = false;
 		
-		int rowSave[][] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
+		int rowSave[][] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}, {0,0}, {0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 		
+		//Tests all 
+		/*for(int i = 0; i < 4; i++) //Sections: 0 to how many bars there are
+		{
+			for(int j = 0; j < 6; j++) //Rows: 0 to 5 ONLY. there are 6 lines in a bar
+			{
+				for(int k = 0; k < chars.get(0)[0].length; k++) //Columns: 0 to the max length of a line. Usually ~58 or so
+				{
+					System.out.print(chars.get(i)[j][k]);
+				}
+				System.out.println();
+			}
+		}*/
 		
-		char arrayChar = chars.get(barPos)[colPos][rowPos]; //Gets first character of the bar
-		int barLength = chars.get(barPos)[colPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
+		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar
+		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
 		
 		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
