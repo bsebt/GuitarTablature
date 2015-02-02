@@ -40,13 +40,15 @@ public class BarLinesPDF
 	private static int givenSpacing = 16; //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 10; //Space between individual lines to be drawn
 	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
-	private static int groupBarSpacing = 100; //Spaces between the groups of 6 lines
-	private static int topVoidSpace = 200; //Space at the top of the page for info.
+	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
+	private static int topVoidSpace = 160; //Space at the top of the page for info. 
 	private static int pageHeight = 800;
 	private static int pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
 	
 	//Data from DataToArray:
+	
+	//chars.get(i)[j].length ---> Gets the exact column number from bar i and row j.
 	private static ArrayList<char[][]> chars;	// All chars from the text file: you obtain by .get(bar)[row][col]
 	private static int maxCol;					// The maximum # of the columns in the array.
 	private static int totalRows;
@@ -100,7 +102,7 @@ public class BarLinesPDF
 			}
 		}
 		
-		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar
+		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
 		
 		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title

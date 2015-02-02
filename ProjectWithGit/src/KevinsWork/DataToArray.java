@@ -16,6 +16,7 @@ public class DataToArray
 	private static char[][] c;
 	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
+	public static String textFile = "Test.txt";
 	
 	private static int col;
 	
@@ -37,7 +38,7 @@ public class DataToArray
 	public static ArrayList<char[][]> textToArray() throws DocumentException, IOException 
 	{
 		BufferedReader input = null;
-		input = new BufferedReader (new FileReader("Test.txt"));
+		input = new BufferedReader (new FileReader(textFile));
 		String line = "";	
 		while(null != (line = input.readLine()))
 		{	

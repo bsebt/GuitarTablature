@@ -11,7 +11,7 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
 
-public class TxtToPdf {
+public class DataToArray {
 	
 	private static char[][] c;
 	private static ArrayList<String> lines = new ArrayList<String>();

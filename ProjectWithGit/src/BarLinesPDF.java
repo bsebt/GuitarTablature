@@ -49,7 +49,7 @@ public class BarLinesPDF
 	public static void main (String args[]) throws DocumentException, IOException
 	{		
 		ArrayList<char[][]> chars = new ArrayList<char[][]>();
-		chars = TxtToPdf.createPdf(); // TODO Add check to make sure TxtToPdf didn't run into an error
+		chars = DataToArray.createPdf(); // TODO Add check to make sure TxtToPdf didn't run into an error
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
