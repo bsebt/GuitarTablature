@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import com.itextpdf.text.DocumentException;
 
-//I removed the making a PDF on this since it is not necessary.
+//Feb/2/15: I removed the making a PDF on this since it is not necessary.
+//Feb/2/15: Got c = new char[6][col]; to work! Made other methods to send to BarLinesPDF.
 
 public class DataToArray 
 {
@@ -16,6 +17,22 @@ public class DataToArray
 	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	
+	private static int col;
+	
+	public static int getMaxColumnAmount()
+	{
+		return DataToArray.col;
+	}
+	
+	public static int getTotalRowAmount()
+	{
+		return DataToArray.lines.size();
+	}
+	
+	public static int getBarAmount()
+	{
+		return DataToArray.lines.size()/6;
+	}
 	
 	public static ArrayList<char[][]> textToArray() throws DocumentException, IOException 
 	{
@@ -31,15 +48,17 @@ public class DataToArray
 				
 			lines.add(line);			
 		}	
-		//System.out.println(lines.size());	
-		//System.out.println(lines.get(0).length());
-		//Read the lines from the array list put them into 2d array list
-		for(int z = 0; z<lines.size(); z = z + 6)
+		
+		/*	System.out.println(lines.size());	
+			System.out.println(lines.get(0).length());
+			Read the lines from the array list put them into 2d array list
+
+			the c = new char[6][col] works.
+		 */
+		for(int z = 0; z < lines.size(); z = z + 6)
 		{
-			int col = lines.get(z).length();
-			//System.out.println(col);
-			//c = new char[6][col];
-			c = new char[6][53];  /* NOT SURE WHY VARIABLE DECLERATION (ie using col) WONT WORK NEED TO FIX*/
+			col = lines.get(z).length();
+			c = new char[6][col];
 			int temp = z;
 			for (int i = 0; i<6; i++, temp++)
 			{

@@ -29,6 +29,7 @@ public class BarLinesPDF
 	private static final float marginRight = 50.0f;
 	private static final float marginTop = 0.0f;
 	private static final float marginBottom = 0.0f;
+	private static final int ROWS = 6;
 	
 	private static Font titleFont = new Font(FontFamily.HELVETICA, 30);
 	private static Font composerFont = new Font(FontFamily.HELVETICA, 14);
@@ -45,7 +46,11 @@ public class BarLinesPDF
 	private static int pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
 	
-	private static ArrayList<char[][]> chars;	// This contains all the chars from TxtToPDF .get(bar)[row][col]
+	//Data from DataToArray:
+	private static ArrayList<char[][]> chars;	// All chars from the text file: you obtain by .get(bar)[row][col]
+	private static int maxCol;					// The maximum # of the columns in the array.
+	private static int totalRows;
+	private static int bars;
 	
 	private static LineSeparator line = new LineSeparator();
 	
@@ -53,6 +58,9 @@ public class BarLinesPDF
 	public static void main (String args[]) throws DocumentException, IOException
 	{		
 		chars = DataToArray.textToArray(); // Gets the
+		maxCol = DataToArray.getMaxColumnAmount();
+		totalRows = DataToArray.getTotalRowAmount();
+		bars = DataToArray.getBarAmount();
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
@@ -79,18 +87,18 @@ public class BarLinesPDF
 		
 		int rowSave[][] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}, {0,0}, {0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 		
-		//Tests all 
-		/*for(int i = 0; i < 4; i++) //Sections: 0 to how many bars there are
+		System.out.println("In BarLinesPDF. Proving the ArrayList of chars works.");
+		for(int i = 0; i < bars; i++) //Sections: 0 to how many bars there are
 		{
-			for(int j = 0; j < 6; j++) //Rows: 0 to 5 ONLY. there are 6 lines in a bar
+			for(int j = 0; j < ROWS; j++) //Rows: 0 to 5 ONLY. there are 6 lines in a bar
 			{
-				for(int k = 0; k < chars.get(0)[0].length; k++) //Columns: 0 to the max length of a line. Usually ~58 or so
+				for(int k = 0; k < chars.get(i)[j].length; k++) //Columns: 0 to the max length of a line. Usually ~58 or so
 				{
 					System.out.print(chars.get(i)[j][k]);
 				}
 				System.out.println();
 			}
-		}*/
+		}
 		
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
