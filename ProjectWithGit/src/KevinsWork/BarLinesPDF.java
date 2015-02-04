@@ -38,6 +38,7 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static Phrase currentChar;
+	private static int numberOfPages = 1; //TODO calculate how many pages are needed with every conversion
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
 	private static int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
@@ -59,7 +60,7 @@ public class BarLinesPDF
 	private static LineSeparator line = new LineSeparator();
 	
 
-	public static void main (String args[]) throws DocumentException, IOException
+	public static void Convert() throws DocumentException, IOException
 	{		
 		chars = DataToArray.textToArray(); // Gets the
 		maxCol = DataToArray.getMaxColumnAmount();
@@ -82,6 +83,9 @@ public class BarLinesPDF
 		PdfContentByte cb = writer.getDirectContent(); //writer to draw lines
 		document.add(title);
 		document.add(composer);
+		
+		//document.newPage(); TODO add pages as needed, add a new loop
+		
 		ColumnText column = new ColumnText(cb); //text bound left and right on a series of lines
 		int lineStart = 0;
 		int rowPos = 0;
@@ -105,9 +109,9 @@ public class BarLinesPDF
 		}
 		
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
-		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
-		
-		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
+		int barLength = chars.get(barPos)[rowPos].length - 1; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically TODO change this so it checks with every bar, otherwise different length bars will break it
+		//Note: -1 above removes the last column of every bar, it is a quick and dirty fix to remove double lines we have been seeing.
+		for (int j = pageHeight * numberOfPages - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
 			rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
 			for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
@@ -116,12 +120,21 @@ public class BarLinesPDF
 				colPos = rowSave[rowPos][1]; //Pull up how many columns we have written on this line
 				arrayChar = chars.get(barPos)[rowPos][colPos]; 
 				
-				boolean endOfBars = false;
 				lineStart = 0;
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
+						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk data. This is a quick fix
+						{
+							colPos++;
+							if (colPos == barLength)
+					        {
+					        	colPos = 0;
+					        	barPos++;
+					        }
+					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+						}
 						if (arrayChar == '|') //problem with writing the | character. Introduces random writing | at the begining
 						{
 							if(i - barSpacing > 0)
@@ -130,6 +143,16 @@ public class BarLinesPDF
 								cb.moveTo(q, i + j);
 								cb.lineTo(q, i + j - barSpacing);
 								
+								colPos++;
+						        if (colPos == barLength)
+						        {
+						        	colPos = 0;
+						        	barPos++;
+						        }
+						        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							}
+							else
+							{
 								colPos++;
 						        if (colPos == barLength)
 						        {
@@ -151,6 +174,8 @@ public class BarLinesPDF
 						}
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
+							
+							
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
@@ -159,7 +184,7 @@ public class BarLinesPDF
 							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 					        column.go();
 					      
-					        colPos++;
+					        colPos++; //TODO change this increment to a method
 					        if (colPos == barLength)
 					        {
 					        	colPos = 0;
