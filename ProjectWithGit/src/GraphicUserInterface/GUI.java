@@ -1,4 +1,4 @@
-package GUI;
+package GraphicUserInterface;
 
 import javax.swing.*;
 
@@ -200,7 +200,7 @@ public class GUI extends JFrame {
 					OutputFile.setText(OutputFile.getText().substring(OutputFile.getText().indexOf(":")+2,OutputFile.getText().length()));
 					dest.setText(dest.getText().substring(dest.getText().indexOf("/"),dest.getText().length()));
 					source.setText(source.getText().substring(source.getText().indexOf("/"),input.getText().length()));
-					BarLinesPDF.Convert();
+					new GUI().createPdf(destination.getText()+"/"+OutputFile.getText(), source.getText());
 				} catch (DocumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
