@@ -39,7 +39,7 @@ public class BarLinesPDF
 	
 	private static Phrase currentChar;
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = 13; //The spacing given at the start of the program, change to variable once we read it in
+	private static int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
 	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
 	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
@@ -109,18 +109,20 @@ public class BarLinesPDF
 		
 		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
-			rowPos = 0; //If this is the first bar of a group, reset the row we are on (start at the top, reset every 6)
+			rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
 			for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
 			{
 				barPos = rowSave[rowPos][0]; //Pull up what bar we have written to on this line
 				colPos = rowSave[rowPos][1]; //Pull up how many columns we have written on this line
+				arrayChar = chars.get(barPos)[rowPos][colPos]; 
+				
 				boolean endOfBars = false;
 				lineStart = 0;
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
-						if (arrayChar == '|' && !doneWriting)
+						if (arrayChar == '|') //problem with writing the | character. Introduces random writing | at the begining
 						{
 							if(i - barSpacing > 0)
 							{
@@ -133,19 +135,8 @@ public class BarLinesPDF
 						        {
 						        	colPos = 0;
 						        	barPos++;
-						        	if (barPos == chars.size())
-						        	{
-						        		endOfBars = true;
-						        		if (rowPos == 5)
-						        		{
-						        			doneWriting = true; //If there are no more bars to write, stop
-						        		}
-						        	}
 						        }
-						        if (!endOfBars)
-						        {
-						        	arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
-						        }
+						        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 							}
 						}
 						else if (arrayChar == '-')
@@ -155,23 +146,11 @@ public class BarLinesPDF
 					        {
 					        	colPos = 0;
 					        	barPos++;
-					        	if (barPos == chars.size())
-					        	{
-					        		endOfBars = true;
-					        		if (rowPos == 5)
-					        		{
-					        			doneWriting = true; //If there are no more bars to write, stop
-					        		}
-					        	}
 					        }
-					        if (!endOfBars)
-					        {
-					        	arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
-					        }
+					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 						}
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
-							//TODO - Check the char to be written, ignore - and move on, otherwise write it down and place the line correctly.
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
@@ -185,19 +164,8 @@ public class BarLinesPDF
 					        {
 					        	colPos = 0;
 					        	barPos++;
-					        	if (barPos == chars.size())
-					        	{
-					        		endOfBars = true;
-					        		if (rowPos == 5)
-					        		{
-					        			doneWriting = true; //If there are no more bars to write, stop
-					        		}
-					        	}
 					        }
-					        if (!endOfBars)
-					        {
-					        	arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
-					        }
+					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 						}
 					}
 					if ((q + givenSpacing*2 >= pageWidth - (int)marginLeft - givenSpacing)) //If the next character doesn't fit, and we are at the end and need to draw a line to the end
