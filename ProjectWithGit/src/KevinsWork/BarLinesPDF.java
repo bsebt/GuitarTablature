@@ -59,7 +59,7 @@ public class BarLinesPDF
 	private static LineSeparator line = new LineSeparator();
 	
 
-	public static void main (String[] args) throws DocumentException, IOException//Convert() throws DocumentException, IOException
+	public static void convertPDF() throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{		
 		chars = DataToArray.textToArray(); // Gets the
 		maxCol = DataToArray.getMaxColumnAmount();
