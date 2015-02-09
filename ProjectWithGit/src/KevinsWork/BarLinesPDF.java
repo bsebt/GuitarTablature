@@ -120,7 +120,8 @@ public class BarLinesPDF
 				arrayChar = chars.get(barPos)[rowPos][colPos]; 
 				
 				lineStart = 0;
-				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
+				int characterSpace = HowManyCharacters(barPos) * givenSpacing;
+				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					boolean EOB = false; //used to check if there is a next bar to pull from, avoids index errors
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
@@ -146,7 +147,7 @@ public class BarLinesPDF
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 							}
 						}
-						if (arrayChar == '|') //problem with writing the | character. Introduces random writing | at the begining
+						if (arrayChar == '|')
 						{
 							if(i - barSpacing > 0)
 							{
@@ -216,10 +217,33 @@ public class BarLinesPDF
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 							}
 						}
+						else if (arrayChar == 's')
+						{
+							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+							cb.moveTo(q - givenSpacing/2, i + j - givenSpacing/2); //Give the option for the user to tweek the settings for this?
+							cb.lineTo(q + givenSpacing/2, i + j + givenSpacing/2); //How should font affect it?
+							
+							colPos++;
+					        if (colPos == barLength)
+					        {
+					        	colPos = 0;
+					        	barPos++;
+					        }
+					        if (barPos == chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							}
+						}
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
-							
-							
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
@@ -255,6 +279,7 @@ public class BarLinesPDF
 						cb.lineTo(pageWidth , i + j );
 			        }
 				}
+				System.out.println("Done a line");
 				rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
         		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 				rowPos++;
@@ -275,6 +300,38 @@ public class BarLinesPDF
 		System.out.println("title alignment: " + title.getAlignment());
 		System.out.println("composer alignment: " + composer.getAlignment());
 		System.out.println("line width: " + line.getLineWidth());
+	}
+	
+	private static int HowManyCharacters (int currentBar) //Decides how many bars to try and write, NOT WORKING YET TODO fix this method to check how much space is available
+	{
+		int count;
+		int tempchar = 0;
+		int tempbar = currentBar;
+		boolean done = false;
+		for (count = pageWidth - (int)marginLeft - (int)marginRight; count >= 0 && !done;)
+		{
+			if (currentBar == chars.size() - 1)
+			{
+				return 0;
+			}
+			count -= chars.get(tempbar)[0].length * givenSpacing;
+			tempchar = chars.get(tempbar)[0].length * givenSpacing;
+			if (count >= 0)
+			{
+				tempchar += chars.get(tempbar)[0].length;
+			}
+			
+			if (tempbar == chars.size() - 1)
+			{
+				done = true;
+			}
+			else
+			{
+				tempbar++;
+			}
+		}
+		System.out.println(done);
+		return tempchar;
 	}
 	
 	public static boolean SetGroupBarSpacing(int newSpacing)
