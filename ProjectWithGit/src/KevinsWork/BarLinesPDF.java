@@ -38,7 +38,6 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static Phrase currentChar;
-	private static int numberOfPages = 1; //TODO calculate how many pages are needed with every conversion
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
 	private static int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
@@ -60,7 +59,7 @@ public class BarLinesPDF
 	private static LineSeparator line = new LineSeparator();
 	
 
-	public static void Convert() throws DocumentException, IOException
+	public static void main (String[] args) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{		
 		chars = DataToArray.textToArray(); // Gets the
 		maxCol = DataToArray.getMaxColumnAmount();
@@ -111,7 +110,7 @@ public class BarLinesPDF
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length - 1; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically TODO change this so it checks with every bar, otherwise different length bars will break it
 		//Note: -1 above removes the last column of every bar, it is a quick and dirty fix to remove double lines we have been seeing.
-		for (int j = pageHeight * numberOfPages - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
+		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{
 			rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
 			for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
@@ -123,6 +122,7 @@ public class BarLinesPDF
 				lineStart = 0;
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - (int)marginLeft - givenSpacing; q += givenSpacing) //Individual characters
 				{
+					boolean EOB = false; //used to check if there is a next bar to pull from, avoids index errors
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
 						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk data. This is a quick fix
@@ -133,7 +133,18 @@ public class BarLinesPDF
 					        	colPos = 0;
 					        	barPos++;
 					        }
-					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							if (barPos == chars.size())
+				        	{
+								EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+							if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							}
 						}
 						if (arrayChar == '|') //problem with writing the | character. Introduces random writing | at the begining
 						{
@@ -149,7 +160,18 @@ public class BarLinesPDF
 						        	colPos = 0;
 						        	barPos++;
 						        }
-						        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+						        if (barPos == chars.size())
+					        	{
+						        	EOB = true;
+					        		if (rowPos == 5)
+					        		{
+					        			doneWriting = true; //If there are no more bars to write, stop
+					        		}
+					        	}
+						        if (!EOB)
+								{
+									arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								}
 							}
 							else
 							{
@@ -159,7 +181,18 @@ public class BarLinesPDF
 						        	colPos = 0;
 						        	barPos++;
 						        }
-						        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+						        if (barPos == chars.size())
+					        	{
+						        	EOB = true;
+					        		if (rowPos == 5)
+					        		{
+					        			doneWriting = true; //If there are no more bars to write, stop
+					        		}
+					        	}
+						        if (!EOB)
+								{
+									arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								}
 							}
 						}
 						else if (arrayChar == '-')
@@ -170,7 +203,18 @@ public class BarLinesPDF
 					        	colPos = 0;
 					        	barPos++;
 					        }
-					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+					        if (barPos == chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							}
 						}
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
@@ -190,7 +234,18 @@ public class BarLinesPDF
 					        	colPos = 0;
 					        	barPos++;
 					        }
-					        arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+					        if (barPos == chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+							}
 						}
 					}
 					if ((q + givenSpacing*2 >= pageWidth - (int)marginLeft - givenSpacing)) //If the next character doesn't fit, and we are at the end and need to draw a line to the end
@@ -203,6 +258,11 @@ public class BarLinesPDF
 				rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
         		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 				rowPos++;
+			}
+			if (j - groupBarSpacing < 0 + marginBottom && !doneWriting)
+			{
+				 j = pageHeight - (int)marginTop;
+				 document.newPage();
 			}
 		}
 		document.close();
