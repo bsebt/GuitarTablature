@@ -61,7 +61,7 @@ public class BarLinesPDF
 
 	public static void convertPDF() throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{		
-		chars = DataToArray.textToArray(); // Gets the
+		chars = DataToArray.textToArray(); // Gets the array of information
 		maxCol = DataToArray.getMaxColumnAmount();
 		totalRows = DataToArray.getTotalRowAmount();
 		bars = DataToArray.getBarAmount();
@@ -286,8 +286,6 @@ public class BarLinesPDF
 							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 					        column.go();
 					        
-					        System.out.println(arrayChar);
-					      
 					        colPos++; //TODO change this increment to a method
 					        if (colPos == barLength)
 					        {

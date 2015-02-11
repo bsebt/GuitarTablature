@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import com.itextpdf.text.DocumentException;
 
 //Feb/2/15: I removed the making a PDF on this since it is not necessary.
@@ -17,6 +18,8 @@ public class DataToArray
 	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	public static String textFile = "Test.txt";
+	
+	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 	
 	private static int col;
 	
@@ -75,6 +78,7 @@ public class DataToArray
 			chars.add(c);
 		}	
 			
+		/*
 		//Test to see printed lines
 		for (int i = 0; i<lines.size(); i++)
 		{
@@ -86,10 +90,49 @@ public class DataToArray
 		{
 			System.out.println(Arrays.deepToString(chars.get(i)));
 		}
+		*/
 			
 		System.out.println("Done. TxtToPdf successfully got the txt to an array. \n");
 		input.close();
-		return chars;
+		
+		//Added by Daniel McVicar, reprocesses Chars to place one bar per element.
+		char[][] indchar = new char[6][chars.get(0)[0].length - 1]; //Needs to be made variable length
+		for (int q = 0; q < 6; q++)
+		{
+			indchar[q][0] = '|';
+		}
+		for (int a = 0; a < chars.size(); a++) //move between bars
+		{
+			int increment = 0;
+			for (int b = 1; b < 27 /*chars.get(a)[0].length - 1*/; b ++) //Move between columns, ignore first column and fill manually to avoid double first element
+			{
+				System.out.println("MaxColumn = " + chars.get(a)[0].length);
+				for (int r = 0; r < 6; r ++) //Move between rows
+				{
+					char temp = chars.get(a)[r][b];
+					if (temp == '|')
+					{
+						if (r == 0)
+						{
+							newchars.add(indchar);
+							indchar = new char[6][chars.get(a)[0].length - 1]; //make a new character array to hold everything from here
+							indchar[r][b - 27*increment] = chars.get(a)[r][b];
+							increment++;
+						}
+					}
+					else
+					{
+					indchar[r][b] = chars.get(a)[r][b];
+					}
+				}
+			}
+		}
+		for (int i = 0; i<newchars.size(); i++)
+		{
+			System.out.println(Arrays.deepToString(newchars.get(i)));
+		}
+		
+		return newchars;
 	}
 }
 

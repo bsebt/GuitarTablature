@@ -90,6 +90,7 @@ public class DataToArray {
 			System.out.println("Done.");
 			output.close();
 			input.close();
+		
 			return chars;
 		}
 		catch (Exception e) {
