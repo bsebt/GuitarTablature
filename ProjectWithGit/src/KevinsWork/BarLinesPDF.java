@@ -94,6 +94,7 @@ public class BarLinesPDF
 		
 		int rowSave[][] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}, {0,0}, {0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 		
+		/*
 		System.out.println("In BarLinesPDF. Proving the ArrayList of chars works.");
 		for(int i = 0; i < bars; i++) //Sections: 0 to how many bars there are
 		{
@@ -106,6 +107,7 @@ public class BarLinesPDF
 				System.out.println();
 			}
 		}
+		*/
 		
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length - 1; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically TODO change this so it checks with every bar, otherwise different length bars will break it
@@ -199,6 +201,11 @@ public class BarLinesPDF
 						        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
 						        		{
 						        			noSpaceAvailable = true;
+						        			if (rowPos != 5)
+						        			{
+							        			cb.moveTo(q + givenSpacing, i + j);
+												cb.lineTo(q + givenSpacing, i + j - barSpacing);
+						        			}
 						        		}
 						        	}
 						        }
@@ -228,6 +235,11 @@ public class BarLinesPDF
 					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
 					        		{
 					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
 					        		}
 					        	}
 					        }
@@ -260,6 +272,11 @@ public class BarLinesPDF
 					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
 					        		{
 					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
 					        		}
 					        	}
 					        }
@@ -296,6 +313,11 @@ public class BarLinesPDF
 					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
 					        		{
 					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
 					        		}
 					        	}
 					        }

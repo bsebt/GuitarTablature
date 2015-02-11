@@ -96,7 +96,8 @@ public class DataToArray
 		input.close();
 		
 		//Added by Daniel McVicar, reprocesses Chars to place one bar per element.
-		char[][] indchar = new char[6][chars.get(0)[0].length - 1]; //Needs to be made variable length
+		/*
+		char[][] indchar = new char[6][chars.get(0)[0].length/2]; //Needs to be made variable length
 		for (int q = 0; q < 6; q++)
 		{
 			indchar[q][0] = '|';
@@ -104,9 +105,8 @@ public class DataToArray
 		for (int a = 0; a < chars.size(); a++) //move between bars
 		{
 			int increment = 0;
-			for (int b = 1; b < 27 /*chars.get(a)[0].length - 1*/; b ++) //Move between columns, ignore first column and fill manually to avoid double first element
+			for (int b = 1; b < 27 chars.get(a)[0].length - 1; b ++) //Move between columns, ignore first column and fill manually to avoid double first element
 			{
-				System.out.println("MaxColumn = " + chars.get(a)[0].length);
 				for (int r = 0; r < 6; r ++) //Move between rows
 				{
 					char temp = chars.get(a)[r][b];
@@ -115,10 +115,11 @@ public class DataToArray
 						if (r == 0)
 						{
 							newchars.add(indchar);
-							indchar = new char[6][chars.get(a)[0].length - 1]; //make a new character array to hold everything from here
-							indchar[r][b - 27*increment] = chars.get(a)[r][b];
+							indchar = new char[6][chars.get(a)[0].length/2]; //make a new character array to hold everything from here
+							indchar[r][b - (chars.get(a)[0].length/2)*increment] = chars.get(a)[r][b];
 							increment++;
 						}
+						indchar[r][b] = chars.get(a)[r][b];
 					}
 					else
 					{
@@ -131,8 +132,8 @@ public class DataToArray
 		{
 			System.out.println(Arrays.deepToString(newchars.get(i)));
 		}
-		
-		return newchars;
+		*/
+		return chars; //Change to use newchars soon
 	}
 }
 

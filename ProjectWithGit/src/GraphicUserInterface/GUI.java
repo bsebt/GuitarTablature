@@ -44,9 +44,6 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
 		
-		
-		
-
 		// creating a menu
 		JMenuBar mb = new JMenuBar();
 		frame.setJMenuBar(mb);
