@@ -111,7 +111,7 @@ public class BarLinesPDF
 		int barLength = chars.get(barPos)[rowPos].length - 1; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically TODO change this so it checks with every bar, otherwise different length bars will break it
 		//Note: -1 above removes the last column of every bar, it is a quick and dirty fix to remove double lines we have been seeing.
 		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
-		{
+		{			
 			rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
 			for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
 			{
@@ -119,8 +119,9 @@ public class BarLinesPDF
 				colPos = rowSave[rowPos][1]; //Pull up how many columns we have written on this line
 				arrayChar = chars.get(barPos)[rowPos][colPos]; 
 				
+				boolean noSpaceAvailable = false; //Used to check if there is enough space to write the next character
 				lineStart = 0;
-				int characterSpace = HowManyCharacters(barPos) * givenSpacing;
+				//int characterSpace = HowManyCharacters(barPos) * givenSpacing;
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
 				{
 					boolean EOB = false; //used to check if there is a next bar to pull from, avoids index errors
@@ -147,7 +148,12 @@ public class BarLinesPDF
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
 							}
 						}
-						if (arrayChar == '|')
+						
+						if (noSpaceAvailable)
+						{
+							//Do nothing, we are waiting until the end of the this line
+						}
+						else if (arrayChar == '|')
 						{
 							if(i - barSpacing > 0)
 							{
@@ -160,6 +166,13 @@ public class BarLinesPDF
 						        {
 						        	colPos = 0;
 						        	barPos++;
+						        	if (barPos < chars.size())
+						        	{
+						        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+						        		{
+						        			noSpaceAvailable = true;
+						        		}
+						        	}
 						        }
 						        if (barPos == chars.size())
 					        	{
@@ -181,6 +194,13 @@ public class BarLinesPDF
 						        {
 						        	colPos = 0;
 						        	barPos++;
+						        	if (barPos < chars.size())
+						        	{
+						        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+						        		{
+						        			noSpaceAvailable = true;
+						        		}
+						        	}
 						        }
 						        if (barPos == chars.size())
 					        	{
@@ -203,6 +223,13 @@ public class BarLinesPDF
 					        {
 					        	colPos = 0;
 					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        		}
+					        	}
 					        }
 					        if (barPos == chars.size())
 				        	{
@@ -228,6 +255,13 @@ public class BarLinesPDF
 					        {
 					        	colPos = 0;
 					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        		}
+					        	}
 					        }
 					        if (barPos == chars.size())
 				        	{
@@ -251,12 +285,21 @@ public class BarLinesPDF
 							currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 					        column.go();
+					        
+					        System.out.println(arrayChar);
 					      
 					        colPos++; //TODO change this increment to a method
 					        if (colPos == barLength)
 					        {
 					        	colPos = 0;
 					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        		}
+					        	}
 					        }
 					        if (barPos == chars.size())
 				        	{
@@ -279,7 +322,6 @@ public class BarLinesPDF
 						cb.lineTo(pageWidth , i + j );
 			        }
 				}
-				System.out.println("Done a line");
 				rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
         		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 				rowPos++;
@@ -300,38 +342,6 @@ public class BarLinesPDF
 		System.out.println("title alignment: " + title.getAlignment());
 		System.out.println("composer alignment: " + composer.getAlignment());
 		System.out.println("line width: " + line.getLineWidth());
-	}
-	
-	private static int HowManyCharacters (int currentBar) //Decides how many bars to try and write, NOT WORKING YET TODO fix this method to check how much space is available
-	{
-		int count;
-		int tempchar = 0;
-		int tempbar = currentBar;
-		boolean done = false;
-		for (count = pageWidth - (int)marginLeft - (int)marginRight; count >= 0 && !done;)
-		{
-			if (currentBar == chars.size() - 1)
-			{
-				return 0;
-			}
-			count -= chars.get(tempbar)[0].length * givenSpacing;
-			tempchar = chars.get(tempbar)[0].length * givenSpacing;
-			if (count >= 0)
-			{
-				tempchar += chars.get(tempbar)[0].length;
-			}
-			
-			if (tempbar == chars.size() - 1)
-			{
-				done = true;
-			}
-			else
-			{
-				tempbar++;
-			}
-		}
-		System.out.println(done);
-		return tempchar;
 	}
 	
 	public static boolean SetGroupBarSpacing(int newSpacing)
