@@ -5,46 +5,39 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.StringTokenizer;
 
 import com.itextpdf.text.DocumentException;
 
 public class DataToArray 
 {
 	
-	private char[][] c;
-	private ArrayList<String> lines = new ArrayList<String>();
-	private ArrayList<char[][]> chars = new ArrayList<char[][]>();
-	public String textFile = "Test.txt";
-	private ArrayList<char[][]> newchars = new ArrayList<char[][]>();
-	private int col;
+	private static char[][] c;
+	private static ArrayList<String> lines = new ArrayList<String>();
+	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
+	private static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
+	public static String textFile = "Test.txt";
 	
-	public DataToArray() {}
+	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 	
-	/**
-	 * Creates a DataToArray object with a specific textfile path
-	 * @param txtFile - The string to the text file destination
-	 */
-	public DataToArray(String txtFile)
+	private static int col;
+	
+	public static int getMaxColumnAmount()
 	{
-		this.textFile = txtFile;
+		return DataToArray.col;
 	}
 	
-	public int getMaxColumnAmount()
+	public static int getTotalRowAmount()
 	{
-		return this.col;
+		return DataToArray.lines.size();
 	}
 	
-	public int getTotalRowAmount()
+	public static int getBarAmount()
 	{
-		return this.lines.size();
+		return DataToArray.lines.size()/6;
 	}
 	
-	public int getBarAmount()
-	{
-		return this.lines.size()/6;
-	}
-	
-	public ArrayList<char[][]> textToArray() throws DocumentException, IOException 
+	public static ArrayList<char[][]> textToArray() throws DocumentException, IOException 
 	{
 		BufferedReader input = null;
 		input = new BufferedReader (new FileReader(textFile));
@@ -140,6 +133,31 @@ public class DataToArray
 		}
 		*/
 		return chars; //Change to use newchars soon
+	}
+	
+	public static void LengthOfPartition(){
+		int length;
+		String temp;
+		for (int i=0; i<lines.size(); i++){
+			String line = lines.get(i);
+			StringTokenizer StrTkn = new StringTokenizer(line, "|");
+			System.out.println("NUMBER OF TOKENS = " + StrTkn.countTokens());
+			while(StrTkn.hasMoreTokens())
+			{
+				temp = StrTkn.nextToken();
+				length = temp.length();
+				partitionLength.add(length);
+			}
+		}	
+		for (int i = 0; i<partitionLength.size(); i++)
+		{
+			System.out.println(partitionLength.get(i));
+		}
+	}
+	
+	public static void main (String[]args) throws DocumentException, IOException{
+		textToArray();
+		LengthOfPartition();
 	}
 }
 
