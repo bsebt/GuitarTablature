@@ -57,14 +57,15 @@ public class BarLinesPDF
 	private static int bars;
 	
 	private static LineSeparator line = new LineSeparator();
-	
+	private static DataToArray data;
 
 	public static void convertPDF() throws DocumentException, IOException//Convert() throws DocumentException, IOException
-	{		
-		chars = DataToArray.textToArray(); // Gets the array of information
-		maxCol = DataToArray.getMaxColumnAmount();
-		totalRows = DataToArray.getTotalRowAmount();
-		bars = DataToArray.getBarAmount();
+	{	
+		data = new DataToArray();
+		chars = data.textToArray(); // Gets the array of information
+		maxCol = data.getMaxColumnAmount();
+		totalRows = data.getTotalRowAmount();
+		bars = data.getBarAmount();
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));

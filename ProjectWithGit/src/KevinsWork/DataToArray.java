@@ -8,37 +8,43 @@ import java.util.Arrays;
 
 import com.itextpdf.text.DocumentException;
 
-//Feb/2/15: I removed the making a PDF on this since it is not necessary.
-//Feb/2/15: Got c = new char[6][col]; to work! Made other methods to send to BarLinesPDF.
-
 public class DataToArray 
 {
 	
-	private static char[][] c;
-	private static ArrayList<String> lines = new ArrayList<String>();
-	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
-	public static String textFile = "Test.txt";
+	private char[][] c;
+	private ArrayList<String> lines = new ArrayList<String>();
+	private ArrayList<char[][]> chars = new ArrayList<char[][]>();
+	public String textFile = "Test.txt";
+	private ArrayList<char[][]> newchars = new ArrayList<char[][]>();
+	private int col;
 	
-	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
+	public DataToArray() {}
 	
-	private static int col;
-	
-	public static int getMaxColumnAmount()
+	/**
+	 * Creates a DataToArray object with a specific textfile path
+	 * @param txtFile - The string to the text file destination
+	 */
+	public DataToArray(String txtFile)
 	{
-		return DataToArray.col;
+		this.textFile = txtFile;
 	}
 	
-	public static int getTotalRowAmount()
+	public int getMaxColumnAmount()
 	{
-		return DataToArray.lines.size();
+		return this.col;
 	}
 	
-	public static int getBarAmount()
+	public int getTotalRowAmount()
 	{
-		return DataToArray.lines.size()/6;
+		return this.lines.size();
 	}
 	
-	public static ArrayList<char[][]> textToArray() throws DocumentException, IOException 
+	public int getBarAmount()
+	{
+		return this.lines.size()/6;
+	}
+	
+	public ArrayList<char[][]> textToArray() throws DocumentException, IOException 
 	{
 		BufferedReader input = null;
 		input = new BufferedReader (new FileReader(textFile));
