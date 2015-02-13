@@ -92,6 +92,7 @@ public class BarLinesPDF
 		int colPos = 0;
 		int barPos = 0;
 		boolean doneWriting = false;
+		boolean lastBarred = false;
 		
 		int rowSave[][] = {{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}, {0,0}, {0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 		
@@ -130,6 +131,7 @@ public class BarLinesPDF
 					boolean EOB = false; //used to check if there is a next bar to pull from, avoids index errors
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
+						//System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
 						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk data. This is a quick fix
 						{
 							colPos++;
@@ -138,17 +140,24 @@ public class BarLinesPDF
 					        	colPos = 0;
 					        	barPos++;
 					        }
-							if (barPos == chars.size())
+							if (barPos >= chars.size())
 				        	{
 								EOB = true;
 				        		if (rowPos == 5)
 				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
 				        			doneWriting = true; //If there are no more bars to write, stop
 				        		}
 				        	}
 							if (!EOB)
 							{
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length - 1;
 							}
 						}
 						
@@ -176,18 +185,26 @@ public class BarLinesPDF
 						        			noSpaceAvailable = true;
 						        		}
 						        	}
+						        	
 						        }
-						        if (barPos == chars.size())
+						        if (barPos >= chars.size())
 					        	{
 						        	EOB = true;
 					        		if (rowPos == 5)
 					        		{
+					        			if (!lastBarred)
+					        			{
+						        			cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+											lastBarred = true;
+					        			}
 					        			doneWriting = true; //If there are no more bars to write, stop
 					        		}
 					        	}
 						        if (!EOB)
 								{
 									arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+									barLength = chars.get(barPos)[rowPos].length - 1;
 								}
 							}
 							else
@@ -210,21 +227,28 @@ public class BarLinesPDF
 						        		}
 						        	}
 						        }
-						        if (barPos == chars.size())
+						        if (barPos >= chars.size())
 					        	{
 						        	EOB = true;
 					        		if (rowPos == 5)
 					        		{
+					        			if (!lastBarred)
+					        			{
+						        			cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+											lastBarred = true;
+					        			}
 					        			doneWriting = true; //If there are no more bars to write, stop
 					        		}
 					        	}
 						        if (!EOB)
 								{
 									arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+									barLength = chars.get(barPos)[rowPos].length - 1;
 								}
 							}
 						}
-						else if (arrayChar == '-')
+						else if (arrayChar == '-' || arrayChar == '<')
 						{
 							colPos++;
 					        if (colPos == barLength)
@@ -244,17 +268,25 @@ public class BarLinesPDF
 					        		}
 					        	}
 					        }
-					        if (barPos == chars.size())
+					        if (barPos >= chars.size())
 				        	{
 					        	EOB = true;
 				        		if (rowPos == 5)
 				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
 				        			doneWriting = true; //If there are no more bars to write, stop
 				        		}
 				        	}
+					        System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " EOB: " + EOB);
 					        if (!EOB)
 							{
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length - 1;
 							}
 						}
 						else if (arrayChar == 's')
@@ -281,28 +313,63 @@ public class BarLinesPDF
 					        		}
 					        	}
 					        }
-					        if (barPos == chars.size())
+					        if (barPos >= chars.size())
 				        	{
 					        	EOB = true;
 				        		if (rowPos == 5)
 				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
 				        			doneWriting = true; //If there are no more bars to write, stop
 				        		}
 				        	}
 					        if (!EOB)
 							{
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length - 1;
 							}
 						}
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
-							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-							cb.moveTo(lineStart, i + j);
-							cb.lineTo(q - whiteSpace - noteFontSize , i + j );
-							lineStart = q + whiteSpace;
-							currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
-							column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
-					        column.go();
+							char nextChar;
+							if (colPos+1 != barLength)
+							{
+								nextChar = chars.get(barPos)[rowPos][colPos+1];
+							}
+							else
+							{
+								nextChar = '-';
+							}
+							if (IsDigit(nextChar)) //it is a two digit number, print them out together
+							{
+								currentChar = new Phrase(("" + arrayChar + nextChar), numberFont); //Replace this with the character from the array we are currently proccessing.
+								column.setSimpleColumn(currentChar, q - noteFontSize - noteFontSize/2, i + j - noteFontSize/2, q + noteFontSize/2, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+						        column.go();
+						        
+						        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+								cb.moveTo(lineStart, i + j);
+								cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
+						        
+						        char[][] tempArray = chars.get(barPos); //The next character has already been written, change it to a blank so we don't write it twice
+						        tempArray[rowPos][colPos+1] = '-';
+						        chars.set(barPos, tempArray);
+						        lineStart = q + whiteSpace*2;
+							}
+							else //it is single digit, same method as before
+							{
+								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+								cb.moveTo(lineStart, i + j);
+								cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+								
+								currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
+								column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+						        column.go();
+						        lineStart = q + whiteSpace;
+							}
 					        
 					        colPos++; //TODO change this increment to a method
 					        if (colPos == barLength)
@@ -322,17 +389,24 @@ public class BarLinesPDF
 					        		}
 					        	}
 					        }
-					        if (barPos == chars.size())
+					        if (barPos >= chars.size())
 				        	{
 					        	EOB = true;
-				        		if (rowPos == 5)
+				        		if (rowPos >= 5)
 				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
 				        			doneWriting = true; //If there are no more bars to write, stop
 				        		}
 				        	}
 					        if (!EOB)
 							{
 								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length - 1;
 							}
 						}
 					}
@@ -346,6 +420,7 @@ public class BarLinesPDF
 				rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
         		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 				rowPos++;
+				
 			}
 			if (j - groupBarSpacing < 0 + marginBottom && !doneWriting)
 			{
@@ -363,6 +438,11 @@ public class BarLinesPDF
 		System.out.println("title alignment: " + title.getAlignment());
 		System.out.println("composer alignment: " + composer.getAlignment());
 		System.out.println("line width: " + line.getLineWidth());
+	}
+	
+	private static boolean IsDigit(char nextChar)
+	{
+		return (nextChar == '0' || nextChar == '1' || nextChar == '2' || nextChar == '3' || nextChar == '4' || nextChar == '5' || nextChar == '6' || nextChar == '7' || nextChar == '8' || nextChar == '9');
 	}
 	
 	public static boolean SetGroupBarSpacing(int newSpacing)
