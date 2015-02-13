@@ -20,48 +20,58 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
+	public String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
 	
-	public static final String TITLE_STRING = "Moonlight Sonata";
-	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
+	public String TITLE_STRING = "Moonlight Sonata";
+	public String COMPOSER_STRING = "Ludwig Van Beethoven";
 	
-	private static final float marginLeft = 50.0f; //Note original margins are 36.0f for letter size
-	private static final float marginRight = 50.0f;
-	private static final float marginTop = 0.0f;
-	private static final float marginBottom = 0.0f;
-	private static final int ROWS = 6;
+	private final float marginLeft = 50.0f; //Note original margins are 36.0f for letter size
+	private final float marginRight = 50.0f;
+	private final float marginTop = 0.0f;
+	private final float marginBottom = 0.0f;
+	private final int ROWS = 6;
 	
-	private static Font titleFont = new Font(FontFamily.HELVETICA, 30);
-	private static Font composerFont = new Font(FontFamily.HELVETICA, 14);
-	private static Font numberFont = new Font(FontFamily.HELVETICA, 9);
-	private static Paragraph title = new Paragraph(TITLE_STRING, titleFont);
-	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
+	private Font titleFont = new Font(FontFamily.HELVETICA, 30);
+	private Font composerFont = new Font(FontFamily.HELVETICA, 14);
+	private Font numberFont = new Font(FontFamily.HELVETICA, 9);
+	private Paragraph title = new Paragraph(TITLE_STRING, titleFont);
+	private Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
-	private static Phrase currentChar;
-	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
-	private static int barSpacing = 7; //Space between individual lines to be drawn
-	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
-	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
-	private static int topVoidSpace = 160; //Space at the top of the page for info. 
-	private static int pageHeight = 800;
-	private static int pageWidth = 620;
+	private Phrase currentChar;
+	private int noteFontSize = 6; //Size of the characters to be written to the page
+	private int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
+	private int barSpacing = 7; //Space between individual lines to be drawn
+	private int whiteSpace = 1; //Space around a written number that does not have a bar line
+	private int groupBarSpacing = 75; //Spaces between the groups of 6 lines
+	private int topVoidSpace = 160; //Space at the top of the page for info. 
+	private int pageHeight = 800;
+	private int pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
 	
 	//Data from DataToArray:
 	
 	//chars.get(i)[j].length ---> Gets the exact column number from bar i and row j.
-	private static ArrayList<char[][]> chars;	// All chars from the text file: you obtain by .get(bar)[row][col]
-	private static int maxCol;					// The maximum # of the columns in the array.
-	private static int totalRows;
-	private static int bars;
+	private ArrayList<char[][]> chars;	// All chars from the text file: you obtain by .get(bar)[row][col]
+	private int maxCol;					// The maximum # of the columns in the array.
+	private int totalRows;
+	private int bars;
 	
-	private static LineSeparator line = new LineSeparator();
-	private static DataToArray data;
+	private LineSeparator line = new LineSeparator();
+	public DataToArray data;
+	
+	public BarLinesPDF() {}
+	
+	public BarLinesPDF(String pdfName)
+	{
+		this.DEST = pdfName;
+	}
+	public BarLinesPDF(DataToArray data)
+	{
+		this.data = data;
+	}
 
-	public static void convertPDF() throws DocumentException, IOException//Convert() throws DocumentException, IOException
+	public void convertPDF(DataToArray data) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
-		data = new DataToArray();
 		chars = data.textToArray(); // Gets the array of information
 		maxCol = data.getMaxColumnAmount();
 		totalRows = data.getTotalRowAmount();
@@ -365,7 +375,7 @@ public class BarLinesPDF
 		System.out.println("line width: " + line.getLineWidth());
 	}
 	
-	public static boolean SetGroupBarSpacing(int newSpacing)
+	public boolean SetGroupBarSpacing(int newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -378,7 +388,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetWhiteSpace(int newSpacing)
+	public boolean SetWhiteSpace(int newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -391,7 +401,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetBarSpacing(int newSpacing)
+	public boolean SetBarSpacing(int newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -404,7 +414,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetGivenSpacing(int newSpacing)
+	public boolean SetGivenSpacing(int newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -417,7 +427,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetNoteFontSize(int newSpacing)
+	public boolean SetNoteFontSize(int newSpacing)
 	{
 		if (newSpacing < 0)
 		{
@@ -428,5 +438,9 @@ public class BarLinesPDF
 			noteFontSize = newSpacing;
 			return true;
 		}
+	}
+	public void SetDesintation(String destination)
+	{
+		this.DEST = destination;
 	}
 }

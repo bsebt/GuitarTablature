@@ -22,6 +22,7 @@ public class GUI extends JFrame {
 	JTextField source = new JTextField();
 	JTextField dest = new JTextField();
 	final JTextField OutputFile = new JTextField("Output file name: ");
+	BarLinesPDF pdf = new BarLinesPDF();
 
 	public GUI() {
 		frame();
@@ -64,7 +65,7 @@ public class GUI extends JFrame {
 		input.setBounds(0, 30, 300, 31);
 		panel.add(input);
 		
-		final JButton InputSelect = new JButton("Brows...");
+		final JButton InputSelect = new JButton("Browse...");
 		InputSelect.setBounds(300, 30, 100, 30);
 		panel.add(InputSelect);
 		
@@ -76,7 +77,7 @@ public class GUI extends JFrame {
 		destination.setBounds(420, 30, 400, 31);
 		panel.add(destination);
 		
-		final JButton OutputSelect = new JButton("Brows...");
+		final JButton OutputSelect = new JButton("Browse...");
 		OutputSelect.setBounds(820, 30, 100, 30);		
 		panel.add(OutputSelect);
 		
@@ -147,8 +148,7 @@ public class GUI extends JFrame {
 				final JFileChooser fc = new JFileChooser();
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText("Input Address: "
-							+ fc.getSelectedFile().getPath());
+					input.setText("Input Address: " + fc.getSelectedFile().getPath()); 
 					source.setText(input.getText());
 				}
 			}
@@ -201,7 +201,8 @@ public class GUI extends JFrame {
 					//dest.setText(dest.getText().substring(dest.getText().indexOf("/"),dest.getText().length()));
 					//source.setText(source.getText().substring(source.getText().indexOf("/"),input.getText().length()));
 					//new GUI().createPdf(destination.getText()+"/"+OutputFile.getText(), source.getText());
-					BarLinesPDF.convertPDF();
+					DataToArray test = new DataToArray();
+					pdf.convertPDF(test);
 				} catch (DocumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
