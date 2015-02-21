@@ -201,7 +201,7 @@ public class GUI extends JFrame {
 					//dest.setText(dest.getText().substring(dest.getText().indexOf("/"),dest.getText().length()));
 					//source.setText(source.getText().substring(source.getText().indexOf("/"),input.getText().length()));
 					//new GUI().createPdf(destination.getText()+"/"+OutputFile.getText(), source.getText());
-					BarLinesPDF.convertPDF();
+					BarLinesPDF.convertPDF("Test.txt");
 				} catch (DocumentException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

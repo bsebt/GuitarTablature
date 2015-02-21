@@ -59,9 +59,9 @@ public class BarLinesPDF
 	private static LineSeparator line = new LineSeparator();
 	private static DataToArray data;
 
-	public static void convertPDF() throws DocumentException, IOException//Convert() throws DocumentException, IOException
+	public static void convertPDF(String textFile) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
-		data = new DataToArray();
+		data = new DataToArray(textFile);
 		chars = data.textToArray(); // Gets the array of information
 		maxCol = data.getMaxColumnAmount();
 		totalRows = data.getTotalRowAmount();

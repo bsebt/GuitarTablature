@@ -37,9 +37,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for Test.txt. If it works, open it.
 		public void testPDF() throws DocumentException, IOException
 		{
-			data.textFile = "Test.txt";
 			pdf.DEST = ("test.pdf");
-			pdf.convertPDF();
+			pdf.convertPDF("Test.txt");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("test.pdf"));
 		}
@@ -47,9 +46,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for EmptyFile.txt. If it works, open it.
 		public void testEmptyFilePDF() throws DocumentException, IOException
 		{
-			data.textFile = "EmptyFile.txt";
 			pdf.DEST = ("EmptyFile.pdf");
-			pdf.convertPDF();
+			pdf.convertPDF("EmptyFile.txt");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("EmptyFile.pdf"));
 		}
@@ -57,9 +55,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for MoonlightSonata.txt. If it works, open it.
 		public void testMoonlightSonataPDF() throws DocumentException, IOException
 		{
-			data.textFile = "MoonlightSonata.txt";
 			pdf.DEST = ("MoonlightSonata.pdf");
-			pdf.convertPDF();
+			pdf.convertPDF("MoonlightSonata.txt");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("MoonlightSonata.pdf"));
 		}
@@ -67,9 +64,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void testRememberingRainPDF() throws DocumentException, IOException
 		{
-			data.textFile = "RememberingRain.txt";
 			pdf.DEST = ("RememberingRain.pdf");
-			pdf.convertPDF();
+			pdf.convertPDF("RememberingRain.txt");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("RememberingRain.pdf"));
 		}
