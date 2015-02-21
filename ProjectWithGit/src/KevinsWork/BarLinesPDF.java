@@ -20,7 +20,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static final String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
+	public static String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
 	
 	public static final String TITLE_STRING = "Moonlight Sonata";
 	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
