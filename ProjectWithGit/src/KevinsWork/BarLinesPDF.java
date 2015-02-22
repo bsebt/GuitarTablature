@@ -339,11 +339,11 @@ public class BarLinesPDF
 								barLength = chars.get(barPos)[rowPos].length;
 							}
 						}
-						else if (arrayChar == 's')
+						else if (arrayChar == 's') //Draw a slash before an s
 						{
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-							cb.moveTo(q - givenSpacing/2, i + j - givenSpacing/2); //Give the option for the user to tweek the settings for this?
-							cb.lineTo(q + givenSpacing/2, i + j + givenSpacing/2); //How should font affect it?
+							cb.moveTo(q - noteFontSize/3, i + j - noteFontSize/3); //Give the option for the user to tweek the settings for this?
+							cb.lineTo(q + noteFontSize/3, i + j + noteFontSize/3); //How should font affect it?
 							
 							colPos++;
 					        if (colPos == barLength)
