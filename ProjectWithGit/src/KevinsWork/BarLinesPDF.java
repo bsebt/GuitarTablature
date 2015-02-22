@@ -138,7 +138,6 @@ public class BarLinesPDF
 						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk data. This is a quick fix
 						{
 							colPos++;
-							System.out.println("Column1: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
 							if (colPos == barLength)
 					        {
 					        	colPos = 0;
@@ -171,6 +170,11 @@ public class BarLinesPDF
 						}
 						else if (arrayChar == '|')
 						{
+							if (doneWriting)
+							{
+								
+								System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
+							}
 							if(i - barSpacing > 0)
 							{
 								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
@@ -178,7 +182,6 @@ public class BarLinesPDF
 								cb.lineTo(q, i + j - barSpacing);
 								
 								colPos++;
-								System.out.println("Column2: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
 						        if (colPos == barLength)
 						        {
 						        	colPos = 0;
@@ -215,7 +218,6 @@ public class BarLinesPDF
 							else
 							{
 								colPos++;
-								System.out.println("Column3: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
 						        if (colPos == barLength)
 						        {
 						        	colPos = 0;
@@ -257,7 +259,6 @@ public class BarLinesPDF
 						else if (arrayChar == '-' || arrayChar == '<')
 						{
 							colPos++;
-							System.out.println("Column4: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
 					        if (colPos == barLength)
 					        {
 					        	colPos = 0;
@@ -296,14 +297,106 @@ public class BarLinesPDF
 								barLength = chars.get(barPos)[rowPos].length;
 							}
 						}
-						else if (arrayChar == 's')
+						else if (arrayChar == '*')
+						{
+							createCircle(cb, q, i + j, noteFontSize/6);
+							colPos++;
+					        if (colPos == barLength)
+					        {
+					        	colPos = 0;
+					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
+					        		}
+					        	}
+					        }
+					        if (barPos >= chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        //System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " EOB: " + EOB);
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length;
+							}
+						}
+						else if (arrayChar == 's') //Draw a slash before an s
 						{
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-							cb.moveTo(q - givenSpacing/2, i + j - givenSpacing/2); //Give the option for the user to tweek the settings for this?
-							cb.lineTo(q + givenSpacing/2, i + j + givenSpacing/2); //How should font affect it?
+							cb.moveTo(q - noteFontSize/3, i + j - noteFontSize/3); //Give the option for the user to tweek the settings for this?
+							cb.lineTo(q + noteFontSize/3, i + j + noteFontSize/3); //How should font affect it?
 							
 							colPos++;
-							System.out.println("Column5: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
+					        if (colPos == barLength)
+					        {
+					        	colPos = 0;
+					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
+					        		}
+					        	}
+					        }
+					        if (barPos >= chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length;
+							}
+						}
+						else if (arrayChar == '>') //Draw a diamond after a > symbol, the starting < can be ignored since it doesn't actualy carry any info
+						{
+							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+							cb.moveTo(q - noteFontSize, i + j);
+							cb.lineTo(q - noteFontSize/2, i + j + noteFontSize/2);
+							cb.lineTo(q, i + j); 
+							cb.lineTo(q - noteFontSize/2, i + j - noteFontSize/2);
+							cb.lineTo(q - noteFontSize, i + j);
+							
+							cb.moveTo(lineStart, i + j);
+							cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
+							lineStart = q + whiteSpace*2;
+							
+							colPos++;
 					        if (colPos == barLength)
 					        {
 					        	colPos = 0;
@@ -380,7 +473,6 @@ public class BarLinesPDF
 							}
 					        
 					        colPos++; //TODO change this increment to a method
-					        System.out.println("Column6: " + colPos + " Row: " + rowPos + " Bar: " + barPos + " barLength: " + barLength);
 					        if (colPos == barLength)
 					        {
 					        	colPos = 0;
@@ -518,5 +610,15 @@ public class BarLinesPDF
 			noteFontSize = newSpacing;
 			return true;
 		}
+	}
+	
+	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 
+	{
+		float b = 0.5523f;
+	    canvas.moveTo(x + r, y);
+	    canvas.curveTo(x + r, y - r * b, x + r * b, y - r, x, y - r);
+	    canvas.curveTo(x - r * b, y - r, x - r, y - r * b, x - r, y);
+	    canvas.curveTo(x - r, y + r * b, x - r * b, y + r, x, y + r);
+	    canvas.curveTo(x + r * b, y + r, x + r, y + r * b, x + r, y);
 	}
 }
