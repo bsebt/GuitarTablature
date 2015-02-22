@@ -12,8 +12,8 @@ import com.itextpdf.text.DocumentException;
 
 public class DataTester 
 {
-	private Boolean result;
-	private DataToArray test, EmptyFile, IncompleteBar, MoonlightSonata, RememberingRain, UnevenLines, NoFile, NullFile;
+	private Boolean nullResult;
+	private DataToArray test, EmptyFile, IncompleteBar, MoonlightSonata, RememberingRain, UnevenLines, NonExistingFile, NullFile, Prose;
 	private ArrayList<char[][]> data;
 	
 		@Before
@@ -21,70 +21,81 @@ public class DataTester
 		{
 			test = new DataToArray();
 			NullFile = new DataToArray(null);
-			NoFile = new DataToArray("");
+			NonExistingFile = new DataToArray("");
 			EmptyFile = new DataToArray("EmptyFile.txt");
 			MoonlightSonata = new DataToArray("MoonlightSonata.txt");
 			IncompleteBar = new DataToArray("IncompleteBar.txt");
 			RememberingRain = new DataToArray("RememberingRain.txt");
 			UnevenLines = new DataToArray("UnevenLines.txt");
+			Prose = new DataToArray("Prose.txt");
 		}
 		
 //Testing DataToArray objects ------------------------------------------------------------------
 		
-		@Test //Tests to see if the conversion works with a non-existing file.
+		//Tests to see if the conversion works with a non-existing file.
+		@Test(expected=IOException.class)
 		public void noData() throws DocumentException, IOException
 		{
-			data = NoFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			data = NonExistingFile.textToArray();
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
-		@Test //Tests to see if the conversion works for a null file.
+		
+		//Tests to see if the conversion works for a null file.
+		@Test(expected=NullPointerException.class)
 		public void nullData() throws DocumentException, IOException
 		{
 			data = NullFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for the test file.
 		public void testData() throws DocumentException, IOException
 		{
 			data = test.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for an empty file.
 		public void EmptyFileData() throws DocumentException, IOException
 		{
 			data = EmptyFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for the MoonlightSonata file.
 		public void MoonlightSonataData() throws DocumentException, IOException
 		{
 			data = MoonlightSonata.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for the IncompleteBar file.
 		public void IncompleteBarData() throws DocumentException, IOException
 		{
 			data = IncompleteBar.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for the RememberingRain file.
 		public void RememberingRainData() throws DocumentException, IOException
 		{
 			data = RememberingRain.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 		@Test //Tests to see if the conversion works for the UnevenLines file.
 		public void UnevenLinesData() throws DocumentException, IOException
 		{
 			data = UnevenLines.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
+		}
+		@Test //Tests to see if the conversion works for the prose file.
+		public void ProseData() throws DocumentException, IOException
+		{
+			data = Prose.textToArray();
+			nullResult = (data.equals(null)) ? false : true;
+			assertTrue(nullResult);
 		}
 }

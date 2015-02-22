@@ -1,6 +1,7 @@
 package KevinsWork;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -46,6 +47,10 @@ public class DataToArray
 	
 	public ArrayList<char[][]> textToArray() throws DocumentException, IOException 
 	{
+		if(this.textFile.equals(null))		//If we are given a null file, throw an exception
+			throw new NullPointerException();
+		if(this.textFile.equals(""))		//If we are given an non existant file, throw an exception
+			throw new FileNotFoundException();
 		BufferedReader input = null;
 		input = new BufferedReader (new FileReader(textFile));
 		String line = "";	
