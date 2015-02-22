@@ -1,0 +1,4 @@
+Hello, my name is Kevin.
+This is not a file containing any guitar information.
+This is used as a test file.
+Thank you and have a good day.
