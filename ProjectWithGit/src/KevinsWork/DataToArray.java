@@ -26,6 +26,8 @@ public class DataToArray
 	private static int col;
 	public static ArrayList<char[][]> textToArray(String source) throws DocumentException, IOException 
 	{
+		chars.clear();
+		lines.clear();
 		BufferedReader input = null;
 		input = new BufferedReader (new FileReader(source));
 		String line = "";	
