@@ -1,7 +1,9 @@
 package KevinsWork;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.PanelUI;
 
 import com.itextpdf.text.DocumentException;
 
@@ -31,7 +33,7 @@ public class GUI extends JFrame {
 
 	private GUI() {
 
-		frame.setSize(320, 220);
+		frame.setSize(325, 215);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
@@ -112,9 +114,17 @@ public class GUI extends JFrame {
 		OpenerPanel.add(AboutB);
 		ExitB.setBounds(10, 105, 300, 50);
 		OpenerPanel.add(ExitB);
+		//OpenerPanel.setSize(frame.getWidth(), frame.getHeight());
+		//OpenerPanel.setBounds(0, 0, 320, 10);
 		frame.add(OpenerPanel);
-		frame.repaint();
+		//frame.pack();
 		frame.setResizable(false);
+		
+		
+		
+		
+		
+
 		OpenB.addActionListener(new ActionListener() {
 
 			@Override
@@ -152,8 +162,8 @@ public class GUI extends JFrame {
 	private void editorpanel() throws DocumentException, IOException {
 		//left panel
 		//frame.setLayout(new BorderLayout());
-		BarLinesPDF.convertPDF(input.getText());
-		JPanel EditorPanel = new JPanel(null);
+		DataToArray.textToArray(input.getText());
+		final JPanel EditorPanel = new JPanel(null);
 		frame.setSize(1000, 1000);
 		//EditorPanel.setSize(500, 10000);
 		String inputname = name.getText();
@@ -180,6 +190,7 @@ public class GUI extends JFrame {
 		JLabel TitleL = new JLabel("Title:");
 		TitleL.setBounds(0, 110, 50, 30);
 		EditorPanel.add(TitleL);
+		
 		JTextField TitleF = new JTextField();
 		TitleF.setBounds(40, 110, 200, 30);
 		TitleF.setText(DataToArray.getTitle());
@@ -188,19 +199,41 @@ public class GUI extends JFrame {
 		JLabel STitleL = new JLabel("Subtitle:");
 		STitleL.setBounds(0, 150, 200, 30);
 		EditorPanel.add(STitleL);
+		
 		JTextField STitleF = new JTextField(DataToArray.getsubTitle());
-		STitleF.setBounds(65, 150, 300, 30);
+		STitleF.setBounds(65, 150, 260, 30);
 		EditorPanel.add(STitleF);
+		
+		JLabel SGBSL = new JLabel("set group bar spacing:(range between 4-20)");
+		SGBSL.setBounds(0, 190, 350, 30);
+		EditorPanel.add(SGBSL);
+		
+		final JSlider setGroupBarSpacing = new JSlider(4, 20);
+		setGroupBarSpacing.setBounds(5, 220, 270, 30);
+		EditorPanel.add(setGroupBarSpacing);
+		
+		final JTextField SGBSF = new JTextField();
+		int i = setGroupBarSpacing.getValue();
+		SGBSF.setText(Integer.toString(i));
+		SGBSF.setBounds(280, 220, 30, 30);
+		EditorPanel.add(SGBSF);
+		
+		
+		
+		
+		
 		
 		//JLabel 
 		
-		
 		EditorPanel.add(NameL);
-		final JSlider setGroupBarSpacing = new JSlider(4, 20);
+		
 		setGroupBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());				
+				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
+				int i = setGroupBarSpacing.getValue();
+				SGBSF.setText(Integer.toString(i));
+				EditorPanel.repaint();
 			}
 		});
 		final JSlider setWhiteSpace = new JSlider(2, 20);
@@ -232,10 +265,15 @@ public class GUI extends JFrame {
 				BarLinesPDF.SetNoteFontSize(setNoteFontSize.getValue());				
 			}
 		});
+		SGBSF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
+				EditorPanel.repaint();
+			}
+		});
 		
-		
-		frame.add(EditorPanel);
-		
+		frame.add(EditorPanel); 
 
 	}
 
