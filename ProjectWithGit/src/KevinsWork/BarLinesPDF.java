@@ -462,14 +462,41 @@ public class BarLinesPDF
 							}
 							else //it is single digit, same method as before
 							{
-								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-								cb.moveTo(lineStart, i + j);
-								cb.lineTo(q - whiteSpace - noteFontSize , i + j );
-								
-								currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
-								column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
-						        column.go();
-						        lineStart = q + whiteSpace;
+								if (rowPos == 0) //Check if it's the top row, this section writes the "Repeat for # times"
+								{
+									if (chars.get(barPos)[rowPos+1][colPos] == '|') //There was a number, but below is a bar line so this is a repeat symbol. Print a repeat line above the lines, and draw a normal bar line here
+									{
+										currentChar = new Phrase(("Repeat " + arrayChar + " times" ), numberFont); //Replace this with the character from the array we are currently proccessing.
+										column.setSimpleColumn(currentChar, q - 12*noteFontSize , i + j +noteFontSize , q, i + j + noteFontSize*2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+								        column.go();
+								        
+								        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+										cb.moveTo(q, i + j); //This draws the vertical bar line where the number was. there might be some problems with using this naked, check first for errors
+										cb.lineTo(q, i + j - barSpacing);
+									}
+									else // repeat of below, the checks must be done seperatly to avoid index out of bounds
+									{
+										line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+										cb.moveTo(lineStart, i + j);
+										cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+										
+										currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
+										column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+								        column.go();
+								        lineStart = q + whiteSpace;
+									}
+								}
+								else //not the top row, print numbers normally
+								{
+									line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+									cb.moveTo(lineStart, i + j);
+									cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+									
+									currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
+									column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+							        column.go();
+							        lineStart = q + whiteSpace;
+								}
 							}
 					        
 					        colPos++; //TODO change this increment to a method
