@@ -69,4 +69,40 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("RememberingRain.pdf"));
 		}
+		
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void unevenLinesPDF() throws DocumentException, IOException
+		{
+			pdf.DEST = ("UnevenLines.pdf");
+			pdf.convertPDF("UnevenLines.txt");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("UnevenLines.pdf"));
+		}
+		
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void incompleteBarPDF() throws DocumentException, IOException
+		{
+			pdf.DEST = ("IncompleteBar.pdf");
+			pdf.convertPDF("IncompleteBar.txt");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("IncompleteBar.pdf"));
+		}
+		
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void ProsePDF() throws DocumentException, IOException
+		{
+			pdf.DEST = ("Prose.pdf");
+			pdf.convertPDF("Prose.txt");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("Prose.pdf"));
+		}
+		
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void extendedASCIIPDF() throws DocumentException, IOException
+		{
+			pdf.DEST = ("ExtendedASCII.pdf");
+			pdf.convertPDF("ExtendedASCII.txt");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("ExtendedASCII.pdf"));
+		}
 }

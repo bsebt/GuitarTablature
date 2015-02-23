@@ -13,7 +13,8 @@ import com.itextpdf.text.DocumentException;
 public class DataTester 
 {
 	private Boolean result;
-	private DataToArray test, EmptyFile, IncompleteBar, MoonlightSonata, RememberingRain, UnevenLines, NoFile, NullFile;
+	private DataToArray test, EmptyFile, IncompleteBar, MoonlightSonata, 
+	RememberingRain, UnevenLines, NoFile, NullFile, ProseFile, ExtendedASCII;
 	private ArrayList<char[][]> data;
 	
 		@Before
@@ -27,6 +28,8 @@ public class DataTester
 			IncompleteBar = new DataToArray("IncompleteBar.txt");
 			RememberingRain = new DataToArray("RememberingRain.txt");
 			UnevenLines = new DataToArray("UnevenLines.txt");
+			ProseFile = new DataToArray("Prose.txt");
+			ExtendedASCII = new DataToArray("ExtendedASCII.txt");
 		}
 		
 //Testing DataToArray objects ------------------------------------------------------------------
@@ -82,6 +85,20 @@ public class DataTester
 		}
 		@Test //Tests to see if the conversion works for the UnevenLines file.
 		public void UnevenLinesData() throws DocumentException, IOException
+		{
+			data = UnevenLines.textToArray();
+			result = (data.equals(null)) ? false : true;
+			assertTrue(result);
+		}
+		@Test //Tests to see if the conversion works for the UnevenLines file.
+		public void ProseData() throws DocumentException, IOException
+		{
+			data = UnevenLines.textToArray();
+			result = (data.equals(null)) ? false : true;
+			assertTrue(result);
+		}
+		@Test //Tests to see if the conversion works for the UnevenLines file.
+		public void ExtnededASCIIData() throws DocumentException, IOException
 		{
 			data = UnevenLines.textToArray();
 			result = (data.equals(null)) ? false : true;
