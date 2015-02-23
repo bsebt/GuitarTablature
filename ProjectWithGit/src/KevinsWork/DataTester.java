@@ -19,7 +19,7 @@ public class DataTester
 	
 //Testing DataToArray objects ------------------------------------------------------------------
 		
-		@Test
+		@Test(expected = FileNotFoundException.class)
 		//Tests to see if the conversion works with a non-existing file.
 		public void noData() throws DocumentException, IOException
 		{
@@ -27,7 +27,7 @@ public class DataTester
 			emptyResult = (NoFile.isEmpty()) ? false : true;
 			assertTrue(emptyResult);
 		}
-		@Test
+		@Test(expected = NullPointerException.class)
 		//Tests to see if the conversion works for a null file.
 		public void nullData() throws DocumentException, IOException
 		{
@@ -36,13 +36,14 @@ public class DataTester
 			assertTrue(emptyResult);
 		}
 		@Test //Tests to see if the conversion works for the test file.
-		//There are only 90 lines in test.txt
 		public void testData() throws DocumentException, IOException
 		{
 			test = DataToArray.textToArray("test.txt");
-			emptyResult = (test.isEmpty()) ? false : true;
-			barResult = (test.size() == 15) ? true : false;
-			assertTrue(emptyResult && barResult);
+			//emptyResult = (test.isEmpty()) ? false : true;
+			//barResult = (test.size() == 90) ? true : false;
+			//assertTrue(emptyResult && barResult);
+			System.out.println(test.size());
+			assertEquals("test", test.size(), 15);
 		}
 		@Test //Tests to see if the conversion works for an empty file.
 		public void EmptyFileData() throws DocumentException, IOException
@@ -56,9 +57,10 @@ public class DataTester
 		public void MoonlightSonataData() throws DocumentException, IOException
 		{
 			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
-			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
-			barResult = (MoonlightSonata.size() == 15) ? true : false;
-			assertTrue(emptyResult && barResult);
+			//emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
+			//barResult = (MoonlightSonata.size() == 15) ? true : false;
+			//assertTrue(emptyResult && barResult);
+			assertEquals(MoonlightSonata.size(), 90);
 		}
 		@Test(expected = IndexOutOfBoundsException.class) //I'm throwing an exception
 		//Tests to see if the conversion works for the IncompleteBar file.
