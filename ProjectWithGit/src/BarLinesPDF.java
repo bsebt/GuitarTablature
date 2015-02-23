@@ -1,4 +1,3 @@
-package KevinsWork;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,8 +21,8 @@ public class BarLinesPDF
 {
 	public static String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
 	
-	public static final String TITLE_STRING = "Moonlight Sonata";
-	public static final String COMPOSER_STRING = "Ludwig Van Beethoven";
+	public static  String TITLE_STRING = DataToArray.getTitle();
+	public static  String COMPOSER_STRING = DataToArray.getsubTitle();
 	
 	private static final float marginLeft = 50.0f; //Note original margins are 36.0f for letter size
 	private static final float marginRight = 50.0f;
@@ -61,11 +60,15 @@ public class BarLinesPDF
 
 	public static void convertPDF(String textFile) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
-		data = new DataToArray(textFile);
-		chars = data.textToArray(); // Gets the array of information
-		maxCol = data.getMaxColumnAmount();
-		totalRows = data.getTotalRowAmount();
-		bars = data.getBarAmount();
+		
+		chars = DataToArray.textToArray(textFile); // Gets the array of information
+		maxCol = DataToArray.getMaxColumnAmount();
+		totalRows = DataToArray.getTotalRowAmount();
+		TITLE_STRING = DataToArray.getTitle();
+		COMPOSER_STRING = DataToArray.getsubTitle();
+		title = new Paragraph(TITLE_STRING, titleFont);
+		composer = new Paragraph (COMPOSER_STRING, composerFont);
+		givenSpacing = (int)(DataToArray.getSpacing());
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
@@ -135,7 +138,7 @@ public class BarLinesPDF
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
 						//System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
-						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk data. This is a quick fix
+						while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk DataToArray. This is a quick fix
 						{
 							colPos++;
 							if (colPos == barLength)
