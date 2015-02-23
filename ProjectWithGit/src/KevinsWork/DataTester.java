@@ -2,6 +2,7 @@ package KevinsWork;
 
 import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,96 +13,92 @@ import com.itextpdf.text.DocumentException;
 
 public class DataTester 
 {
-	private Boolean result;
-	private DataToArray test, EmptyFile, IncompleteBar, MoonlightSonata, 
+	private Boolean emptyResult, barResult;
+	private static ArrayList<char[][]> test, EmptyFile, IncompleteBar, MoonlightSonata, 
 	RememberingRain, UnevenLines, NoFile, NullFile, ProseFile, ExtendedASCII;
-	private ArrayList<char[][]> data;
 	
-		@Before
-		public void setUp() throws DocumentException, IOException
-		{
-			test = new DataToArray();
-			NullFile = new DataToArray(null);
-			NoFile = new DataToArray("");
-			EmptyFile = new DataToArray("EmptyFile.txt");
-			MoonlightSonata = new DataToArray("MoonlightSonata.txt");
-			IncompleteBar = new DataToArray("IncompleteBar.txt");
-			RememberingRain = new DataToArray("RememberingRain.txt");
-			UnevenLines = new DataToArray("UnevenLines.txt");
-			ProseFile = new DataToArray("Prose.txt");
-			ExtendedASCII = new DataToArray("ExtendedASCII.txt");
-		}
-		
 //Testing DataToArray objects ------------------------------------------------------------------
 		
-		@Test //Tests to see if the conversion works with a non-existing file.
+		@Test
+		//Tests to see if the conversion works with a non-existing file.
 		public void noData() throws DocumentException, IOException
 		{
-			data = NoFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			NoFile = DataToArray.textToArray("");
+			emptyResult = (NoFile.isEmpty()) ? false : true;
+			assertTrue(emptyResult);
 		}
-		@Test //Tests to see if the conversion works for a null file.
+		@Test
+		//Tests to see if the conversion works for a null file.
 		public void nullData() throws DocumentException, IOException
 		{
-			data = NullFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			NullFile = DataToArray.textToArray(null);
+			emptyResult = (NullFile.isEmpty()) ? false : true;
+			assertTrue(emptyResult);
 		}
 		@Test //Tests to see if the conversion works for the test file.
+		//There are only 90 lines in test.txt
 		public void testData() throws DocumentException, IOException
 		{
-			data = test.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			test = DataToArray.textToArray("test.txt");
+			emptyResult = (test.isEmpty()) ? false : true;
+			barResult = (test.size() == 15) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for an empty file.
 		public void EmptyFileData() throws DocumentException, IOException
 		{
-			data = EmptyFile.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			EmptyFile = DataToArray.textToArray("EmptyFile.txt");
+			emptyResult = (EmptyFile.isEmpty()) ? false : true;
+			barResult = (EmptyFile.size() == 0) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the MoonlightSonata file.
 		public void MoonlightSonataData() throws DocumentException, IOException
 		{
-			data = MoonlightSonata.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
+			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
+			barResult = (MoonlightSonata.size() == 15) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
-		@Test //Tests to see if the conversion works for the IncompleteBar file.
+		@Test(expected = IndexOutOfBoundsException.class) //I'm throwing an exception
+		//Tests to see if the conversion works for the IncompleteBar file.
 		public void IncompleteBarData() throws DocumentException, IOException
 		{
-			data = IncompleteBar.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			IncompleteBar = DataToArray.textToArray("IncompleteBar.txt");
+			emptyResult = (IncompleteBar.isEmpty()) ? false : true;
+			barResult = (IncompleteBar.size() == 0) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the RememberingRain file.
 		public void RememberingRainData() throws DocumentException, IOException
 		{
-			data = RememberingRain.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			RememberingRain = DataToArray.textToArray("RememberingRain.txt");
+			emptyResult = (RememberingRain.isEmpty()) ? false : true;
+			barResult = (RememberingRain.size() == 15) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the UnevenLines file.
 		public void UnevenLinesData() throws DocumentException, IOException
 		{
-			data = UnevenLines.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			UnevenLines = DataToArray.textToArray("UnevenLines.txt");
+			emptyResult = (UnevenLines.isEmpty()) ? false : true;
+			barResult = (UnevenLines.size() == 1) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the UnevenLines file.
 		public void ProseData() throws DocumentException, IOException
 		{
-			data = UnevenLines.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			ProseFile = DataToArray.textToArray("Prose.txt");
+			emptyResult = (ProseFile.isEmpty()) ? false : true;
+			barResult = (ProseFile.size() == 1) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the UnevenLines file.
-		public void ExtnededASCIIData() throws DocumentException, IOException
+		public void ExtendedASCIIData() throws DocumentException, IOException
 		{
-			data = UnevenLines.textToArray();
-			result = (data.equals(null)) ? false : true;
-			assertTrue(result);
+			ExtendedASCII = DataToArray.textToArray("ExtendedASCII.txt");
+			emptyResult = (ExtendedASCII.isEmpty()) ? false : true;
+			barResult = (ExtendedASCII.size() == 3) ? true : false;
+			assertTrue(emptyResult && barResult);
 		}
 }
