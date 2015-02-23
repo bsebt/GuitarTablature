@@ -1,51 +1,43 @@
 package KevinsWork;
-
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.image.TileObserver;
+import java.io.*;
+import java.util.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
+
 
 public class GUI extends JFrame {
 
-	private static final long serialVersionUID = 1L;
-	final static JProgressBar barDo = new JProgressBar(0, 100);
-	JTextField source = new JTextField();
-	JTextField dest = new JTextField();
-	final JTextField OutputFile = new JTextField("Output file name: ");
-
-	public GUI() {
-		frame();
+	public static void main(String[] args) {
+		new GUI();
 	}
 
-	public void frame() {
+	public static JTextField input = new JTextField();
+	public static JFrame frame = new JFrame(
+			"Convert Guitar Notes to pdf Format");
+	public static JTextField destination = new JTextField();
+	public static JTextField name = new JTextField();
 
-		// creating an empty frame
-		final JPanel panel = new JPanel(null);
-		
-		
-		
-		
+	// private static JTextField source = new JTextField();
+
+	private GUI() {
+
+		frame.setSize(320, 220);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+
 		JMenuItem open = new JMenuItem("Open");
 		JMenuItem exit = new JMenuItem("Exit");
-		
-		final JFrame frame = new JFrame("Convert Guitar Notes to pdf Format");
-		frame.setVisible(true);
-		frame.setSize(930, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setContentPane(panel);
-		
-		
-		
+		JMenuItem about = new JMenuItem("About");
 
 		// creating a menu
 		JMenuBar mb = new JMenuBar();
@@ -54,93 +46,10 @@ public class GUI extends JFrame {
 		// making menues on the bar
 		JMenu file = new JMenu("File");
 		mb.add(file);
+		JMenu help = new JMenu("Help");
+		mb.add(help);
 
-		// add a button
-		JLabel inputLabel = new JLabel("Input File ");
-		inputLabel.setBounds(0, 0, 100, 30);
-		panel.add(inputLabel);
-		
-		final JTextField input = new JTextField("Input Address: ");
-		input.setBounds(0, 30, 300, 31);
-		panel.add(input);
-		
-		final JButton InputSelect = new JButton("Brows...");
-		InputSelect.setBounds(300, 30, 100, 30);
-		panel.add(InputSelect);
-		
-		JLabel outputLabel = new JLabel("Output File ");
-		outputLabel.setBounds(420, 0, 100, 30);
-		panel.add(outputLabel);
-		
-		final JTextField destination = new JTextField("Destination: ");
-		destination.setBounds(420, 30, 400, 31);
-		panel.add(destination);
-		
-		final JButton OutputSelect = new JButton("Brows...");
-		OutputSelect.setBounds(820, 30, 100, 30);		
-		panel.add(OutputSelect);
-		
-		final JCheckBox box = new JCheckBox("or click to use the same name");
-		box.setBounds(620, 65, 500, 20);
-		panel.add(box);
-		
-		OutputFile.setBounds(420, 60, 200, 31);
-		panel.add(OutputFile);
-		
-		final JButton convert = new JButton("Convert");
-		convert.setBounds(800, 101, 100, 30);
-		panel.add(convert);
-		
-		final JButton privewOut = new JButton("Preview of input");
-		privewOut.setBounds(200, 100, 200, 30);
-		panel.add(privewOut);
-		
-		panel.add(barDo);
 		file.add(open);
-		file.add(exit);
-		frame.setResizable(false);
-		
-
-		// making menu options
-		
-		privewOut.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				 try {
-				      Desktop desktop = null;
-				      if (Desktop.isDesktopSupported()) {
-				        desktop = Desktop.getDesktop();
-				      }
-
-				       desktop.open(new File(source.getText().substring(source.getText().indexOf("/"),input.getText().length())));
-				    } catch (IOException ioe) {
-				      ioe.printStackTrace();
-				    }
-				
-			}
-		});
-		
-		
-		box.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {	
-				File f = new File(source.getText());
-				if (!box.isSelected()){
-					OutputFile.setText("Output file name: ");
-					OutputFile.setBounds(420, 60, 200, 31);
-					panel.add(OutputFile);
-					panel.repaint();
-					}else{
-						panel.remove(OutputFile);
-						OutputFile.setText("hello: "+f.getName().substring(0, f.getName().indexOf("."))+".pdf");
-						System.out.println(OutputFile.getText());
-						panel.repaint();
-			}
-		}});
-		
-		
 		open.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -149,125 +58,184 @@ public class GUI extends JFrame {
 				if (response == JFileChooser.APPROVE_OPTION) {
 					input.setText("Input Address: "
 							+ fc.getSelectedFile().getPath());
-					source.setText(input.getText());
 				}
 			}
 		});
 
+		file.add(exit);
 		exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
 		});
 
-		InputSelect.addActionListener(new ActionListener() {
+		help.add(about);
+		about.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(frame, "how our program works.",
+						"guitar note converter manual",
+						JOptionPane.INFORMATION_MESSAGE, null);
+			}
+		});
+		// ImageIcon icon =
+		// createImageIcon("/home/behshad/Desktop/open-file.png");
+		JButton OpenB = new JButton("Modify and convert");
+
+		JButton QuickB = new JButton("Fast Convert");
+
+		JButton ExitB = new JButton("Exit");
+		ExitB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.exit(1);
+			}
+		});
+
+		JButton AboutB = new JButton("About");
+		AboutB.setIconTextGap(JOptionPane.INFORMATION_MESSAGE);
+		AboutB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(frame, "how our program works.",
+						"guitar note converter manual",
+						JOptionPane.INFORMATION_MESSAGE, null);
+			}
+		});
+		final JPanel OpenerPanel = new JPanel(null);
+		OpenB.setBounds(10, 5, 300, 50);
+		OpenerPanel.add(OpenB);
+		QuickB.setBounds(10, 55, 130, 50);
+		OpenerPanel.add(QuickB);
+		AboutB.setBounds(180, 55, 130, 50);
+		OpenerPanel.add(AboutB);
+		ExitB.setBounds(10, 105, 300, 50);
+		OpenerPanel.add(ExitB);
+		frame.add(OpenerPanel);
+		frame.repaint();
+		frame.setResizable(false);
+		OpenB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
 				final JFileChooser fc = new JFileChooser();
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText("Input Address: "
-							+ fc.getSelectedFile().getPath());
-					source.setText(input.getText());
-
-				}
-			}
-		});
-
-		OutputSelect.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser chooser = new JFileChooser();
-				chooser.setCurrentDirectory(new java.io.File("."));
-				chooser.setDialogTitle("Output directory");
-				chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				//
-				// disable the "All files" option.
-				//
-				chooser.setAcceptAllFileFilterUsed(false);
-				//
-				if (chooser.showOpenDialog(GUI.this) == JFileChooser.APPROVE_OPTION) {
-					destination.setText(chooser.getSelectedFile().getPath());
-					dest.setText(destination.getText());
-				}
-			}
-		});
-
-		convert.addActionListener(new btnDoAction()); // Add the button's action
-
-		convert.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					//System.out.println(OutputFile.getText());
-					//OutputFile.setText(OutputFile.getText().substring(OutputFile.getText().indexOf(":")+2,OutputFile.getText().length()));
-					//dest.setText(dest.getText().substring(dest.getText().indexOf("/"),dest.getText().length()));
-					//source.setText(source.getText().substring(source.getText().indexOf("/"),input.getText().length()));
-					//new GUI().createPdf(destination.getText()+"/"+OutputFile.getText(), source.getText());
-					BarLinesPDF.convertPDF();
-				} catch (DocumentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					input.setText(fc.getSelectedFile().getPath());
+					name.setText(fc.getSelectedFile().getName());
+					destination.setText(fc.getSelectedFile().getParent());
+					frame.remove(OpenerPanel);
+					frame.repaint();
+					try {
+						editorpanel();
+					} catch (DocumentException e1) {
+						e1.printStackTrace();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
 	}
 
-	public void createPdf(String des, String source) throws DocumentException,
-			IOException {
-		BufferedReader input = null;
-		Document output = null;
+	protected static ImageIcon createImageIcon(String path) {
+		java.net.URL imgURL = GUI.class.getResource(path);
+		if (imgURL != null) {
+			return new ImageIcon(imgURL);
+		} else {
+			return null;
+		}
+	}
 
-		try {
-			input = new BufferedReader(new FileReader(source));
-			output = new Document();
-			PdfWriter.getInstance(output, new FileOutputStream(des));
-
-			output.open();
-
-			String line = "";
-			while (null != (line = input.readLine())) {
-				System.out.println(line);
-				Paragraph p = new Paragraph(line);
-				output.add(p);
+	private void editorpanel() throws DocumentException, IOException {
+		//left panel
+		//frame.setLayout(new BorderLayout());
+		BarLinesPDF.convertPDF(input.getText());
+		JPanel EditorPanel = new JPanel(null);
+		frame.setSize(1000, 1000);
+		//EditorPanel.setSize(500, 10000);
+		String inputname = name.getText();
+		StringBuffer buffer = new StringBuffer(name.getText().substring(0, name.getText().indexOf('.')));
+		buffer.append(".pdf");
+		//System.out.println(destination.getText());
+		name.setText(buffer.toString());
+		JLabel NameL = new JLabel("Input Name:"+ inputname);
+		NameL.setBounds(0,0, 500, 30);
+		EditorPanel.add(NameL);
+		
+		JLabel OUTNAME = new JLabel("Output Name:");
+		OUTNAME.setBounds(0, 30, 200, 30);
+		EditorPanel.add(OUTNAME);
+		name.setBounds(100, 30, 220, 30);
+		EditorPanel.add(name);
+		
+		JLabel OUTDES = new JLabel("Output directory:");
+		OUTDES.setBounds(0, 70, 150, 30);
+		EditorPanel.add(OUTDES);
+		destination.setBounds(123, 70, 200, 30);
+		EditorPanel.add(destination);
+		
+		JLabel TitleL = new JLabel("Title:");
+		TitleL.setBounds(0, 110, 50, 30);
+		EditorPanel.add(TitleL);
+		JTextField TitleF = new JTextField();
+		TitleF.setBounds(40, 110, 200, 30);
+		TitleF.setText(DataToArray.getTitle());
+		EditorPanel.add(TitleF);
+		
+		JLabel STitleL = new JLabel("Subtitle:");
+		STitleL.setBounds(0, 150, 200, 30);
+		EditorPanel.add(STitleL);
+		JTextField STitleF = new JTextField(DataToArray.getsubTitle());
+		STitleF.setBounds(65, 150, 300, 30);
+		EditorPanel.add(STitleF);
+		
+		//JLabel 
+		
+		
+		EditorPanel.add(NameL);
+		final JSlider setGroupBarSpacing = new JSlider(4, 20);
+		setGroupBarSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());				
 			}
-
-			System.out.println("Done.");
-			output.close();
-			input.close();
-			// System.exit(0);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	// The action
-	public static class btnDoAction implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			new Thread(new thread1()).start(); // Start the thread
-		}
-	}
-
-	// The thread
-	public static class thread1 implements Runnable {
-		public void run() {
-			for (int i = 0; i <= 100; i++) { // Progressively increment variable
-				// i
-				barDo.setValue(i); // Set value
-				barDo.repaint(); // Refresh graphics
-				try {
-					Thread.sleep(50);
-				} // Sleep 50 milliseconds
-				catch (InterruptedException err) {
-				}
+		});
+		final JSlider setWhiteSpace = new JSlider(2, 20);
+		setWhiteSpace.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				BarLinesPDF.SetWhiteSpace(setWhiteSpace.getValue());				
 			}
-		}
-	}
+		});
 
-	public static void main(String[] args) {
-
-		new GUI();
+		final JSlider setBarSpacing = new JSlider(2, 20);
+		setBarSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				BarLinesPDF.SetBarSpacing(setBarSpacing.getValue());				
+			}
+		});
+		final JSlider setGivenSpacing = new JSlider(2,20);
+		setGivenSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				BarLinesPDF.SetGivenSpacing(setGivenSpacing.getValue());				
+			}
+		});
+		final JSlider setNoteFontSize = new JSlider(2, 20);
+		setNoteFontSize.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				BarLinesPDF.SetNoteFontSize(setNoteFontSize.getValue());				
+			}
+		});
+		
+		
+		frame.add(EditorPanel);
+		
 
 	}
 

@@ -17,39 +17,38 @@ public class DataToArray
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	private static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
 	public static String textFile = "Test.txt";
+	public static String Title = "Default";
+	public static String SubTitle = "Default";
+	public static double Spacing = 8.0;
 	
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 	
 	private static int col;
-	
-	public static int getMaxColumnAmount()
-	{
-		return DataToArray.col;
-	}
-	
-	public static int getTotalRowAmount()
-	{
-		return DataToArray.lines.size();
-	}
-	
-	public static int getBarAmount()
-	{
-		return DataToArray.lines.size()/6;
-	}
-	
-	public static ArrayList<char[][]> textToArray() throws DocumentException, IOException 
+	public static ArrayList<char[][]> textToArray(String source) throws DocumentException, IOException 
 	{
 		BufferedReader input = null;
-		input = new BufferedReader (new FileReader(textFile));
+		input = new BufferedReader (new FileReader(source));
 		String line = "";	
 		while(null != (line = input.readLine()))
 		{	
+			if (line.contains("subtitle") || line.contains("SUBTITLE")){
+				SubTitle = line.substring(line.indexOf('=')+1,line.length());
+			}else if (line.contains("title") || line.contains("TITLE")){
+				Title = line.substring(line.indexOf('=')+1,line.length());
+			}
+			if (line.contains("spacing") ||line.contains("SPACING")){
+				Spacing = Double.parseDouble(line.substring(line.indexOf('=')+1,line.length()));
+			}
 			if (line.trim().length() == 0)
 			{
 				continue;
 			}
-				
-			lines.add(line);			
+//			System.out.println("Title is: " + Title);
+//			System.out.println("SubTitle is: " + SubTitle);
+//			System.out.println("Spacing is: " + Spacing);
+			if(line.charAt(0) == '|'){
+				lines.add(line);		
+			}
 		}	
 		
 		/*	System.out.println(lines.size());	
@@ -77,7 +76,7 @@ public class DataToArray
 			chars.add(c);
 		}	
 			
-		/*
+		
 		//Test to see printed lines
 		for (int i = 0; i<lines.size(); i++)
 		{
@@ -89,7 +88,7 @@ public class DataToArray
 		{
 			System.out.println(Arrays.deepToString(chars.get(i)));
 		}
-		*/
+		
 			
 		System.out.println("Done. TxtToPdf successfully got the txt to an array. \n");
 		input.close();
@@ -154,9 +153,35 @@ public class DataToArray
 			System.out.println(partitionLength.get(i));
 		}
 	}
+	public static int getMaxColumnAmount()
+	{
+		return DataToArray.col;
+	}
+	
+	public static int getTotalRowAmount()
+	{
+		return DataToArray.lines.size();
+	}
+	
+	public static int getBarAmount()
+	{
+		return DataToArray.lines.size()/6;
+	}
+	public static String getTitle(){
+		return Title;
+	}
+	public static String getsubTitle(){
+		return SubTitle;
+	}
+	public static double getSpacing(){
+		return Spacing;
+	}
+	
+
+	
 	
 	public static void main (String[]args) throws DocumentException, IOException{
-		textToArray();
+		//textToArray();
 		LengthOfPartition();
 	}
 }
