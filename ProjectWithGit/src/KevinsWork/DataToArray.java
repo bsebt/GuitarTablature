@@ -189,6 +189,8 @@ public class DataToArray
 		}
 		return partition;
 	}
+	
+	
 	public static int getMaxColumnAmount()
 	{
 		return DataToArray.col;
