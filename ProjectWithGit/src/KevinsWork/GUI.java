@@ -39,7 +39,7 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
-		JMenuItem open = new JMenuItem("Open");
+		JMenuItem open = new JMenuItem("Open Text File");
 		JMenuItem exit = new JMenuItem("Exit");
 		JMenuItem about = new JMenuItem("About");
 
@@ -85,9 +85,9 @@ public class GUI extends JFrame {
 		});
 		// ImageIcon icon =
 		// createImageIcon("/home/behshad/Desktop/open-file.png");
-		JButton OpenB = new JButton("Open");
+		JButton OpenB = new JButton("Convert File");
 
-		JButton QuickB = new JButton("Fast Convert");
+		JButton SetB = new JButton("Set Destination");
 
 		JButton ExitB = new JButton("Exit");
 		ExitB.addActionListener(new ActionListener() {
@@ -110,8 +110,8 @@ public class GUI extends JFrame {
 		final JPanel OpenerPanel = new JPanel(null);
 		OpenB.setBounds(10, 5, 300, 50);
 		OpenerPanel.add(OpenB);
-		QuickB.setBounds(10, 55, 130, 50);
-		OpenerPanel.add(QuickB);
+		SetB.setBounds(10, 55, 130, 50);
+		OpenerPanel.add(SetB);
 		AboutB.setBounds(180, 55, 130, 50);
 		OpenerPanel.add(AboutB);
 		ExitB.setBounds(10, 105, 300, 50);
@@ -143,6 +143,24 @@ public class GUI extends JFrame {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+				}
+			}
+		});
+		SetB.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				final JFileChooser fc = new JFileChooser();
+				int response = fc.showOpenDialog(GUI.this);
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				if (response == JFileChooser.APPROVE_OPTION) {
+					input.setText(fc.getCurrentDirectory().getPath());
+					name.setText(fc.getCurrentDirectory().getName());
+					destination.setText(fc.getCurrentDirectory().getParent());
+					frame.remove(OpenerPanel);
+					frame.repaint();
+					BarLinesPDF.DEST = input.getText();
 				}
 			}
 		});

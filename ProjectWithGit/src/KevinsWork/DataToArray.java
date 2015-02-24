@@ -155,6 +155,40 @@ public class DataToArray
 			System.out.println(partitionLength.get(i));
 		}
 	}
+	
+	//Gets the left bars and everything else not including the right bars
+	public static String DanielsPartition(String line)
+	{
+		for(int i = 0; i < line.length(); i++)
+		{
+			if(line.charAt(i) == '|')
+			{
+				if(i == 0 || i == 1)
+				{
+				}
+				else
+				{
+					line = line.substring(0, i);
+				}
+			}
+		}
+		System.out.println(line);
+		return line;
+	}
+	public static ArrayList<String> DanielsPartition2(ArrayList<String> data)
+	{
+		ArrayList<String> partition = data;
+		for(int i = 0; i < partition.size(); i++)
+		{
+			String line = DanielsPartition(partition.get(i));
+			partition.set(i, line);
+		}
+		for(int j = 0; j < partition.size(); j++)
+		{
+			System.out.println(partition.get(j));
+		}
+		return partition;
+	}
 	public static int getMaxColumnAmount()
 	{
 		return DataToArray.col;
@@ -184,7 +218,9 @@ public class DataToArray
 	
 	public static void main (String[]args) throws DocumentException, IOException{
 		//textToArray();
+		DataToArray.textToArray(DataToArray.textFile);
 		LengthOfPartition();
+		DanielsPartition2(lines);
 	}
 }
 
