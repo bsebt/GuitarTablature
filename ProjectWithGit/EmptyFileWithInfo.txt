@@ -1,0 +1,3 @@
+TITLE=Empty file with information
+SUBTITLE=There are no bars in this file
+SPACING=5
