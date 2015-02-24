@@ -105,4 +105,13 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("ExtendedASCII.pdf"));
 		}
+		
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void emptyFileWithInfo() throws DocumentException, IOException
+		{
+			pdf.DEST = ("EmptyFileWithInfo.pdf");
+			pdf.convertPDF("EmptyFileWithInfo.txt");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("EmptyFileWithInfo.pdf"));
+		}
 }

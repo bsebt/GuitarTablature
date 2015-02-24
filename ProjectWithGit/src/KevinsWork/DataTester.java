@@ -15,7 +15,7 @@ public class DataTester
 {
 	private Boolean emptyResult, barResult;
 	private static ArrayList<char[][]> test, EmptyFile, IncompleteBar, MoonlightSonata, 
-	RememberingRain, UnevenLines, NoFile, NullFile, ProseFile, ExtendedASCII;
+	RememberingRain, UnevenLines, NoFile, NullFile, ProseFile, ExtendedASCII, EmptyFileWithInfo;
 	
 //Testing DataToArray objects ------------------------------------------------------------------
 		
@@ -98,6 +98,14 @@ public class DataTester
 			ExtendedASCII = DataToArray.textToArray("ExtendedASCII.txt");
 			emptyResult = (ExtendedASCII.isEmpty()) ? false : true;
 			barResult = (ExtendedASCII.size() == 3) ? true : false;
+			assertTrue(emptyResult && barResult);
+		}
+		@Test //Tests to see if the conversion works for the UnevenLines file.
+		public void EmptyFileWithInfoData() throws DocumentException, IOException
+		{
+			EmptyFileWithInfo = DataToArray.textToArray("EmptyFileWithInfo.txt");
+			emptyResult = (EmptyFileWithInfo.isEmpty()) ? false : true;
+			barResult = (EmptyFileWithInfo.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 }

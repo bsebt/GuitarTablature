@@ -644,7 +644,7 @@ public class BarLinesPDF
 	
 	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 
 	{
-		float b = 0.5523f;
+		float b = 1.5f; //original: 0.5523f
 	    canvas.moveTo(x + r, y);
 	    canvas.curveTo(x + r, y - r * b, x + r * b, y - r, x, y - r);
 	    canvas.curveTo(x - r * b, y - r, x - r, y - r * b, x - r, y);
