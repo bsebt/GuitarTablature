@@ -80,17 +80,17 @@ public class DataToArray
 			
 		
 		//Test to see printed lines
-		for (int i = 0; i<lines.size(); i++)
-		{
-			System.out.println(lines.get(i));
-		}
-			
+//		for (int i = 0; i<lines.size(); i++)
+//		{
+//			System.out.println(lines.get(i));
+//		}
+//			
 		//Test to see if characters properly placed in 2-d array.
-		for (int i = 0; i<chars.size(); i++)
-		{
-			System.out.println(Arrays.deepToString(chars.get(i)));
-		}
-		
+//		for (int i = 0; i<chars.size(); i++)
+//		{
+//			System.out.println(Arrays.deepToString(chars.get(i)));
+//		}
+//		
 			
 		System.out.println("Done. TxtToPdf successfully got the txt to an array. \n");
 		input.close();
@@ -142,7 +142,7 @@ public class DataToArray
 		for (int i=0; i<lines.size(); i++){
 			String line = lines.get(i);
 			StringTokenizer StrTkn = new StringTokenizer(line, "|");
-			System.out.println("NUMBER OF TOKENS = " + StrTkn.countTokens());
+		//	System.out.println("NUMBER OF TOKENS = " + StrTkn.countTokens());
 			while(StrTkn.hasMoreTokens())
 			{
 				temp = StrTkn.nextToken();
@@ -150,10 +150,10 @@ public class DataToArray
 				partitionLength.add(length);
 			}
 		}	
-		for (int i = 0; i<partitionLength.size(); i++)
-		{
-			System.out.println(partitionLength.get(i));
-		}
+//		for (int i = 0; i<partitionLength.size(); i++)
+//		{
+//			System.out.println(partitionLength.get(i));
+//		}
 	}
 	
 	//Gets the left bars and everything else not including the right bars
@@ -172,7 +172,7 @@ public class DataToArray
 				}
 			}
 		}
-		System.out.println(line);
+		//System.out.println(line);
 		return line;
 	}
 	public static ArrayList<String> DanielsPartition2(ArrayList<String> data)
@@ -185,7 +185,7 @@ public class DataToArray
 		}
 		for(int j = 0; j < partition.size(); j++)
 		{
-			System.out.println(partition.get(j));
+			//System.out.println(partition.get(j));
 		}
 		return partition;
 	}

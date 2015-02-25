@@ -191,17 +191,16 @@ public class GUI extends JFrame {
 	private void editorpanel() throws DocumentException, IOException {
 		// left panel		
 		frame.setSize(1000, 1000);
-		// EditorPanel.setSize(500, 10000);
 		String inputname = name.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
 		buffer.append(".pdf");
-		
-		// System.out.println(destination.getText());
 		name.setText(buffer.toString());
+		DataToArray.textToArray(input.getText());
+		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
 		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
 		String s = destination.getText()+"/"+name.getText();
-		System.out.println(s);
+		
 		
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -256,14 +255,16 @@ public class GUI extends JFrame {
 		final JSlider setGivenSpacing = new JSlider(4, 20);
 		setGivenSpacing.setBounds(5, 280, 280, 30);
 		EditorPanel.add(setGivenSpacing);
+		
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
-		
+		//modify();
 		JButton save = new JButton("save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				frame.remove(EditorPanel);
 				new GUI();
 			}
 		});

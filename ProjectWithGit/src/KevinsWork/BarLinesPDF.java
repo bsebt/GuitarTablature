@@ -179,7 +179,7 @@ public class BarLinesPDF
 							if (doneWriting)
 							{
 								
-								System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
+								//System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
 							}
 							if(i - barSpacing > 0)
 							{
@@ -566,13 +566,13 @@ public class BarLinesPDF
 		document.close();
 		
 		//Testing:
-		System.out.println("left margin: " + document.leftMargin());
-		System.out.println("right margin: " + document.rightMargin());
-		System.out.println("top margin: " + document.topMargin());
-		System.out.println("bottom margin: " + document.bottomMargin());
-		System.out.println("title alignment: " + title.getAlignment());
-		System.out.println("composer alignment: " + composer.getAlignment());
-		System.out.println("line width: " + line.getLineWidth());
+//		System.out.println("left margin: " + document.leftMargin());
+//		System.out.println("right margin: " + document.rightMargin());
+//		System.out.println("top margin: " + document.topMargin());
+//		System.out.println("bottom margin: " + document.bottomMargin());
+//		System.out.println("title alignment: " + title.getAlignment());
+//		System.out.println("composer alignment: " + composer.getAlignment());
+//		System.out.println("line width: " + line.getLineWidth());
 	}
 	
 	private static boolean IsDigit(char nextChar)
