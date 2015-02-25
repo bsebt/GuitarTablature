@@ -28,6 +28,8 @@ public class DataToArray {
 			throws DocumentException, IOException {
 		chars.clear();
 		lines.clear();
+		Title = " ";
+		SubTitle = " ";
 		BufferedReader input = null;
 		input = new BufferedReader(new FileReader(source));
 		String line = "";

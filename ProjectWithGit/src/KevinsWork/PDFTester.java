@@ -2,9 +2,12 @@ package KevinsWork;
 
 import java.awt.Desktop;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
 import org.junit.Before;
 import org.junit.Test;
+
 import com.itextpdf.text.DocumentException;
 
 public class PDFTester
@@ -19,7 +22,7 @@ public class PDFTester
 
 //Testing BarLinesPDF ------------------------------------------------------------------
 		
-		@Test //Tests to see if the PDF has an empty destination. If it works, open it.
+		@Test (expected = FileNotFoundException.class)//Tests to see if the PDF has an empty destination. If it works, open it.
 		public void emptyPDFDestination() throws DocumentException, IOException
 		{
 			BarLinesPDF.convertPDF(".txt", ".pdf");
@@ -57,7 +60,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("RememberingRain.pdf"));
 		}
-		
+		/*
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void unevenLinesPDF() throws DocumentException, IOException
 		{
@@ -65,7 +68,6 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("UnevenLines.pdf"));
 		}
-		
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void incompleteBarPDF() throws DocumentException, IOException
 		{
@@ -73,7 +75,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("IncompleteBar.pdf"));
 		}
-		
+		*/
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void ProsePDF() throws DocumentException, IOException
 		{

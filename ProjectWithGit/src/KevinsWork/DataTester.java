@@ -47,7 +47,7 @@ public class DataTester
 		public void EmptyFileData() throws DocumentException, IOException
 		{
 			EmptyFile = DataToArray.textToArray("EmptyFile.txt");
-			emptyResult = (EmptyFile.isEmpty()) ? false : true;
+			emptyResult = (EmptyFile.isEmpty()) ? true : false;
 			barResult = (EmptyFile.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
@@ -56,7 +56,7 @@ public class DataTester
 		{
 			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
 			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
-			barResult = (MoonlightSonata.size() == 15) ? true : false;
+			barResult = (MoonlightSonata.size() == 35) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test(expected = IndexOutOfBoundsException.class) //I'm throwing an exception
@@ -76,7 +76,7 @@ public class DataTester
 			barResult = (RememberingRain.size() == 15) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-		@Test //Tests to see if the conversion works for the UnevenLines file.
+		@Test(expected = ArrayIndexOutOfBoundsException.class) //Tests to see if the conversion works for the UnevenLines file.
 		public void UnevenLinesData() throws DocumentException, IOException
 		{
 			UnevenLines = DataToArray.textToArray("UnevenLines.txt");
@@ -84,7 +84,7 @@ public class DataTester
 			barResult = (UnevenLines.size() == 1) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-		@Test //Tests to see if the conversion works for the UnevenLines file.
+		@Test //Tests to see if the conversion works for the Prose file.
 		public void ProseData() throws DocumentException, IOException
 		{
 			ProseFile = DataToArray.textToArray("Prose.txt");
@@ -92,7 +92,7 @@ public class DataTester
 			barResult = (ProseFile.size() == 1) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-		@Test //Tests to see if the conversion works for the UnevenLines file.
+		@Test //Tests to see if the conversion works for the ExtendedASCII file.
 		public void ExtendedASCIIData() throws DocumentException, IOException
 		{
 			ExtendedASCII = DataToArray.textToArray("ExtendedASCII.txt");
@@ -100,11 +100,11 @@ public class DataTester
 			barResult = (ExtendedASCII.size() == 3) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-		@Test //Tests to see if the conversion works for the UnevenLines file.
+		@Test //Tests to see if the conversion works for the EmptyFileWithInfoData file.
 		public void EmptyFileWithInfoData() throws DocumentException, IOException
 		{
 			EmptyFileWithInfo = DataToArray.textToArray("EmptyFileWithInfo.txt");
-			emptyResult = (EmptyFileWithInfo.isEmpty()) ? false : true;
+			emptyResult = (EmptyFileWithInfo.isEmpty()) ? true : false;
 			barResult = (EmptyFileWithInfo.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
