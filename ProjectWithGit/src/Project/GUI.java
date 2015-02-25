@@ -1,4 +1,4 @@
-package KevinsWork;
+package Project;
 
 import javax.swing.*;
 import javax.swing.Timer;
@@ -28,8 +28,10 @@ public class GUI extends JFrame {
 	private PreviewPan preview;
 	private JPanel body;
 	public static JTextField SGBSF = new JTextField("75");
-	public static JTextField SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
+	public static JTextField SGSPF = new JTextField(Double.toString(DataToArray
+			.getSpacing()));
 	static JPanel EditorPanel = new JPanel(null);
+	public static JTextField STitleF = new JTextField(DataToArray.getsubTitle());
 
 	// private static JTextField source = new JTextField();
 
@@ -156,7 +158,8 @@ public class GUI extends JFrame {
 
 	public void preview() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		preview = new PreviewPan(new File(destination.getText()+"/"+name.getText()));
+		preview = new PreviewPan(new File(destination.getText() + "/"
+				+ name.getText()));
 
 		frame.setResizable(true);
 
@@ -176,7 +179,8 @@ public class GUI extends JFrame {
 		EditorPanel.remove(preview);
 		frame.remove(EditorPanel);
 		try {
-			BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
+			BarLinesPDF.convertPDF(input.getText(), (destination.getText()
+					+ "/" + name.getText()));
 		} catch (DocumentException | IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -185,7 +189,7 @@ public class GUI extends JFrame {
 	}
 
 	private void editorpanel() throws DocumentException, IOException {
-		// left panel		
+		// left panel
 		frame.setSize(1000, 1000);
 		String inputname = name.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
@@ -194,8 +198,10 @@ public class GUI extends JFrame {
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
 		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
-		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));		
-		
+		STitleF.setText(DataToArray.getTitle());
+		BarLinesPDF.convertPDF(input.getText(),
+				(destination.getText() + "/" + name.getText()));
+
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
 		EditorPanel.add(NameL);
@@ -209,24 +215,47 @@ public class GUI extends JFrame {
 		JLabel OUTDES = new JLabel("Output directory:");
 		OUTDES.setBounds(0, 70, 150, 30);
 		EditorPanel.add(OUTDES);
+		destination.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
 		destination.setBounds(123, 70, 200, 30);
 		EditorPanel.add(destination);
 
 		JLabel TitleL = new JLabel("Title:");
 		TitleL.setBounds(0, 110, 50, 30);
 		EditorPanel.add(TitleL);
-		JTextField TitleF = new JTextField();
+		final JTextField TitleF = new JTextField();
 		TitleF.setBounds(40, 110, 200, 30);
 		TitleF.setText(DataToArray.getTitle());
 		EditorPanel.add(TitleF);
+		TitleF.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BarLinesPDF.setTitle(TitleF.getText());
+
+			}
+		});
 
 		JLabel STitleL = new JLabel("Subtitle:");
 		STitleL.setBounds(0, 150, 200, 30);
 		EditorPanel.add(STitleL);
 
-		JTextField STitleF = new JTextField(DataToArray.getsubTitle());
+		STitleF.setText(DataToArray.getTitle());
 		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
+		STitleF.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BarLinesPDF.setSubTitle(STitleF.getText());
+
+			}
+		});
 
 		JLabel SGBSL = new JLabel("Set Group Bar Spacing: Range Between 50-90");
 		SGBSL.setBounds(0, 190, 320, 30);
@@ -240,8 +269,8 @@ public class GUI extends JFrame {
 		SGBSF.setText(Integer.toString(i));
 		SGBSF.setBounds(285, 220, 30, 30);
 		EditorPanel.add(SGBSF);
-		
-		//BarLinesPDF.SetGivenSpacing(newSpacing)
+
+		// BarLinesPDF.SetGivenSpacing(newSpacing)
 		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 4-20");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
@@ -251,10 +280,8 @@ public class GUI extends JFrame {
 		EditorPanel.add(setGivenSpacing);
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
-		
-		
-		
-		//buttons
+
+		// buttons
 		JButton save = new JButton("Save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);
@@ -272,7 +299,6 @@ public class GUI extends JFrame {
 				modify();
 			}
 		});
-
 
 		// JLabel
 
@@ -300,7 +326,7 @@ public class GUI extends JFrame {
 				BarLinesPDF.SetBarSpacing(setBarSpacing.getValue());
 			}
 		});
-		
+
 		setGivenSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
@@ -327,12 +353,18 @@ public class GUI extends JFrame {
 		preview();
 
 	}
-	public static int getgivenspacing(){
+
+	public static int getgivenspacing() {
 		return (int) Double.parseDouble(SGSPF.getText());
 	}
 
 	public static int getgroupbarspacing() {
 		return Integer.parseInt(SGBSF.getText());
 	}
+
+//	public static String getTitle() {
+//		String s = STitleF.getText();
+//		return s;
+//	}
 
 }

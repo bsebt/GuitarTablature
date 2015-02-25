@@ -1,4 +1,4 @@
-package KevinsWork;
+package Project;
 
 
 import java.io.FileOutputStream;
@@ -713,6 +713,12 @@ public class BarLinesPDF
 			noteFontSize = newSpacing;
 			return true;
 		}
+	}
+	public static void setTitle(String s){
+		TITLE_STRING = s;
+	}
+	public static void setSubTitle(String s){
+		COMPOSER_STRING = s;
 	}
 	
 	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 

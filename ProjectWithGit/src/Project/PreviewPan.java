@@ -1,4 +1,4 @@
-package KevinsWork;
+package Project;
 
 import java.awt.GridBagLayout;
 import java.awt.Image;
