@@ -72,7 +72,6 @@ public class BarLinesPDF
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
 		givenSpacing = (int)GUI.getgivenspacing();
 		
-		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
 		//Header/Meta Data:
@@ -101,26 +100,21 @@ public class BarLinesPDF
 		boolean doneWriting = false;
 		boolean lastBarred = false;
 		
-		int rowSave[][] = {{0,0,chars.get(barPos)[0].length},{0,0,chars.get(barPos)[1].length},{0,0,chars.get(barPos)[2].length},{0,0,chars.get(barPos)[3].length},{0,0,chars.get(barPos)[4].length},{0,0,chars.get(barPos)[5].length},{0,0,0},{0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
-		
-		/*
-		System.out.println("In BarLinesPDF. Proving the ArrayList of chars works.");
-		for(int i = 0; i < bars; i++) //Sections: 0 to how many bars there are
+		if(chars.size() >= 1) //As long as there is something in the file, trim the end to avoid extra repeating | symbols for the full line.
 		{
-			for(int j = 0; j < ROWS; j++) //Rows: 0 to 5 ONLY. there are 6 lines in a bar
+			char[][] tempCharArray = chars.get(chars.size() - 1); //Get the last bar
+			for (int q = 0; q <= 5; q++)
 			{
-				for(int k = 0; k < chars.get(i)[j].length; k++) //Columns: 0 to the max length of a line. Usually ~58 or so
-				{
-					System.out.print(chars.get(i)[j][k]);
-				}
-				System.out.println();
+				tempCharArray[q][tempCharArray[0].length-1] = '-'; //Set the character to '-' for the last column of each line
 			}
+			chars.set(chars.size()-1, tempCharArray); //Reset the last bar to the new one we have changed.
 		}
-		*/
 		
+		int rowSave[][] = {{0,0,chars.get(barPos)[0].length},{0,0,chars.get(barPos)[1].length},{0,0,chars.get(barPos)[2].length},{0,0,chars.get(barPos)[3].length},{0,0,chars.get(barPos)[4].length},{0,0,chars.get(barPos)[5].length},{0,0,0},{0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
+					
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
-		//Note: -1 above removes the last column of every bar, it is a quick and dirty fix to remove double lines we have been seeing.
+		
 		for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 		{			
 			rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
@@ -137,6 +131,7 @@ public class BarLinesPDF
 				//int characterSpace = HowManyCharacters(barPos) * givenSpacing;
 				for(int q = (int)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
 				{
+					boolean cancelBarDraw = false;
 					EOB = false; //used to check if there is a next bar to pull from, avoids index errors
 					if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 					{
@@ -176,16 +171,13 @@ public class BarLinesPDF
 						}
 						else if (arrayChar == '|')
 						{
-							if (doneWriting)
-							{
-								
-								System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
-							}
 							if(i - barSpacing > 0)
 							{
 								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 								cb.moveTo(q, i + j);
 								cb.lineTo(q, i + j - barSpacing);
+								
+								//cancelBarDraw = true; //Don't draw a bar line if this is at the end, we have already done that
 								
 								colPos++;
 						        if (colPos == barLength)
@@ -443,13 +435,13 @@ public class BarLinesPDF
 						else //Otherwise it's a normal character, print it out. Make sure to catch all special characters before this section
 						{
 							char nextChar;
-							if (colPos+1 != barLength)
+							if (colPos+1 != barLength) //Get the next character to see if it is a two digit number, set to blank if the next char does not exist (no space)
 							{
 								nextChar = chars.get(barPos)[rowPos][colPos+1];
 							}
 							else
 							{
-								nextChar = '-';
+								nextChar = '-'; 
 							}
 							if (IsDigit(nextChar)) //it is a two digit number, print them out together
 							{
@@ -479,6 +471,8 @@ public class BarLinesPDF
 								        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 										cb.moveTo(q, i + j); //This draws the vertical bar line where the number was. there might be some problems with using this naked, check first for errors
 										cb.lineTo(q, i + j - barSpacing);
+										
+										cancelBarDraw = true; //Don't draw a bar line if this is at the end of a bar, we have already done that (It would be extra)
 									}
 									else // repeat of below, the checks must be done seperatly to avoid index out of bounds
 									{
@@ -515,7 +509,7 @@ public class BarLinesPDF
 					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
 					        		{
 					        			noSpaceAvailable = true;
-					        			if (rowPos != 5)
+					        			if (rowPos != 5 && !cancelBarDraw)
 					        			{
 						        			cb.moveTo(q + givenSpacing, i + j);
 											cb.lineTo(q + givenSpacing, i + j - barSpacing);
