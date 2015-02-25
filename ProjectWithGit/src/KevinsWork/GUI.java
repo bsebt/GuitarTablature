@@ -4,11 +4,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-//import KevinsWork.PreviewPan;
-
 import com.itextpdf.text.DocumentException;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -198,9 +194,7 @@ public class GUI extends JFrame {
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
 		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
-		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
-		String s = destination.getText()+"/"+name.getText();
-		
+		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));		
 		
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -255,10 +249,12 @@ public class GUI extends JFrame {
 		final JSlider setGivenSpacing = new JSlider(4, 20);
 		setGivenSpacing.setBounds(5, 280, 280, 30);
 		EditorPanel.add(setGivenSpacing);
-		
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
-		//modify();
+		
+		
+		
+		//buttons
 		JButton save = new JButton("save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);

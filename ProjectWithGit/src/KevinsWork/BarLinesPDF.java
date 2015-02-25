@@ -103,20 +103,6 @@ public class BarLinesPDF
 		
 		int rowSave[][] = {{0,0,chars.get(barPos)[0].length},{0,0,chars.get(barPos)[1].length},{0,0,chars.get(barPos)[2].length},{0,0,chars.get(barPos)[3].length},{0,0,chars.get(barPos)[4].length},{0,0,chars.get(barPos)[5].length},{0,0,0},{0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 		
-		/*
-		System.out.println("In BarLinesPDF. Proving the ArrayList of chars works.");
-		for(int i = 0; i < bars; i++) //Sections: 0 to how many bars there are
-		{
-			for(int j = 0; j < ROWS; j++) //Rows: 0 to 5 ONLY. there are 6 lines in a bar
-			{
-				for(int k = 0; k < chars.get(i)[j].length; k++) //Columns: 0 to the max length of a line. Usually ~58 or so
-				{
-					System.out.print(chars.get(i)[j][k]);
-				}
-				System.out.println();
-			}
-		}
-		*/
 		
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
@@ -565,14 +551,6 @@ public class BarLinesPDF
 		}
 		document.close();
 		
-		//Testing:
-//		System.out.println("left margin: " + document.leftMargin());
-//		System.out.println("right margin: " + document.rightMargin());
-//		System.out.println("top margin: " + document.topMargin());
-//		System.out.println("bottom margin: " + document.bottomMargin());
-//		System.out.println("title alignment: " + title.getAlignment());
-//		System.out.println("composer alignment: " + composer.getAlignment());
-//		System.out.println("line width: " + line.getLineWidth());
 	}
 	
 	private static boolean IsDigit(char nextChar)
