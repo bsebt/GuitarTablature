@@ -1,3 +1,5 @@
+package KevinsWork;
+
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
@@ -184,17 +186,10 @@ public class GUI extends JFrame {
 			e1.printStackTrace();
 		}
 		preview();
-		// preview.setBounds(380, 0, frame.getWidth(), frame.getHeight());
-		// EditorPanel.add(preview, BorderLayout.CENTER);
-		// frame.add(EditorPanel);
-		// EditorPanel.repaint();
-		// frame.repaint();
 	}
 
 	private void editorpanel() throws DocumentException, IOException {
-		// left panel
-		// frame.setLayout(new BorderLayout());
-		
+		// left panel		
 		frame.setSize(1000, 1000);
 		// EditorPanel.setSize(500, 10000);
 		String inputname = name.getText();
@@ -264,7 +259,7 @@ public class GUI extends JFrame {
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
 		
-		JButton save = new JButton("save the document");
+		JButton save = new JButton("save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
@@ -272,6 +267,15 @@ public class GUI extends JFrame {
 				new GUI();
 			}
 		});
+		JButton apply = new JButton("apply");
+		apply.setBounds(120, 500, 100, 30);
+		EditorPanel.add(apply);
+		apply.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				modify();
+			}
+		});
+
 
 		// JLabel
 
@@ -325,6 +329,9 @@ public class GUI extends JFrame {
 
 		preview();
 
+	}
+	public static int getgivenspacing(){
+		return (int) Double.parseDouble(SGSPF.getText());
 	}
 
 	public static int getgroupbarspacing() {

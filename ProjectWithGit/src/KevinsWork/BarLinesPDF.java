@@ -1,3 +1,5 @@
+package KevinsWork;
+
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -68,9 +70,8 @@ public class BarLinesPDF
 		COMPOSER_STRING = DataToArray.getsubTitle();
 		title = new Paragraph(TITLE_STRING, titleFont);
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
-		givenSpacing = (int)(DataToArray.getSpacing());
-		//SetGivenSpacing(GUI.getgroupbarspacing());
-		//System.out.println(GUI.getgroupbarspacing());
+		givenSpacing = (int)GUI.getgivenspacing();
+		
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
