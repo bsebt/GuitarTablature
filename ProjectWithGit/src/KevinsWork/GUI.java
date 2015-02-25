@@ -1,9 +1,9 @@
-package KevinsWork;
-
 import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
+//import KevinsWork.PreviewPan;
 
 import com.itextpdf.text.DocumentException;
 
@@ -15,7 +15,6 @@ import java.awt.image.TileObserver;
 import java.io.*;
 import java.util.*;
 import java.awt.*;
-
 
 public class GUI extends JFrame {
 
@@ -30,6 +29,9 @@ public class GUI extends JFrame {
 	public static JTextField name = new JTextField();
 	private PreviewPan preview;
 	private JPanel body;
+	public static JTextField SGBSF = new JTextField("75");
+	public static JTextField SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
+	static JPanel EditorPanel = new JPanel(null);
 
 	// private static JTextField source = new JTextField();
 
@@ -39,7 +41,7 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
-		JMenuItem open = new JMenuItem("Open Text File");
+		JMenuItem open = new JMenuItem("Open");
 		JMenuItem exit = new JMenuItem("Exit");
 		JMenuItem about = new JMenuItem("About");
 
@@ -85,9 +87,9 @@ public class GUI extends JFrame {
 		});
 		// ImageIcon icon =
 		// createImageIcon("/home/behshad/Desktop/open-file.png");
-		JButton OpenB = new JButton("Convert File");
+		JButton OpenB = new JButton("Open");
 
-		JButton SetB = new JButton("Set Destination");
+		JButton QuickB = new JButton("Fast Convert");
 
 		JButton ExitB = new JButton("Exit");
 		ExitB.addActionListener(new ActionListener() {
@@ -110,17 +112,15 @@ public class GUI extends JFrame {
 		final JPanel OpenerPanel = new JPanel(null);
 		OpenB.setBounds(10, 5, 300, 50);
 		OpenerPanel.add(OpenB);
-		SetB.setBounds(10, 55, 130, 50);
-		OpenerPanel.add(SetB);
+		QuickB.setBounds(10, 55, 130, 50);
+		OpenerPanel.add(QuickB);
 		AboutB.setBounds(180, 55, 130, 50);
 		OpenerPanel.add(AboutB);
 		ExitB.setBounds(10, 105, 300, 50);
 		OpenerPanel.add(ExitB);
 		frame.add(OpenerPanel);
-	
-		
+
 		frame.setResizable(false);
-		
 
 		OpenB.addActionListener(new ActionListener() {
 
@@ -137,30 +137,11 @@ public class GUI extends JFrame {
 					frame.repaint();
 					try {
 						editorpanel();
-						//previewPDF();
 					} catch (DocumentException e1) {
 						e1.printStackTrace();
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-				}
-			}
-		});
-		SetB.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				final JFileChooser fc = new JFileChooser();
-				int response = fc.showOpenDialog(GUI.this);
-				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText(fc.getCurrentDirectory().getPath());
-					name.setText(fc.getCurrentDirectory().getName());
-					destination.setText(fc.getCurrentDirectory().getParent());
-					frame.remove(OpenerPanel);
-					frame.repaint();
-					BarLinesPDF.DEST = input.getText();
 				}
 			}
 		});
@@ -175,34 +156,74 @@ public class GUI extends JFrame {
 		}
 	}
 
+	public void preview() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		preview = new PreviewPan(new File(destination.getText()+"/"+name.getText()));
+
+		frame.setResizable(true);
+
+		int height = (int) (screenSize.getHeight() - 20);
+		int width = (int) (screenSize.getWidth() - 20);
+
+		frame.setPreferredSize(new Dimension(width, height));
+		preview.setBounds(380, 0, 800, (int) (screenSize.getHeight() - 60));
+		EditorPanel.add(preview, BorderLayout.CENTER);
+		frame.add(EditorPanel);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+
+	public void modify() {
+		EditorPanel.remove(preview);
+		frame.remove(EditorPanel);
+		try {
+			BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
+		} catch (DocumentException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		preview();
+		// preview.setBounds(380, 0, frame.getWidth(), frame.getHeight());
+		// EditorPanel.add(preview, BorderLayout.CENTER);
+		// frame.add(EditorPanel);
+		// EditorPanel.repaint();
+		// frame.repaint();
+	}
+
 	private void editorpanel() throws DocumentException, IOException {
-		//left panel
-		//frame.setLayout(new BorderLayout());
-		BarLinesPDF.convertPDF(input.getText());
-		JPanel EditorPanel = new JPanel(null);
-		frame.setSize(1000, 1000);
-		//EditorPanel.setSize(500, 10000);
-		String inputname = name.getText();
-		StringBuffer buffer = new StringBuffer(name.getText().substring(0, name.getText().indexOf('.')));
-		buffer.append(".pdf");
-		//System.out.println(destination.getText());
-		name.setText(buffer.toString());
-		JLabel NameL = new JLabel("Input Name:"+ inputname);
-		NameL.setBounds(0,0, 500, 30);
-		EditorPanel.add(NameL);
+		// left panel
+		// frame.setLayout(new BorderLayout());
 		
+		frame.setSize(1000, 1000);
+		// EditorPanel.setSize(500, 10000);
+		String inputname = name.getText();
+		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
+				name.getText().indexOf('.')));
+		buffer.append(".pdf");
+		
+		// System.out.println(destination.getText());
+		name.setText(buffer.toString());
+		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
+		String s = destination.getText()+"/"+name.getText();
+		System.out.println(s);
+		
+		JLabel NameL = new JLabel("Input Name:" + inputname);
+		NameL.setBounds(0, 0, 500, 30);
+		EditorPanel.add(NameL);
+
 		JLabel OUTNAME = new JLabel("Output Name:");
 		OUTNAME.setBounds(0, 30, 200, 30);
 		EditorPanel.add(OUTNAME);
 		name.setBounds(100, 30, 220, 30);
 		EditorPanel.add(name);
-		
+
 		JLabel OUTDES = new JLabel("Output directory:");
 		OUTDES.setBounds(0, 70, 150, 30);
 		EditorPanel.add(OUTDES);
 		destination.setBounds(123, 70, 200, 30);
 		EditorPanel.add(destination);
-		
+
 		JLabel TitleL = new JLabel("Title:");
 		TitleL.setBounds(0, 110, 50, 30);
 		EditorPanel.add(TitleL);
@@ -210,30 +231,64 @@ public class GUI extends JFrame {
 		TitleF.setBounds(40, 110, 200, 30);
 		TitleF.setText(DataToArray.getTitle());
 		EditorPanel.add(TitleF);
-		
+
 		JLabel STitleL = new JLabel("Subtitle:");
 		STitleL.setBounds(0, 150, 200, 30);
 		EditorPanel.add(STitleL);
+
 		JTextField STitleF = new JTextField(DataToArray.getsubTitle());
-		STitleF.setBounds(65, 150, 300, 30);
+		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
+
+		JLabel SGBSL = new JLabel("set group bar spacing:  range between 50-90");
+		SGBSL.setBounds(0, 190, 320, 30);
+		EditorPanel.add(SGBSL);
+
+		final JSlider setGroupBarSpacing = new JSlider(50, 90);
+		setGroupBarSpacing.setBounds(5, 220, 280, 30);
+		EditorPanel.add(setGroupBarSpacing);
+
+		int i = setGroupBarSpacing.getValue();
+		SGBSF.setText(Integer.toString(i));
+		SGBSF.setBounds(285, 220, 30, 30);
+		EditorPanel.add(SGBSF);
 		
-		//JLabel 
+		//BarLinesPDF.SetGivenSpacing(newSpacing)
+		JLabel SGSPL = new JLabel("set The Given Spacing-(range between 4-20)");
+		SGSPL.setBounds(0, 250, 320, 30);
+		EditorPanel.add(SGSPL);
+
+		final JSlider setGivenSpacing = new JSlider(4, 20);
+		setGivenSpacing.setBounds(5, 280, 280, 30);
+		EditorPanel.add(setGivenSpacing);
+		SGSPF.setBounds(285, 280, 30, 30);
+		EditorPanel.add(SGSPF);
 		
-		
+		JButton save = new JButton("save the document");
+		save.setBounds(10, 500, 100, 30);
+		EditorPanel.add(save);
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new GUI();
+			}
+		});
+
+		// JLabel
+
 		EditorPanel.add(NameL);
-		final JSlider setGroupBarSpacing = new JSlider(4, 20);
+
 		setGroupBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());				
+				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
+				SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 			}
 		});
 		final JSlider setWhiteSpace = new JSlider(2, 20);
 		setWhiteSpace.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetWhiteSpace(setWhiteSpace.getValue());				
+				BarLinesPDF.SetWhiteSpace(setWhiteSpace.getValue());
 			}
 		});
 
@@ -241,51 +296,39 @@ public class GUI extends JFrame {
 		setBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetBarSpacing(setBarSpacing.getValue());				
+				BarLinesPDF.SetBarSpacing(setBarSpacing.getValue());
 			}
 		});
-		final JSlider setGivenSpacing = new JSlider(2,20);
+		
 		setGivenSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetGivenSpacing(setGivenSpacing.getValue());				
+				BarLinesPDF.SetGivenSpacing(setGivenSpacing.getValue());
+				SGSPF.setText(Integer.toString(setGivenSpacing.getValue()));
+				EditorPanel.repaint();
 			}
 		});
 		final JSlider setNoteFontSize = new JSlider(2, 20);
 		setNoteFontSize.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetNoteFontSize(setNoteFontSize.getValue());				
+				BarLinesPDF.SetNoteFontSize(setNoteFontSize.getValue());
 			}
 		});
-		
-		
-		
-		preview = new PreviewPan(new File("tester.pdf"));
-		preview.setBounds(500,0,frame.getWidth(),frame.getHeight());
-		
-		EditorPanel.add(preview, BorderLayout.CENTER);
-		frame.add(EditorPanel);
-		
-		frame.setResizable(true);
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		int height = (int) (screenSize.getHeight() / 1.5);
-		int width = (int) (screenSize.getWidth() / 1.5);
-		if (height < 750)
-			height = 750;
-		if (width < 1500)
-			width = 1500;
-		
-		frame.setVisible(false);
-		frame.setPreferredSize(new Dimension(width, height));
-		frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-		
+		SGBSF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
+				modify();
+			}
+		});
+
+		preview();
+
 	}
-	
-	
-	
-	
+
+	public static int getgroupbarspacing() {
+		return Integer.parseInt(SGBSF.getText());
+	}
 
 }

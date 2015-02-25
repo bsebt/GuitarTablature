@@ -1,4 +1,4 @@
-package KevinsWork;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF 
 {
-	public static String DEST = "tester.pdf";	//Destination, this should be changed according to the GUI
+	//public static String DEST;	//Destination, this should be changed according to the GUI
 	
 	public static  String TITLE_STRING = DataToArray.getTitle();
 	public static  String COMPOSER_STRING = DataToArray.getsubTitle();
@@ -38,7 +38,7 @@ public class BarLinesPDF
 	
 	private static Phrase currentChar;
 	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = 8; //The spacing given at the start of the program, change to variable once we read it in
+	private static int givenSpacing = (int)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
 	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
 	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
@@ -58,7 +58,7 @@ public class BarLinesPDF
 	private static LineSeparator line = new LineSeparator();
 	private static DataToArray data;
 
-	public static void convertPDF(String textFile) throws DocumentException, IOException//Convert() throws DocumentException, IOException
+	public static void convertPDF(String textFile, String Destination) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
 		
 		chars = DataToArray.textToArray(textFile); // Gets the array of information
@@ -69,9 +69,11 @@ public class BarLinesPDF
 		title = new Paragraph(TITLE_STRING, titleFont);
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
 		givenSpacing = (int)(DataToArray.getSpacing());
+		//SetGivenSpacing(GUI.getgroupbarspacing());
+		//System.out.println(GUI.getgroupbarspacing());
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
-		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(DEST));
+		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
 		//Header/Meta Data:
 		document.addCreator("Kevin");
 		document.addAuthor("Kevin Arindaeng");
@@ -644,7 +646,7 @@ public class BarLinesPDF
 	
 	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 
 	{
-		float b = 1.5f; //original: 0.5523f
+		float b = 0.5523f;
 	    canvas.moveTo(x + r, y);
 	    canvas.curveTo(x + r, y - r * b, x + r * b, y - r, x, y - r);
 	    canvas.curveTo(x - r * b, y - r, x - r, y - r * b, x - r, y);
