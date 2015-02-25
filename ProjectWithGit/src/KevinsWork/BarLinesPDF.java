@@ -96,6 +96,9 @@ public class BarLinesPDF
 		int rowPos = 0;
 		int colPos = 0;
 		int barPos = 0;
+		
+		int lastWriteX = 0;
+		int lastWriteY = 0;
 		boolean EOB = false;
 		boolean doneWriting = false;
 		boolean lastBarred = false;
@@ -108,7 +111,7 @@ public class BarLinesPDF
 			}
 			chars.set(chars.size()-1, tempCharArray); //Reset the last bar to the new one we have changed.
 		}
-		int rowSave[][] = {{0,0,chars.get(barPos)[0].length},{0,0,chars.get(barPos)[1].length},{0,0,chars.get(barPos)[2].length},{0,0,chars.get(barPos)[3].length},{0,0,chars.get(barPos)[4].length},{0,0,chars.get(barPos)[5].length},{0,0,0},{0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
+		int rowSave[][] = {{0,0,chars.get(barPos)[0].length,0,0},{0,0,chars.get(barPos)[1].length,0,0},{0,0,chars.get(barPos)[2].length,0,0},{0,0,chars.get(barPos)[3].length,0,0},{0,0,chars.get(barPos)[4].length,0,0},{0,0,chars.get(barPos)[5].length,0,0},{0,0,0,0,0},{0,0,0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 			
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
@@ -120,7 +123,10 @@ public class BarLinesPDF
 			{
 				barPos = rowSave[rowPos][0]; //Pull up what bar we have written to on this line
 				colPos = rowSave[rowPos][1]; //Pull up how many columns we have written on this line
-				barLength = rowSave[rowPos][2];
+				barLength = rowSave[rowPos][2]; //pull up the bar length, in case we changed bars at the very end of the last line
+				lastWriteX = rowSave[rowPos][3]; //Pull up the last write co-ords for this line of music
+				lastWriteY = rowSave[rowPos][4];
+				
 				
 				arrayChar = chars.get(barPos)[rowPos][colPos]; 
 				
@@ -379,6 +385,60 @@ public class BarLinesPDF
 								barLength = chars.get(barPos)[rowPos].length;
 							}
 						}
+						else if (arrayChar == 'p') //Draw a phrasing line between this character and the next one
+						{
+							if (i + j == lastWriteY) //The two characters are on the same line, all is well!
+							{
+								cb.moveTo(q, i + j + noteFontSize); //We are drawing the curve backwards, so set start point to our current location
+								cb.curveTo((q + lastWriteX)/2 , i + j + (noteFontSize*2),lastWriteX, lastWriteY + noteFontSize);
+							}
+							else //The characters are on seperate lines, or perhaps different pages. Arc to the end of the page and beginning of the page for both.
+							{
+								cb.moveTo(q, i + j + noteFontSize); //We are drawing the curve backwards, so set start point to our current location
+								cb.curveTo((q + marginLeft)/2 , i + j + (noteFontSize*2), marginLeft, i + j + noteFontSize); 
+								
+								cb.moveTo(marginRight, lastWriteY);
+								cb.curveTo((lastWriteX + marginRight)/2 , lastWriteY + (noteFontSize*2), lastWriteX , lastWriteY + noteFontSize);
+							}
+							
+							colPos++;
+					        if (colPos == barLength)
+					        {
+					        	colPos = 0;
+					        	barPos++;
+					        	if (barPos < chars.size())
+					        	{
+					        		if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth - marginRight - q))
+					        		{
+					        			noSpaceAvailable = true;
+					        			if (rowPos != 5)
+					        			{
+						        			cb.moveTo(q + givenSpacing, i + j);
+											cb.lineTo(q + givenSpacing, i + j - barSpacing);
+					        			}
+					        		}
+					        	}
+					        }
+					        if (barPos >= chars.size())
+				        	{
+					        	EOB = true;
+				        		if (rowPos == 5)
+				        		{
+				        			if (!lastBarred)
+				        			{
+					        			cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j + barSpacing*5);// draw the very last bar line
+										lastBarred = true;
+				        			}
+				        			doneWriting = true; //If there are no more bars to write, stop
+				        		}
+				        	}
+					        if (!EOB)
+							{
+								arrayChar = chars.get(barPos)[rowPos][colPos]; //Load the next char to write
+								barLength = chars.get(barPos)[rowPos].length;
+							}
+						}
 						else if (arrayChar == '>') //Draw a diamond after a > symbol, the starting < can be ignored since it doesn't actualy carry any info
 						{
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
@@ -452,13 +512,19 @@ public class BarLinesPDF
 						        column.go();
 						        
 						        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+						        if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+								{
 								cb.moveTo(lineStart, i + j);
 								cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
+								}
 						        
 						        char[][] tempArray = chars.get(barPos); //The next character has already been written, change it to a blank so we don't write it twice
 						        tempArray[rowPos][colPos+1] = '-';
 						        chars.set(barPos, tempArray);
 						        lineStart = q + whiteSpace*2;
+						        
+						        lastWriteX = q;
+						        lastWriteY = i + j + noteFontSize; //Extra noteFontSize to account for the fact that it is a double digit, might be too big.
 							}
 							else //it is single digit, same method as before
 							{
@@ -479,25 +545,37 @@ public class BarLinesPDF
 									else // repeat of below, the checks must be done seperatly to avoid index out of bounds
 									{
 										line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+										if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+										{
 										cb.moveTo(lineStart, i + j);
 										cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+										}
 										
 										currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 										column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 								        column.go();
 								        lineStart = q + whiteSpace;
+								        
+								        lastWriteX = q;
+								        lastWriteY = i + j;
 									}
 								}
 								else //not the top row, print numbers normally
 								{
 									line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+									if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+									{
 									cb.moveTo(lineStart, i + j);
 									cb.lineTo(q - whiteSpace - noteFontSize , i + j );
+									}
 									
 									currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 									column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 							        column.go();
 							        lineStart = q + whiteSpace;
+							        
+							        lastWriteX = q;
+							        lastWriteY = i + j;
 								}
 							}
 					        
@@ -550,6 +628,8 @@ public class BarLinesPDF
 				rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
         		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
         		rowSave[rowPos][2] = barLength; //Keep track of how long this section is, to avoid index errors
+        		rowSave[rowPos][3] = lastWriteX; //Keeps track of the last element's X position written on this line, so we can draw a phrase arc to it if needed later
+        		rowSave[rowPos][4] = lastWriteY; //Keeps track of the last element's Y position
 				rowPos++;
 				
 			}
