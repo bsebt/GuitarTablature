@@ -338,8 +338,8 @@ public class BarLinesPDF
 						else if (arrayChar == 's') //Draw a slash before an s
 						{
 							line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-							cb.moveTo(q - noteFontSize/3, i + j - noteFontSize/3); //Give the option for the user to tweek the settings for this?
-							cb.lineTo(q + noteFontSize/3, i + j + noteFontSize/3); //How should font affect it?
+							cb.moveTo(q - noteFontSize, i + j - noteFontSize/3); //Give the option for the user to tweek the settings for this?
+							cb.lineTo(q, i + j + noteFontSize/3); //How should font affect it?
 							
 							colPos++;
 					        if (colPos == barLength)
@@ -387,9 +387,13 @@ public class BarLinesPDF
 							cb.lineTo(q, i + j); 
 							cb.lineTo(q - noteFontSize/2, i + j - noteFontSize/2);
 							cb.lineTo(q - noteFontSize, i + j);
+							cb.lineTo(q - noteFontSize/2, i + j + noteFontSize/2); //Draws a diamond, with an extra leg to eliminate the starting area having a mark
 							
+							if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+							{
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
+							}
 							lineStart = q + whiteSpace*2;
 							
 							colPos++;
