@@ -22,7 +22,7 @@ public class GUI extends JFrame {
 
 	public static JTextField input = new JTextField();
 	public static JFrame frame = new JFrame(
-			"Convert Guitar Notes to pdf Format");
+			"Convert Guitar Notes to PDF Format");
 	public static JTextField destination = new JTextField();
 	public static JTextField name = new JTextField();
 	private PreviewPan preview;
@@ -228,7 +228,7 @@ public class GUI extends JFrame {
 		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
 
-		JLabel SGBSL = new JLabel("set group bar spacing:  range between 50-90");
+		JLabel SGBSL = new JLabel("Set Group Bar Spacing: Range Between 50-90");
 		SGBSL.setBounds(0, 190, 320, 30);
 		EditorPanel.add(SGBSL);
 
@@ -242,7 +242,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(SGBSF);
 		
 		//BarLinesPDF.SetGivenSpacing(newSpacing)
-		JLabel SGSPL = new JLabel("set The Given Spacing-(range between 4-20)");
+		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 4-20");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
@@ -255,7 +255,7 @@ public class GUI extends JFrame {
 		
 		
 		//buttons
-		JButton save = new JButton("save");
+		JButton save = new JButton("Save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
@@ -264,7 +264,7 @@ public class GUI extends JFrame {
 				new GUI();
 			}
 		});
-		JButton apply = new JButton("apply");
+		JButton apply = new JButton("Apply");
 		apply.setBounds(120, 500, 100, 30);
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
