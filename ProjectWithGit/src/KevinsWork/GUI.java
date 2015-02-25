@@ -4,11 +4,7 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-//import KevinsWork.PreviewPan;
-
 import com.itextpdf.text.DocumentException;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -191,17 +187,14 @@ public class GUI extends JFrame {
 	private void editorpanel() throws DocumentException, IOException {
 		// left panel		
 		frame.setSize(1000, 1000);
-		// EditorPanel.setSize(500, 10000);
 		String inputname = name.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
 		buffer.append(".pdf");
-		
-		// System.out.println(destination.getText());
 		name.setText(buffer.toString());
-		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));
-		String s = destination.getText()+"/"+name.getText();
-		System.out.println(s);
+		DataToArray.textToArray(input.getText());
+		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
+		BarLinesPDF.convertPDF(input.getText(),(destination.getText()+"/"+name.getText()));		
 		
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -259,11 +252,15 @@ public class GUI extends JFrame {
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
 		
+		
+		
+		//buttons
 		JButton save = new JButton("save");
 		save.setBounds(10, 500, 100, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				frame.remove(EditorPanel);
 				new GUI();
 			}
 		});

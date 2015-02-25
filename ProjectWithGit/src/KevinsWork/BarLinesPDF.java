@@ -99,7 +99,6 @@ public class BarLinesPDF
 		boolean EOB = false;
 		boolean doneWriting = false;
 		boolean lastBarred = false;
-		
 		if(chars.size() >= 1) //As long as there is something in the file, trim the end to avoid extra repeating | symbols for the full line.
 		{
 			char[][] tempCharArray = chars.get(chars.size() - 1); //Get the last bar
@@ -109,9 +108,8 @@ public class BarLinesPDF
 			}
 			chars.set(chars.size()-1, tempCharArray); //Reset the last bar to the new one we have changed.
 		}
-		
 		int rowSave[][] = {{0,0,chars.get(barPos)[0].length},{0,0,chars.get(barPos)[1].length},{0,0,chars.get(barPos)[2].length},{0,0,chars.get(barPos)[3].length},{0,0,chars.get(barPos)[4].length},{0,0,chars.get(barPos)[5].length},{0,0,0},{0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
-					
+			
 		char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 		int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
 		
@@ -559,14 +557,6 @@ public class BarLinesPDF
 		}
 		document.close();
 		
-		//Testing:
-		System.out.println("left margin: " + document.leftMargin());
-		System.out.println("right margin: " + document.rightMargin());
-		System.out.println("top margin: " + document.topMargin());
-		System.out.println("bottom margin: " + document.bottomMargin());
-		System.out.println("title alignment: " + title.getAlignment());
-		System.out.println("composer alignment: " + composer.getAlignment());
-		System.out.println("line width: " + line.getLineWidth());
 	}
 	
 	private static boolean IsDigit(char nextChar)
