@@ -288,12 +288,13 @@ public class GUI extends JFrame {
 		SGBSF.setBounds(285, 220, 30, 30);
 		EditorPanel.add(SGBSF);
 
-		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 4-20");
+		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 4-10");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
-		final JSlider setGivenSpacing = new JSlider(4, 20);
+		final JSlider setGivenSpacing = new JSlider(4, 10);
 		setGivenSpacing.setBounds(5, 280, 280, 30);
+		setGivenSpacing.setValue((int)Double.parseDouble(SGSPF.getText()));
 		EditorPanel.add(setGivenSpacing);
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
