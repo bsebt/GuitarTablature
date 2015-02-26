@@ -66,8 +66,8 @@ public class BarLinesPDF
 		chars = DataToArray.textToArray(textFile); // Gets the array of information
 		maxCol = DataToArray.getMaxColumnAmount();
 		totalRows = DataToArray.getTotalRowAmount();
-		TITLE_STRING = DataToArray.getTitle();
-		COMPOSER_STRING = DataToArray.getsubTitle();
+		TITLE_STRING = GUI.getTitle1();
+		COMPOSER_STRING = GUI.getsubTitle1();
 		title = new Paragraph(TITLE_STRING, titleFont);
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
 		givenSpacing = (int)GUI.getgivenspacing();

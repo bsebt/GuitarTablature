@@ -80,8 +80,8 @@ public class DataToArray {
 		// }
 		//
 
-		System.out
-				.println("Done. TxtToPdf successfully got the txt to an array. \n");
+		//System.out
+		//		.println("Done. TxtToPdf successfully got the txt to an array. \n");
 		input.close();
 
 		// Added by Daniel McVicar, reprocesses Chars to place one bar per
