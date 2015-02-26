@@ -108,4 +108,31 @@ public class DataTester
 			barResult = (EmptyFileWithInfo.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
+		@Test //Tests to see if the getter methods work for MoonlightSonata after conversion for the MoonlightSonata file.
+		public void MSDataDecisionTable() throws DocumentException, IOException
+		{
+			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
+			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
+			barResult = (MoonlightSonata.size() == 15) ? true : false;
+			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
+			boolean row = (DataToArray.getTotalRowAmount() == 90) ;
+			boolean barAmount = (DataToArray.getBarAmount() == 15) ;
+			boolean column = (DataToArray.getMaxColumnAmount() == 53) ;
+			boolean subtitle = (DataToArray.getsubTitle().equalsIgnoreCase("Default")) ;
+			assertTrue(emptyResult && barResult && spacing && column && row  && barAmount && subtitle);
+		}
+		
+		@Test //Testing boundary values at empty file construction.
+		public void DefaultCreationBoundaryTests() throws DocumentException, IOException
+		{
+			EmptyFile = DataToArray.textToArray("EmptyFile.txt");
+			emptyResult = (EmptyFile.isEmpty()) ? false : true;
+			barResult = (EmptyFile.size() == 0) ? true : false;
+			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
+			boolean row = (DataToArray.getTotalRowAmount() == 0) ;
+			boolean barAmount = (DataToArray.getBarAmount() == 0) ;
+			boolean subtitle = (DataToArray.getsubTitle().equalsIgnoreCase("Default")) ;
+			assertTrue(barResult  && !emptyResult && spacing && barAmount && row  && subtitle);
+			
+		}
 }
