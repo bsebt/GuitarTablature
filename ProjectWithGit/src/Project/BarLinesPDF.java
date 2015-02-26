@@ -59,6 +59,7 @@ public class BarLinesPDF
 	
 	private static LineSeparator line = new LineSeparator();
 	private static DataToArray data;
+	public static String destination1;
 
 	public static void convertPDF(String textFile, String Destination) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
@@ -71,6 +72,7 @@ public class BarLinesPDF
 		title = new Paragraph(TITLE_STRING, titleFont);
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
 		givenSpacing = (int)GUI.getgivenspacing();
+		destination1 = Destination;
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
@@ -720,6 +722,13 @@ public class BarLinesPDF
 	public static void setSubTitle(String s){
 		COMPOSER_STRING = s;
 	}
+	
+	public static String getDestination(){
+		return destination1;
+	}
+//	public static String getSubTitle(){
+//		return COMPOSER_STRING;
+//	}
 	
 	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 
 	{

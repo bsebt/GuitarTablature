@@ -33,12 +33,14 @@ public class GUI extends JFrame {
 	static JPanel EditorPanel = new JPanel(null);
 	public static JTextField STitleF = new JTextField(DataToArray.getsubTitle());
 	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
+	public static String inputname;
+	public static String deskeeper;
 
 	// private static JTextField source = new JTextField();
 
 	private GUI() {
-		
-		
+
+
 		input = new JTextField();
 		frame = new JFrame(
 				"Convert Guitar Notes to PDF Format");
@@ -52,9 +54,9 @@ public class GUI extends JFrame {
 		EditorPanel = new JPanel(null);
 		STitleF = new JTextField(DataToArray.getsubTitle());
 		TitleF = new JTextField(DataToArray.getsubTitle());
-		
-		
-		
+
+
+
 
 		frame.setSize(320, 210);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,21 +112,21 @@ public class GUI extends JFrame {
 
 		JButton QuickB = new JButton("Fast Convert");
 		QuickB.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Object[] options = {"Yes, save and exit",
-                "No, delete the file and exit"};
+				"No, delete the file and exit"};
 				int n = JOptionPane.showOptionDialog(frame,
-					    "would you like to save the pdf before you exit?",
-					    "A Silly Question",
-					    JOptionPane.YES_NO_OPTION,
-					    JOptionPane.QUESTION_MESSAGE,
-					    null,     //do not use a custom Icon
-					    options,  //the titles of buttons
-					    options[0]); //default button title
+						"would you like to save the pdf before you exit?",
+						"A Silly Question",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null,     //do not use a custom Icon
+						options,  //the titles of buttons
+						options[0]); //default button title
 				System.out.println(n);
-				
+
 			}
 		});
 
@@ -228,15 +230,16 @@ public class GUI extends JFrame {
 	private void editorpanel() throws DocumentException, IOException {
 		// left panel
 		frame.setSize(1000, 1000);
-		String inputname = name.getText();
+		inputname = name.getText();
+		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
 		buffer.append(".pdf");
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
 		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
-		STitleF.setText(DataToArray.getTitle());
-		TitleF.setText(DataToArray.getsubTitle());
+		TitleF.setText(DataToArray.getTitle());
+		STitleF.setText(DataToArray.getsubTitle());
 		BarLinesPDF.convertPDF(input.getText(),
 				(destination.getText() + "/" + name.getText()));
 
@@ -253,13 +256,6 @@ public class GUI extends JFrame {
 		JLabel OUTDES = new JLabel("Output directory:");
 		OUTDES.setBounds(0, 70, 150, 30);
 		EditorPanel.add(OUTDES);
-		destination.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-			}
-		});
 		destination.setBounds(123, 70, 200, 30);
 		EditorPanel.add(destination);
 
@@ -275,7 +271,7 @@ public class GUI extends JFrame {
 		STitleL.setBounds(0, 150, 200, 30);
 		EditorPanel.add(STitleL);
 
-		STitleF.setText(DataToArray.getTitle());
+		STitleF.setText(DataToArray.getsubTitle());
 		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
 
@@ -319,25 +315,31 @@ public class GUI extends JFrame {
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				modify();
+				if (destination.getText()+"/"+name != BarLinesPDF.getDestination()){
+					File file = new File(BarLinesPDF.getDestination());
+					file.delete();
+					modify();
+				}else{
+					modify();
+				}
 			}
 		});
-		
+
 		JButton Exit = new JButton("Exit without saving");
-		Exit.setBounds(10, 532, 200, 30);
+		Exit.setBounds(10, 532, 210, 30);
 		EditorPanel.add(Exit);
 		Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object[] options = {"Yes, save and exit",
-                "No, delete the file and exit"};
+				"No, delete the file and exit"};
 				int n = JOptionPane.showOptionDialog(frame,
-					    "would you like to save the pdf before you exit?",
-					    "A Silly Question",
-					    JOptionPane.YES_NO_OPTION,
-					    JOptionPane.QUESTION_MESSAGE,
-					    null,     //do not use a custom Icon
-					    options,  //the titles of buttons
-					    options[0]); //default button title
+						"would you like to save the pdf before you exit?",
+						"A Silly Question",
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE,
+						null,     //do not use a custom Icon
+						options,  //the titles of buttons
+						options[0]); //default button title
 				System.out.println(n);
 				if (n==0){ //yes
 					modify();
@@ -354,7 +356,7 @@ public class GUI extends JFrame {
 						new GUI();
 					}
 				}else{
-					
+
 				}
 			}
 		});
@@ -422,8 +424,7 @@ public class GUI extends JFrame {
 	}
 
 	public static String getTitle1() {
-		String s = TitleF.getText();
-		return s;
+		return TitleF.getText();
 	}
 	public static String getsubTitle1(){
 		return STitleF.getText();
