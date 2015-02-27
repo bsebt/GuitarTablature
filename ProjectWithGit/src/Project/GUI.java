@@ -11,6 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.TileObserver;
 import java.io.*;
+import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.*;
 import java.awt.*;
 
@@ -35,28 +37,23 @@ public class GUI extends JFrame {
 	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
 	public static String inputname;
 	public static String deskeeper;
+	
 
 	// private static JTextField source = new JTextField();
 
 	private GUI() {
 
-
 		input = new JTextField();
-		frame = new JFrame(
-				"Convert Guitar Notes to PDF Format");
+		frame = new JFrame("Convert Guitar Notes to PDF Format");
 		destination = new JTextField();
 		name = new JTextField();
 		PreviewPan preview;
-		//private JPanel body;
+		// private JPanel body;
 		SGBSF = new JTextField("75");
-		SGSPF = new JTextField(Double.toString(DataToArray
-				.getSpacing()));
+		SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
 		EditorPanel = new JPanel(null);
 		STitleF = new JTextField(DataToArray.getsubTitle());
 		TitleF = new JTextField(DataToArray.getsubTitle());
-
-
-
 
 		frame.setSize(320, 210);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -70,7 +67,7 @@ public class GUI extends JFrame {
 		JMenuBar mb = new JMenuBar();
 		frame.setJMenuBar(mb);
 
-		// making menues on the bar
+		// making menus on the bar
 		JMenu file = new JMenu("File");
 		mb.add(file);
 		JMenu help = new JMenu("Help");
@@ -115,16 +112,15 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object[] options = {"Yes, save and exit",
-				"No, delete the file and exit"};
+				Object[] options = { "Yes, save and exit",
+						"No, delete the file and exit" };
 				int n = JOptionPane.showOptionDialog(frame,
 						"would you like to save the pdf before you exit?",
-						"A Silly Question",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE,
-						null,     //do not use a custom Icon
-						options,  //the titles of buttons
-						options[0]); //default button title
+						"A Silly Question", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, // do not use a
+						// custom Icon
+						options, // the titles of buttons
+						options[0]); // default button title
 				System.out.println(n);
 
 			}
@@ -262,7 +258,7 @@ public class GUI extends JFrame {
 		JLabel TitleL = new JLabel("Title:");
 		TitleL.setBounds(0, 110, 50, 30);
 		EditorPanel.add(TitleL);
-		
+
 		TitleF.setBounds(40, 110, 200, 30);
 		TitleF.setText(DataToArray.getTitle());
 		EditorPanel.add(TitleF);
@@ -294,69 +290,73 @@ public class GUI extends JFrame {
 
 		final JSlider setGivenSpacing = new JSlider(4, 10);
 		setGivenSpacing.setBounds(5, 280, 280, 30);
-		setGivenSpacing.setValue((int)Double.parseDouble(SGSPF.getText()));
+		setGivenSpacing.setValue((int) Double.parseDouble(SGSPF.getText()));
 		EditorPanel.add(setGivenSpacing);
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
 
+		
 		// buttons
 		JButton save = new JButton("Save");
-		save.setBounds(10, 500, 100, 30);
+		save.setBounds(10, 600, 100, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frame, "The pdf has been saved with latest changes.",
-						null, JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(frame,
+						"The pdf has been saved with latest changes.", null,
+						JOptionPane.INFORMATION_MESSAGE);
 				frame.setVisible(false);
 				new GUI();
 			}
 		});
 		JButton apply = new JButton("Apply");
-		apply.setBounds(120, 500, 100, 30);
+		apply.setBounds(120, 600, 100, 30);
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (destination.getText()+"/"+name != BarLinesPDF.getDestination()){
+				if (destination.getText() + "/" + name != BarLinesPDF
+						.getDestination()) {
 					File file = new File(BarLinesPDF.getDestination());
 					file.delete();
 					modify();
-				}else{
+				} else {
 					modify();
 				}
 			}
 		});
 
 		JButton Exit = new JButton("Exit without saving");
-		Exit.setBounds(10, 532, 210, 30);
+		Exit.setBounds(10, 632, 210, 30);
 		EditorPanel.add(Exit);
 		Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Object[] options = {"Yes, save and exit",
-				"No, delete the file and exit"};
+				Object[] options = { "Yes, save and exit",
+						"No, delete the file and exit" };
 				int n = JOptionPane.showOptionDialog(frame,
 						"would you like to save the pdf before you exit?",
-						"A Silly Question",
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE,
-						null,     //do not use a custom Icon
-						options,  //the titles of buttons
-						options[0]); //default button title
+						"A Silly Question", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, // do not use a
+						// custom Icon
+						options, // the titles of buttons
+						options[0]); // default button title
 				System.out.println(n);
-				if (n==0){ //yes
+				if (n == 0) { // yes
 					modify();
 					frame.setVisible(false);
 					new GUI();
-				}else if(n==1){ //no
-					File file = new File(destination.getText() + "/" + name.getText());
+				} else if (n == 1) { // no
+					File file = new File(destination.getText() + "/"
+							+ name.getText());
 					boolean b = file.delete();
-					if(b==true){
-						JOptionPane.showMessageDialog(frame, "Preview file has been removed.",
-								null, JOptionPane.INFORMATION_MESSAGE);
-						//System.exit(0);
+					if (b == true) {
+						JOptionPane.showMessageDialog(frame,
+								"Preview file has been removed.", null,
+								JOptionPane.INFORMATION_MESSAGE);
+						// System.exit(0);
 						frame.setVisible(false);
 						new GUI();
 					}
-				}else{
+				} else {
 
 				}
 			}
@@ -373,11 +373,42 @@ public class GUI extends JFrame {
 				SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 			}
 		});
-		final JSlider setWhiteSpace = new JSlider(2, 20);
+		final JTextField SWSF = new JTextField("1");
+		
+//		final DoubleJSlider sliderTest = new DoubleJSlider();
+//		sliderTest.setBounds(0, 370, 300, 30);
+//		EditorPanel.add(sliderTest);
+//		sliderTest.addChangeListener(new ChangeListener() {
+//			
+//			@Override
+//			public void stateChanged(ChangeEvent arg0) {
+//				SWSF.setText(Double.toString(sliderTest.getdoubleValue()));
+//				
+//			}
+//		});
+//		
+		
+		
+
+		final DoubleJSlider setWhiteSpace = new DoubleJSlider(2.0, 10.0,4.4);
+        
+        setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
+        SWSF.setBounds(285, 330, 50, 30);
+        EditorPanel.add(SWSF);
+        
+		
+		setWhiteSpace.setBounds(5, 330, 280, 30);
+		EditorPanel.add(setWhiteSpace);
+		JLabel SWSL = new JLabel("Set White Space: Range between 1-10");
+		SWSL.setBounds(0, 300, 320, 30);
+		EditorPanel.add(SWSL);
+		
+		
 		setWhiteSpace.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetWhiteSpace(setWhiteSpace.getValue());
+				BarLinesPDF.SetWhiteSpace((int)setWhiteSpace.getdoubleValue());
+				SWSF.setText(Double.toString(setWhiteSpace.getdoubleValue()));
 			}
 		});
 
@@ -408,7 +439,6 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
-				modify();
 			}
 		});
 
@@ -427,7 +457,8 @@ public class GUI extends JFrame {
 	public static String getTitle1() {
 		return TitleF.getText();
 	}
-	public static String getsubTitle1(){
+
+	public static String getsubTitle1() {
 		return STitleF.getText();
 	}
 
