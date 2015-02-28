@@ -18,7 +18,7 @@ public class DataToArray {
 	public static String textFile = "Test.txt";
 	public static String Title = "Default";
 	public static String SubTitle = "Default";
-	public static double Spacing = 8.0;
+	public static float Spacing = 8.0f;
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -40,7 +40,7 @@ public class DataToArray {
 				Title = line.substring(line.indexOf('=') + 1, line.length());
 			}
 			if (line.contains("spacing") || line.contains("SPACING")) {
-				Spacing = Double.parseDouble(line.substring(
+				Spacing = Float.parseFloat(line.substring(
 						line.indexOf('=') + 1, line.length()));
 			}
 			if (line.trim().length() == 0) {
@@ -167,7 +167,7 @@ public class DataToArray {
 		return SubTitle;
 	}
 
-	public static double getSpacing() {
+	public static float getSpacing() {
 		return Spacing;
 	}
 

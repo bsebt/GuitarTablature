@@ -41,7 +41,7 @@ public class GUI extends JFrame {
 	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
 	public static String inputname;
 	public static String deskeeper;
-	JMenuItem exitMI = new JMenuItem("Exit");
+	JMenuItem exitMI = new JMenuItem("Exit"); 
 	
 
 	// private static JTextField source = new JTextField();
