@@ -29,7 +29,6 @@ public class GUI extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 
-
 	public static void main(String[] args) {
 		new GUI();
 	}
@@ -49,8 +48,7 @@ public class GUI extends JFrame {
 	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
 	public static String inputname;
 	public static String deskeeper;
-	JMenuItem exitMI = new JMenuItem("Exit"); 
-
+	JMenuItem exitMI = new JMenuItem("Exit");
 
 	// private static JTextField source = new JTextField();
 
@@ -125,30 +123,63 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//				Object[] options = { "Yes, save and exit",
-				//						"No, delete the file and exit" };
-				//				int n = JOptionPane.showOptionDialog(frame,
-				//						"would you like to save the pdf before you exit?",
-				//						"A Silly Question", JOptionPane.YES_NO_OPTION,
-				//						JOptionPane.QUESTION_MESSAGE, null, // do not use a
-				//						// custom Icon
-				//						options, // the titles of buttons
-				//						options[0]); // default button title
-
+				// Object[] options = { "Yes, save and exit",
+				// "No, delete the file and exit" };
+				// int n = JOptionPane.showOptionDialog(frame,
+				// "would you like to save the pdf before you exit?",
+				// "A Silly Question", JOptionPane.YES_NO_OPTION,
+				// JOptionPane.QUESTION_MESSAGE, null, // do not use a
+				// // custom Icon
+				// options, // the titles of buttons
+				// options[0]); // default button title
+				//
+				// JFileChooser fc = new JFileChooser();
+				// int n = fc.showSaveDialog(GUI.this);
+				//
+				// FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				// "JPG & GIF Images", "jpg", "gif");
+				// fc.setFileFilter(filter);
+				//
+				//
+				// if(n==fc.APPROVE_OPTION){
+				// destination.setText(fc.getSelectedFile().getParent());
+				// name.setText(fc.getSelectedFile().getName());
+				// }
+				// System.out.println(n);
 				JFileChooser fc = new JFileChooser();
-				int n = fc.showSaveDialog(GUI.this);
-				
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"JPG & GIF Images", "jpg", "gif");
+						"Text Files", "txt");
 				fc.setFileFilter(filter);
-				
-
-				if(n==fc.APPROVE_OPTION){
-					destination.setText(fc.getSelectedFile().getParent());
+				File mnmn = new File("/home/behshad/Desktop");
+				fc.setCurrentDirectory(mnmn);
+				int response = fc.showOpenDialog(GUI.this);
+				if (response == JFileChooser.APPROVE_OPTION) {
+					input.setText(fc.getSelectedFile().getPath());
 					name.setText(fc.getSelectedFile().getName());
-				}
-				System.out.println(n);
+					destination.setText(fc.getSelectedFile().getParent());
 
+					StringBuffer buffer = new StringBuffer(name.getText()
+							.substring(0, name.getText().indexOf('.')));
+					name.setText(buffer.toString());
+					try {
+						DataToArray.textToArray(input.getText());
+					} catch (DocumentException | IOException e2) {
+						// TODO Auto-generated catch block
+						e2.printStackTrace();
+					}
+					SGSPF.setText(Double.toString(DataToArray.getSpacing()));
+					TitleF.setText(DataToArray.getTitle());
+					STitleF.setText(DataToArray.getsubTitle());
+					try {
+						BarLinesPDF.convertPDF(
+								input.getText(),
+								(destination.getText() + "/" + name.getText() + ".pdf"));
+					} catch (DocumentException | IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+
+				}
 			}
 		});
 
@@ -225,7 +256,7 @@ public class GUI extends JFrame {
 	public void preview() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		preview = new PreviewPan(new File(destination.getText() + "/"
-				+ name.getText()+".pdf"));
+				+ name.getText() + ".pdf"));
 
 		frame.setResizable(true);
 
@@ -246,7 +277,7 @@ public class GUI extends JFrame {
 		frame.remove(EditorPanel);
 		try {
 			BarLinesPDF.convertPDF(input.getText(), (destination.getText()
-					+ "/" + name.getText()+".pdf"));
+					+ "/" + name.getText() + ".pdf"));
 		} catch (DocumentException | IOException e1) {
 			e1.printStackTrace();
 		}
@@ -260,16 +291,14 @@ public class GUI extends JFrame {
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
-		//buffer.append(".pdf");
+		// buffer.append(".pdf");
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
 		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
 		TitleF.setText(DataToArray.getTitle());
 		STitleF.setText(DataToArray.getsubTitle());
-		BarLinesPDF.convertPDF(input.getText(),
-				(destination.getText() + "/" + name.getText()+".pdf"));
-
-
+		BarLinesPDF.convertPDF(input.getText(), (destination.getText() + "/"
+				+ name.getText() + ".pdf"));
 
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -301,11 +330,12 @@ public class GUI extends JFrame {
 						"PDF Files", "pdf");
 				fc.setFileFilter(filter);
 				int n = fc.showSaveDialog(GUI.this);
-				
-//				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-//				fc.setFileFilter(filter);
-				
-				if(n == JFileChooser.APPROVE_OPTION){
+
+				// FileNameExtensionFilter filter = new
+				// FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
+				// fc.setFileFilter(filter);
+
+				if (n == JFileChooser.APPROVE_OPTION) {
 					destination.setText(fc.getSelectedFile().getParent());
 					name.setText(fc.getSelectedFile().getName());
 					EditorPanel.repaint();
@@ -354,7 +384,6 @@ public class GUI extends JFrame {
 		SGSPF.setBounds(285, 280, 30, 30);
 		EditorPanel.add(SGSPF);
 
-
 		// buttons
 		JButton save = new JButton("Save");
 		save.setBounds(10, 600, 100, 30);
@@ -390,7 +419,7 @@ public class GUI extends JFrame {
 		Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Object[] options = { "Yes, save and exit",
-				"No, delete the file and exit" };
+						"No, delete the file and exit" };
 				int n = JOptionPane.showOptionDialog(frame,
 						"would you like to save the pdf before you exit?",
 						"A Silly Question", JOptionPane.YES_NO_OPTION,
@@ -398,13 +427,13 @@ public class GUI extends JFrame {
 						// custom Icon
 						options, // the titles of buttons
 						options[0]); // default button title
-				//System.out.println(n);
+				// System.out.println(n);
 				if (n == 0) { // yes
 					modify();
 					frame.setVisible(false);
 					new GUI();
 				} else if (n == 1) { // no
-					
+
 					File file = new File(BarLinesPDF.destination1);
 					boolean b = file.delete();
 					if (b == true) {
@@ -433,27 +462,24 @@ public class GUI extends JFrame {
 		});
 		final JTextField SWSF = new JTextField("1");
 
-		//		final DoubleJSlider sliderTest = new DoubleJSlider();
-		//		sliderTest.setBounds(0, 370, 300, 30);
-		//		EditorPanel.add(sliderTest);
-		//		sliderTest.addChangeListener(new ChangeListener() {
-		//			
-		//			@Override
-		//			public void stateChanged(ChangeEvent arg0) {
-		//				SWSF.setText(Double.toString(sliderTest.getdoubleValue()));
-		//				
-		//			}
-		//		});
-		//		
+		// final DoubleJSlider sliderTest = new DoubleJSlider();
+		// sliderTest.setBounds(0, 370, 300, 30);
+		// EditorPanel.add(sliderTest);
+		// sliderTest.addChangeListener(new ChangeListener() {
+		//
+		// @Override
+		// public void stateChanged(ChangeEvent arg0) {
+		// SWSF.setText(Double.toString(sliderTest.getdoubleValue()));
+		//
+		// }
+		// });
+		//
 
-
-
-		final DoubleJSlider setWhiteSpace = new DoubleJSlider(2.0, 10.0,4.4);
+		final DoubleJSlider setWhiteSpace = new DoubleJSlider(2.0, 10.0, 4.4);
 
 		setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
 		SWSF.setBounds(285, 330, 30, 30);
 		EditorPanel.add(SWSF);
-
 
 		setWhiteSpace.setBounds(5, 330, 280, 30);
 		EditorPanel.add(setWhiteSpace);
@@ -461,11 +487,10 @@ public class GUI extends JFrame {
 		SWSL.setBounds(0, 300, 320, 30);
 		EditorPanel.add(SWSL);
 
-
 		setWhiteSpace.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetWhiteSpace((int)setWhiteSpace.getdoubleValue());
+				BarLinesPDF.SetWhiteSpace((int) setWhiteSpace.getdoubleValue());
 				SWSF.setText(Double.toString(setWhiteSpace.getdoubleValue()));
 			}
 		});
