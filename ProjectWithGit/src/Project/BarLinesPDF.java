@@ -39,14 +39,14 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static Phrase currentChar;
-	private static int noteFontSize = 6; //Size of the characters to be written to the page
-	private static int givenSpacing = (int)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
-	private static int barSpacing = 7; //Space between individual lines to be drawn
-	private static int whiteSpace = 1; //Space around a written number that does not have a bar line
-	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
-	private static int topVoidSpace = 160; //Space at the top of the page for info. 
-	private static int pageHeight = 800;
-	private static int pageWidth = 620;
+	private static float noteFontSize = 6; //Size of the characters to be written to the page
+	private static float givenSpacing = (float)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
+	private static float barSpacing = 7; //Space between individual lines to be drawn
+	private static float whiteSpace = 1; //Space around a written number that does not have a bar line
+	private static float groupBarSpacing = 75; //Spaces between the groups of 6 lines
+	private static float topVoidSpace = 160; //Space at the top of the page for info. 
+	private static float pageHeight = 800;
+	private static float pageWidth = 620;
 	//Note, standard page is 620 units wide and 800 units tall.
 	
 	//Data from DataToArray:
@@ -95,7 +95,7 @@ public class BarLinesPDF
 		if(chars.isEmpty() != true)
 		{
 			ColumnText column = new ColumnText(cb); //text bound left and right on a series of lines
-			int lineStart = 0;
+			float lineStart = 0;
 			int rowPos = 0;
 			int colPos = 0;
 			int barPos = 0;
@@ -119,10 +119,10 @@ public class BarLinesPDF
 			char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
 			int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
 			
-			for (int j = pageHeight - (int)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
+			for (float j = pageHeight - (float)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 			{			
 				rowPos = 0; //Reset the row we are on (start at the top, reset every 6)
-				for(int i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
+				for(float i = barSpacing*6; i > 0; i -= barSpacing) //Individual horizontal bars
 				{
 					barPos = rowSave[rowPos][0]; //Pull up what bar we have written to on this line
 					colPos = rowSave[rowPos][1]; //Pull up how many columns we have written on this line
@@ -136,7 +136,7 @@ public class BarLinesPDF
 					boolean noSpaceAvailable = false; //Used to check if there is enough space to write the next character
 					lineStart = 0;
 					//int characterSpace = HowManyCharacters(barPos) * givenSpacing;
-					for(int q = (int)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
+					for(float q = (float)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
 					{
 						boolean cancelBarDraw = false;
 						EOB = false; //used to check if there is a next bar to pull from, avoids index errors
@@ -526,8 +526,8 @@ public class BarLinesPDF
 							        chars.set(barPos, tempArray);
 							        lineStart = q + whiteSpace*2;
 							        
-							        lastWriteX = q;
-							        lastWriteY = i + j + noteFontSize; //Extra noteFontSize to account for the fact that it is a double digit, might be too big.
+							        lastWriteX = (int) q;
+							        lastWriteY =(int) (i + j + noteFontSize); //Extra noteFontSize to account for the fact that it is a double digit, might be too big.
 								}
 								else //it is single digit, same method as before
 								{
@@ -559,8 +559,8 @@ public class BarLinesPDF
 									        column.go();
 									        lineStart = q + whiteSpace;
 									        
-									        lastWriteX = q;
-									        lastWriteY = i + j;
+									        lastWriteX = (int) q;
+									        lastWriteY = (int) (i + j);
 										}
 									}
 									else //not the top row, print numbers normally
@@ -577,8 +577,8 @@ public class BarLinesPDF
 								        column.go();
 								        lineStart = q + whiteSpace;
 								        
-								        lastWriteX = q;
-								        lastWriteY = i + j;
+								        lastWriteX = (int) q;
+								        lastWriteY = (int) (i + j);
 									}
 								}
 						        

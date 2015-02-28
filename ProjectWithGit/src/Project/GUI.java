@@ -4,7 +4,11 @@ import javax.swing.*;
 import javax.swing.Timer;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.tools.JavaFileManager;
+
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.pdf.PdfDocument.Destination;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -37,6 +41,7 @@ public class GUI extends JFrame {
 	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
 	public static String inputname;
 	public static String deskeeper;
+	JMenuItem exitMI = new JMenuItem("Exit");
 	
 
 	// private static JTextField source = new JTextField();
@@ -60,7 +65,7 @@ public class GUI extends JFrame {
 		frame.setVisible(true);
 
 		JMenuItem open = new JMenuItem("Open");
-		JMenuItem exit = new JMenuItem("Exit");
+		
 		JMenuItem about = new JMenuItem("About");
 
 		// creating a menu
@@ -86,8 +91,8 @@ public class GUI extends JFrame {
 			}
 		});
 
-		file.add(exit);
-		exit.addActionListener(new ActionListener() {
+		file.add(exitMI);
+		exitMI.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
@@ -112,15 +117,22 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Object[] options = { "Yes, save and exit",
-						"No, delete the file and exit" };
-				int n = JOptionPane.showOptionDialog(frame,
-						"would you like to save the pdf before you exit?",
-						"A Silly Question", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, // do not use a
-						// custom Icon
-						options, // the titles of buttons
-						options[0]); // default button title
+//				Object[] options = { "Yes, save and exit",
+//						"No, delete the file and exit" };
+//				int n = JOptionPane.showOptionDialog(frame,
+//						"would you like to save the pdf before you exit?",
+//						"A Silly Question", JOptionPane.YES_NO_OPTION,
+//						JOptionPane.QUESTION_MESSAGE, null, // do not use a
+//						// custom Icon
+//						options, // the titles of buttons
+//						options[0]); // default button title
+				
+				JFileChooser fc = new JFileChooser();
+				int n = fc.showSaveDialog(GUI.this);
+				
+				if(n==fc.APPROVE_OPTION){
+					destination.setText(fc.getSelectedFile().getParent());
+				}
 				System.out.println(n);
 
 			}
@@ -194,7 +206,7 @@ public class GUI extends JFrame {
 	public void preview() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		preview = new PreviewPan(new File(destination.getText() + "/"
-				+ name.getText()));
+				+ name.getText()+".pdf"));
 
 		frame.setResizable(true);
 
@@ -215,7 +227,7 @@ public class GUI extends JFrame {
 		frame.remove(EditorPanel);
 		try {
 			BarLinesPDF.convertPDF(input.getText(), (destination.getText()
-					+ "/" + name.getText()));
+					+ "/" + name.getText()+".pdf"));
 		} catch (DocumentException | IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -230,14 +242,16 @@ public class GUI extends JFrame {
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
-		buffer.append(".pdf");
+		//buffer.append(".pdf");
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
 		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
 		TitleF.setText(DataToArray.getTitle());
 		STitleF.setText(DataToArray.getsubTitle());
 		BarLinesPDF.convertPDF(input.getText(),
-				(destination.getText() + "/" + name.getText()));
+				(destination.getText() + "/" + name.getText()+".pdf"));
+		
+		
 
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -254,6 +268,24 @@ public class GUI extends JFrame {
 		EditorPanel.add(OUTDES);
 		destination.setBounds(123, 70, 200, 30);
 		EditorPanel.add(destination);
+		JButton browse = new JButton("...");
+		browse.setBounds(323, 70, 30, 30);
+		browse.setToolTipText("Browse for directory and choose a file name");
+		EditorPanel.add(browse);
+		browse.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser fc = new JFileChooser();
+				int n = fc.showSaveDialog(GUI.this);
+				if(n==fc.APPROVE_OPTION){
+					destination.setText(fc.getSelectedFile().getParent());
+					name.setText(fc.getSelectedFile().getName());
+					EditorPanel.repaint();
+				}
+				
+			}
+		});
 
 		JLabel TitleL = new JLabel("Title:");
 		TitleL.setBounds(0, 110, 50, 30);
@@ -345,8 +377,7 @@ public class GUI extends JFrame {
 					frame.setVisible(false);
 					new GUI();
 				} else if (n == 1) { // no
-					File file = new File(destination.getText() + "/"
-							+ name.getText());
+					File file = new File(destination.getText() + "/"+ name.getText()+".pdf");
 					boolean b = file.delete();
 					if (b == true) {
 						JOptionPane.showMessageDialog(frame,
@@ -393,7 +424,7 @@ public class GUI extends JFrame {
 		final DoubleJSlider setWhiteSpace = new DoubleJSlider(2.0, 10.0,4.4);
         
         setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
-        SWSF.setBounds(285, 330, 50, 30);
+        SWSF.setBounds(285, 330, 30, 30);
         EditorPanel.add(SWSF);
         
 		
