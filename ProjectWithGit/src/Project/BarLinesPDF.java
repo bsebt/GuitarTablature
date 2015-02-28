@@ -30,7 +30,7 @@ public class BarLinesPDF
 	private static final float marginRight = 50.0f;
 	private static final float marginTop = 0.0f;
 	private static final float marginBottom = 0.0f;
-	private static final int ROWS = 6;
+	//private static final int ROWS = 6;
 	
 	private static Font titleFont = new Font(FontFamily.HELVETICA, 30);
 	private static Font composerFont = new Font(FontFamily.HELVETICA, 14);
@@ -40,7 +40,7 @@ public class BarLinesPDF
 	
 	private static Phrase currentChar;
 	private static float noteFontSize = 6; //Size of the characters to be written to the page
-	private static float givenSpacing = DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
+	private static float givenSpacing = (float)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
 	private static float barSpacing = 7; //Space between individual lines to be drawn
 	private static float whiteSpace = 1; //Space around a written number that does not have a bar line
 	private static float groupBarSpacing = 75; //Spaces between the groups of 6 lines
@@ -91,7 +91,7 @@ public class BarLinesPDF
 		document.add(title);
 		document.add(composer);
 		
-		//document.newPage(); TODO add pages as needed, add a new loop
+		//document.newPage(); TO DO add pages as needed, add a new loop
 		if(chars.isEmpty() != true)
 		{
 			ColumnText column = new ColumnText(cb); //text bound left and right on a series of lines
@@ -117,7 +117,7 @@ public class BarLinesPDF
 			int rowSave[][] = {{0,0,chars.get(barPos)[0].length,0,0},{0,0,chars.get(barPos)[1].length,0,0},{0,0,chars.get(barPos)[2].length,0,0},{0,0,chars.get(barPos)[3].length,0,0},{0,0,chars.get(barPos)[4].length,0,0},{0,0,chars.get(barPos)[5].length,0,0},{0,0,0,0,0},{0,0,0,0,0}}; //Used to store our place when we change between lines, first number is the bar we are on, second number is the column.
 				
 			char arrayChar = chars.get(barPos)[rowPos][colPos]; //Gets first character of the bar = |
-			int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TODO write a method to check to see if there is enough space automatically
+			int barLength = chars.get(barPos)[rowPos].length; //Gets size of bar, so I can check to see if we are at the end of the array and get the next bar. TO DO write a method to check to see if there is enough space automatically
 			
 			for (float j = pageHeight - (float)topVoidSpace; j > 0 + marginBottom && !doneWriting; j -= groupBarSpacing) //Groups of bars, 100 is void space at the top for title
 			{			
@@ -143,7 +143,7 @@ public class BarLinesPDF
 						if (q + givenSpacing < pageWidth - (int)marginLeft - givenSpacing) //Don't print a character on the far right side to make room for the bar line
 						{
 							//System.out.println("Column: " + colPos + " Row: " + rowPos + " Bar: " + barPos);
-							while (arrayChar == ' ') //TODO do this check when we read in data, empty space is normaly a mistake or junk DataToArray. This is a quick fix
+							while (arrayChar == ' ') //TO DO do this check when we read in data, empty space is normaly a mistake or junk DataToArray. This is a quick fix
 							{
 								colPos++;
 								if (colPos == barLength)
@@ -452,7 +452,7 @@ public class BarLinesPDF
 								cb.lineTo(q - noteFontSize, i + j);
 								cb.lineTo(q - noteFontSize/2, i + j + noteFontSize/2); //Draws a diamond, with an extra leg to eliminate the starting area having a mark
 								
-								if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+								if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
 								{
 								cb.moveTo(lineStart, i + j);
 								cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
@@ -515,7 +515,7 @@ public class BarLinesPDF
 							        column.go();
 							        
 							        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-							        if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+							        if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
 									{
 									cb.moveTo(lineStart, i + j);
 									cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
@@ -548,7 +548,7 @@ public class BarLinesPDF
 										else // repeat of below, the checks must be done seperatly to avoid index out of bounds
 										{
 											line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-											if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+											if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
 											{
 											cb.moveTo(lineStart, i + j);
 											cb.lineTo(q - whiteSpace - noteFontSize , i + j );
@@ -566,7 +566,7 @@ public class BarLinesPDF
 									else //not the top row, print numbers normally
 									{
 										line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-										if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TODO: Apply this change everywhere needed
+										if ((q - whiteSpace - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
 										{
 										cb.moveTo(lineStart, i + j);
 										cb.lineTo(q - whiteSpace - noteFontSize , i + j );
@@ -582,7 +582,7 @@ public class BarLinesPDF
 									}
 								}
 						        
-						        colPos++; //TODO change this increment to a method
+						        colPos++; //TO DO change this increment to a method
 						        if (colPos == barLength)
 						        {
 						        	colPos = 0;
