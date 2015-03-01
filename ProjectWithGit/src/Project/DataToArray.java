@@ -40,8 +40,7 @@ public class DataToArray {
 				Title = line.substring(line.indexOf('=') + 1, line.length());
 			}
 			if (line.contains("spacing") || line.contains("SPACING")) {
-				Spacing = Float.parseFloat(line.substring(
-						line.indexOf('=') + 1, line.length()));
+				Spacing = Float.parseFloat(line.substring(line.indexOf('=') + 1, line.length()));
 			}
 			if (line.trim().length() == 0) {
 				continue;

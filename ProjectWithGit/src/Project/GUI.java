@@ -3,14 +3,14 @@ package Project;
 import javax.annotation.processing.FilerException;
 import javax.swing.*;
 import javax.swing.Timer;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.tools.JavaFileManager;
-
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.pdf.PdfDocument.Destination;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -49,6 +49,9 @@ public class GUI extends JFrame {
 	public static String inputname;
 	public static String deskeeper;
 	JMenuItem exitMI = new JMenuItem("Exit");
+	public static JTextField SWSF = new JTextField("1.0");
+	public static JTextField SBSF = new JTextField("7");
+	public static JTextField SNFF = new JTextField("6");
 
 	// private static JTextField source = new JTextField();
 
@@ -65,6 +68,9 @@ public class GUI extends JFrame {
 		EditorPanel = new JPanel(null);
 		STitleF = new JTextField(DataToArray.getsubTitle());
 		TitleF = new JTextField(DataToArray.getsubTitle());
+		SWSF = new JTextField("1.0");
+		SBSF = new JTextField("7");
+		SNFF = new JTextField("6");
 
 		frame.setSize(320, 210);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -164,7 +170,7 @@ public class GUI extends JFrame {
 					try {
 						DataToArray.textToArray(input.getText());
 					} catch (DocumentException | IOException e2) {
-						// TODO Auto-generated catch block
+
 						e2.printStackTrace();
 					}
 					SGSPF.setText(Double.toString(DataToArray.getSpacing()));
@@ -175,7 +181,7 @@ public class GUI extends JFrame {
 								input.getText(),
 								(destination.getText() + "/" + name.getText() + ".pdf"));
 					} catch (DocumentException | IOException e1) {
-						// TODO Auto-generated catch block
+
 						e1.printStackTrace();
 					}
 
@@ -260,14 +266,17 @@ public class GUI extends JFrame {
 
 		frame.setResizable(true);
 
-		int height = (int) (screenSize.getHeight() - 20);
-		int width = (int) (screenSize.getWidth() - 20);
+		// int height = (int) (screenSize.getHeight() - 20);
+		// int width = (int) (screenSize.getWidth() - 20);
 
-		frame.setPreferredSize(new Dimension(width, height));
-		preview.setBounds(380, 0, 800, (int) (screenSize.getHeight() - 60));
+		frame.setPreferredSize(screenSize);
+		frame.setSize(screenSize);
+		preview.setBounds(380, 0, frame.getWidth() - 380,
+				frame.getHeight() - 48);
 		EditorPanel.add(preview, BorderLayout.CENTER);
 		frame.add(EditorPanel);
-		frame.pack();
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		// frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}
@@ -286,7 +295,7 @@ public class GUI extends JFrame {
 
 	private void editorpanel() throws DocumentException, IOException {
 		// left panel
-		frame.setSize(1000, 1000);
+		// frame.setSize(1000, 1000);
 		inputname = name.getText();
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
@@ -294,11 +303,12 @@ public class GUI extends JFrame {
 		// buffer.append(".pdf");
 		name.setText(buffer.toString());
 		DataToArray.textToArray(input.getText());
-		SGSPF.setText(Double.toString(DataToArray.getSpacing()));
+		SGSPF.setText(Float.toString(DataToArray.getSpacing()));
 		TitleF.setText(DataToArray.getTitle());
 		STitleF.setText(DataToArray.getsubTitle());
 		BarLinesPDF.convertPDF(input.getText(), (destination.getText() + "/"
 				+ name.getText() + ".pdf"));
+		preview();
 
 		JLabel NameL = new JLabel("Input Name:" + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -361,44 +371,139 @@ public class GUI extends JFrame {
 		EditorPanel.add(STitleF);
 
 		JLabel SGBSL = new JLabel("Set Group Bar Spacing: Range Between 50-90");
-		SGBSL.setBounds(0, 190, 320, 30);
+		SGBSL.setBounds(0, 190, 375, 30);
 		EditorPanel.add(SGBSL);
 
 		final JSlider setGroupBarSpacing = new JSlider(50, 90);
 		setGroupBarSpacing.setBounds(5, 220, 280, 30);
 		EditorPanel.add(setGroupBarSpacing);
 
-		int i = setGroupBarSpacing.getValue();
-		SGBSF.setText(Integer.toString(i));
-		SGBSF.setBounds(285, 220, 30, 30);
+		SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
+		SGBSF.setBounds(285, 220, 40, 30);
 		EditorPanel.add(SGBSF);
 
-		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 4-10");
+		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 2-10");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
-		final JSlider setGivenSpacing = new JSlider(4, 10);
+		final FloatJSlider setGivenSpacing = new FloatJSlider(2.0f, 10.0f,
+				Float.parseFloat(SGSPF.getText()));
 		setGivenSpacing.setBounds(5, 280, 280, 30);
-		setGivenSpacing.setValue((int) Double.parseDouble(SGSPF.getText()));
+		setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 		EditorPanel.add(setGivenSpacing);
-		SGSPF.setBounds(285, 280, 30, 30);
+		SGSPF.setBounds(285, 280, 40, 30);
 		EditorPanel.add(SGSPF);
 
-		// buttons
-		JButton save = new JButton("Save");
-		save.setBounds(10, 600, 100, 30);
-		EditorPanel.add(save);
-		save.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frame,
-						"The pdf has been saved with latest changes.", null,
-						JOptionPane.INFORMATION_MESSAGE);
-				frame.setVisible(false);
-				new GUI();
+		// JLabel
+
+		EditorPanel.add(NameL);
+
+		setGroupBarSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				//BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
+				SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 			}
 		});
+		SGBSF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
+			}
+		});
+
+		final FloatJSlider setWhiteSpace = new FloatJSlider(1.0f, 5.0f,
+				Float.parseFloat(SWSF.getText() + "f"));
+		// setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
+		SWSF.setBounds(285, 330, 40, 30);
+		EditorPanel.add(SWSF);
+		setWhiteSpace.setBounds(5, 330, 280, 30);
+		EditorPanel.add(setWhiteSpace);
+		JLabel SWSL = new JLabel("Set White Space: Range between 1-10");
+		SWSL.setBounds(0, 300, 320, 30);
+		EditorPanel.add(SWSL);
+
+		setWhiteSpace.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				SWSF.setText(Float.toString(setWhiteSpace.getFloatValue()));
+				//EditorPanel.repaint();
+			}
+		});
+		SWSF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setWhiteSpace.setFloatValue(Float.parseFloat(SWSF.getText()));
+				//EditorPanel.repaint();
+			}
+		});
+
+		final JSlider setBarSpacing = new JSlider(4, 10, 7);
+		JLabel SBSL = new JLabel("set Bar Spacing: Range between 1-10");
+		SBSL.setBounds(0, 360, 380, 30);
+		EditorPanel.add(SBSL);
+
+		setBarSpacing.setBounds(0, 390, 280, 30);
+		SBSF.setText(Integer.toString(setBarSpacing.getValue()));
+		SBSF.setBounds(285, 385, 40, 30);
+		EditorPanel.add(SBSF);
+		EditorPanel.add(setBarSpacing);
+
+		setBarSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				// BarLinesPDF.SetBarSpacing(setBarSpacing.getFloatValue());
+				SBSF.setText(Integer.toString(setBarSpacing.getValue()));
+			}
+		});
+		SBSF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setBarSpacing.setValue(Integer.parseInt(SBSF.getText()));
+			}
+		});
+
+		setGivenSpacing.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				SGSPF.setText(Float.toString(setGivenSpacing.getFloatValue()));
+				//EditorPanel.repaint();
+			}
+		});
+
+		SGSPF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
+				//EditorPanel.repaint();
+			}
+		});
+
+		final JSlider setNoteFontSize = new JSlider(2, 10,Integer.parseInt(SNFF.getText()));
+		JLabel SNFL = new JLabel("set Note Font Size: Range between 2-10");
+		SNFL.setBounds(0, 415, 380, 30);
+		setNoteFontSize.setBounds(0, 445, 280, 30);
+
+		SNFF.setBounds(285, 445, 40, 30);
+		EditorPanel.add(setNoteFontSize);
+		EditorPanel.add(SNFL);
+		EditorPanel.add(SNFF);
+
+		setNoteFontSize.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent arg0) {
+				SNFF.setText(Integer.toString(setNoteFontSize.getValue()));
+			}
+		});
+		SNFF.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
+			}
+		});
+
 		JButton apply = new JButton("Apply");
-		apply.setBounds(120, 600, 100, 30);
+		apply.setBounds(118, frame.getHeight() - 140, 102, 30);
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -413,8 +518,21 @@ public class GUI extends JFrame {
 			}
 		});
 
+		JButton save = new JButton("Save");
+		save.setBounds(10, frame.getHeight() - 140, 103, 30);
+		EditorPanel.add(save);
+		save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JOptionPane.showMessageDialog(frame,
+						"The pdf has been saved with latest changes.", null,
+						JOptionPane.INFORMATION_MESSAGE);
+				frame.setVisible(false);
+				new GUI();
+			}
+		});
+
 		JButton Exit = new JButton("Exit without saving");
-		Exit.setBounds(10, 632, 210, 30);
+		Exit.setBounds(10, frame.getHeight() - 100, 210, 30); // 623+30
 		EditorPanel.add(Exit);
 		Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -427,7 +545,6 @@ public class GUI extends JFrame {
 						// custom Icon
 						options, // the titles of buttons
 						options[0]); // default button title
-				// System.out.println(n);
 				if (n == 0) { // yes
 					modify();
 					frame.setVisible(false);
@@ -448,89 +565,11 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-
-		// JLabel
-
-		EditorPanel.add(NameL);
-
-		setGroupBarSpacing.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
-				SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
-			}
-		});
-		final JTextField SWSF = new JTextField("1");
-
-		// final DoubleJSlider sliderTest = new DoubleJSlider();
-		// sliderTest.setBounds(0, 370, 300, 30);
-		// EditorPanel.add(sliderTest);
-		// sliderTest.addChangeListener(new ChangeListener() {
-		//
-		// @Override
-		// public void stateChanged(ChangeEvent arg0) {
-		// SWSF.setText(Double.toString(sliderTest.getdoubleValue()));
-		//
-		// }
-		// });
-		//
-
-		final DoubleJSlider setWhiteSpace = new DoubleJSlider(2.0, 10.0, 4.4);
-
-		setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
-		SWSF.setBounds(285, 330, 30, 30);
-		EditorPanel.add(SWSF);
-
-		setWhiteSpace.setBounds(5, 330, 280, 30);
-		EditorPanel.add(setWhiteSpace);
-		JLabel SWSL = new JLabel("Set White Space: Range between 1-10");
-		SWSL.setBounds(0, 300, 320, 30);
-		EditorPanel.add(SWSL);
-
-		setWhiteSpace.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetWhiteSpace((int) setWhiteSpace.getdoubleValue());
-				SWSF.setText(Double.toString(setWhiteSpace.getdoubleValue()));
-			}
-		});
-
-		final JSlider setBarSpacing = new JSlider(2, 20);
-		setBarSpacing.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetBarSpacing(setBarSpacing.getValue());
-			}
-		});
-
-		setGivenSpacing.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetGivenSpacing(setGivenSpacing.getValue());
-				SGSPF.setText(Integer.toString(setGivenSpacing.getValue()));
-				EditorPanel.repaint();
-			}
-		});
-		final JSlider setNoteFontSize = new JSlider(2, 20);
-		setNoteFontSize.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent arg0) {
-				BarLinesPDF.SetNoteFontSize(setNoteFontSize.getValue());
-			}
-		});
-		SGBSF.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
-			}
-		});
-
 		preview();
-
 	}
 
-	public static int getgivenspacing() {
-		return (int) Double.parseDouble(SGSPF.getText());
+	public static float getgivenspacing() {
+		return Float.parseFloat(SGSPF.getText());
 	}
 
 	public static int getgroupbarspacing() {
@@ -545,4 +584,16 @@ public class GUI extends JFrame {
 		return STitleF.getText();
 	}
 
+	public static float getWhiteSpacing() {
+
+		return Float.parseFloat(SWSF.getText());
+	}
+
+	public static int getbarspacing() {
+		return Integer.parseInt(SBSF.getText());
+	}
+
+	public static int getnotefont() {
+		return Integer.parseInt(SNFF.getText());
+	}
 }

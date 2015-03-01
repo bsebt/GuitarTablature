@@ -39,11 +39,11 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static Phrase currentChar;
-	private static float noteFontSize = 6; //Size of the characters to be written to the page
+	private static int noteFontSize = 6; //Size of the characters to be written to the page
 	private static float givenSpacing = (float)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
-	private static float barSpacing = 7; //Space between individual lines to be drawn
-	private static float whiteSpace = 1; //Space around a written number that does not have a bar line
-	private static float groupBarSpacing = 75; //Spaces between the groups of 6 lines
+	private static int barSpacing = 7; //Space between individual lines to be drawn
+	private static float whiteSpace = 1.0f; //Space around a written number that does not have a bar line
+	private static int groupBarSpacing = 75; //Spaces between the groups of 6 lines
 	private static float topVoidSpace = 160; //Space at the top of the page for info. 
 	private static float pageHeight = 800;
 	private static float pageWidth = 620;
@@ -71,8 +71,12 @@ public class BarLinesPDF
 		COMPOSER_STRING = GUI.getsubTitle1();
 		title = new Paragraph(TITLE_STRING, titleFont);
 		composer = new Paragraph (COMPOSER_STRING, composerFont);
-		givenSpacing = (int)GUI.getgivenspacing();
+		givenSpacing = GUI.getgivenspacing();
 		destination1 = Destination;
+		whiteSpace = GUI.getWhiteSpacing();
+		barSpacing = GUI.getbarspacing();
+		noteFontSize = GUI.getnotefont();
+		groupBarSpacing = GUI.getgroupbarspacing();
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
@@ -95,7 +99,7 @@ public class BarLinesPDF
 		if(chars.isEmpty() != true)
 		{
 			ColumnText column = new ColumnText(cb); //text bound left and right on a series of lines
-			float lineStart = 0;
+			int lineStart = 0;
 			int rowPos = 0;
 			int colPos = 0;
 			int barPos = 0;
@@ -136,7 +140,7 @@ public class BarLinesPDF
 					boolean noSpaceAvailable = false; //Used to check if there is enough space to write the next character
 					lineStart = 0;
 					//int characterSpace = HowManyCharacters(barPos) * givenSpacing;
-					for(float q = (float)marginLeft + givenSpacing; q < pageWidth - marginRight - givenSpacing; q += givenSpacing) //Individual characters
+					for(float q = (float)(marginLeft + givenSpacing); (q < pageWidth - marginRight - givenSpacing); q += givenSpacing) //Individual characters
 					{
 						boolean cancelBarDraw = false;
 						EOB = false; //used to check if there is a next bar to pull from, avoids index errors
@@ -457,7 +461,7 @@ public class BarLinesPDF
 								cb.moveTo(lineStart, i + j);
 								cb.lineTo(q - whiteSpace*2 - noteFontSize , i + j );
 								}
-								lineStart = q + whiteSpace*2;
+								lineStart = (int) (q + whiteSpace*2);
 								
 								colPos++;
 						        if (colPos == barLength)
@@ -524,7 +528,7 @@ public class BarLinesPDF
 							        char[][] tempArray = chars.get(barPos); //The next character has already been written, change it to a blank so we don't write it twice
 							        tempArray[rowPos][colPos+1] = '-';
 							        chars.set(barPos, tempArray);
-							        lineStart = q + whiteSpace*2;
+							        lineStart = (int) (q + whiteSpace*2);
 							        
 							        lastWriteX = (int) q;
 							        lastWriteY =(int) (i + j + noteFontSize); //Extra noteFontSize to account for the fact that it is a double digit, might be too big.
@@ -557,7 +561,7 @@ public class BarLinesPDF
 											currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 											column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 									        column.go();
-									        lineStart = q + whiteSpace;
+									        lineStart = (int) (q + whiteSpace);
 									        
 									        lastWriteX = (int) q;
 									        lastWriteY = (int) (i + j);
@@ -575,7 +579,7 @@ public class BarLinesPDF
 										currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
 										column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 								        column.go();
-								        lineStart = q + whiteSpace;
+								        lineStart = (int) (q + whiteSpace);
 								        
 								        lastWriteX = (int) q;
 								        lastWriteY = (int) (i + j);
@@ -665,7 +669,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetWhiteSpace(int newSpacing)
+	public static boolean SetWhiteSpace(float newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -691,7 +695,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetGivenSpacing(int newSpacing)
+	public static boolean SetGivenSpacing(float newSpacing)
 	{
 		if (newSpacing <0)
 		{
@@ -726,9 +730,7 @@ public class BarLinesPDF
 	public static String getDestination(){
 		return destination1;
 	}
-//	public static String getSubTitle(){
-//		return COMPOSER_STRING;
-//	}
+
 	
 	public static void createCircle(PdfContentByte canvas, float x, float y, float r) 
 	{
