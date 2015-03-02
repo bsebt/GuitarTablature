@@ -269,16 +269,18 @@ public class GUI extends JFrame {
 		// int height = (int) (screenSize.getHeight() - 20);
 		// int width = (int) (screenSize.getWidth() - 20);
 
-		frame.setPreferredSize(screenSize);
+		//frame.setPreferredSize(screenSize);
 		frame.setSize(screenSize);
 		preview.setBounds(380, 0, frame.getWidth() - 380,
-				frame.getHeight() - 48);
+				frame.getHeight() - 85);
 		EditorPanel.add(preview, BorderLayout.CENTER);
 		frame.add(EditorPanel);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		
+		
 		// frame.pack();
-		frame.setLocationRelativeTo(null);
+		//frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 	public void modify() {
