@@ -27,7 +27,7 @@ public class GUI extends JFrame {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	//private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {
 		new GUI();
@@ -287,10 +287,11 @@ public class GUI extends JFrame {
 		try {
 			BarLinesPDF.convertPDF(input.getText(), (destination.getText()
 					+ "/" + name.getText() + ".pdf"));
+			preview();
 		} catch (DocumentException | IOException e1) {
 			e1.printStackTrace();
 		}
-		preview();
+		
 	}
 
 	private void editorpanel() throws DocumentException, IOException {
@@ -565,7 +566,6 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		preview();
 	}
 
 	public static float getgivenspacing() {
