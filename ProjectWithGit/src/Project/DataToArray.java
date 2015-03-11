@@ -16,8 +16,8 @@ public class DataToArray {
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	private static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
 	public static String textFile = "Test.txt";
-	public static String Title = "Default";
-	public static String SubTitle = "Default";
+	public static String Title = "NO TITLE";
+	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();

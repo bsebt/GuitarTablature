@@ -119,7 +119,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
-						+ "Convert Only: Converts the ASCII to PDF according to default settings. \n"
+						+ "Convert Only: Converts the ASCII to PDF according to default settings. Output name is the same as the input name. \n"
 						+ "About: How to use the program. \n"
 						+ "Exit: The program is terminated. \n\n"
 						+ "Created by: \n"
@@ -215,7 +215,7 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
-						+ "Convert Only: Converts the ASCII to PDF according to default settings. \n"
+						+ "Convert Only: Converts the ASCII to PDF according to default settings. Output name is the same as the input name. \n"
 						+ "About: How to use the program. \n"
 						+ "Exit: The program is terminated. \n\n"
 						+ "Created by: \n"
@@ -544,14 +544,14 @@ public class GUI extends JFrame {
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JOptionPane.showMessageDialog(frame,
-						"The pdf has been saved with latest changes.", null,
+						"The PDF has been saved with latest changes.", null,
 						JOptionPane.INFORMATION_MESSAGE);
 				frame.setVisible(false);
 				new GUI();
 			}
 		});
 
-		JButton Exit = new JButton("Exit without saving");
+		JButton Exit = new JButton("Exit");
 		Exit.setBounds(10, frame.getHeight() - 100, 210, 30); // 623+30
 		EditorPanel.add(Exit);
 		Exit.addActionListener(new ActionListener() {
@@ -559,8 +559,8 @@ public class GUI extends JFrame {
 				Object[] options = { "Yes, save and exit",
 						"No, delete the file and exit" };
 				int n = JOptionPane.showOptionDialog(frame,
-						"would you like to save the pdf before you exit?",
-						"A Silly Question", JOptionPane.YES_NO_OPTION,
+						"Would you like to save the PDF before you exit?",
+						"ASCII Guitar Tablature to PDF", JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, // do not use a
 						// custom Icon
 						options, // the titles of buttons
