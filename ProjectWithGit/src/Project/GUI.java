@@ -9,8 +9,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.tools.JavaFileManager;
+
 import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfDocument.Destination;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -58,7 +61,7 @@ public class GUI extends JFrame {
 	private GUI() {
 
 		input = new JTextField();
-		frame = new JFrame("Convert Guitar Notes to PDF Format");
+		frame = new JFrame("ASCII Guitar Tablature to PDF");
 		destination = new JTextField();
 		name = new JTextField();
 		PreviewPan preview;
@@ -71,7 +74,7 @@ public class GUI extends JFrame {
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
 		SNFF = new JTextField("6");
-
+		frame.setLocationByPlatform(true);
 		frame.setSize(320, 210);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
@@ -115,16 +118,22 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frame, "how our program works.",
-						"guitar note converter manual",
+				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
+						+ "Convert Only: Converts the ASCII to PDF according to default settings. \n"
+						+ "About: How to use the program. \n"
+						+ "Exit: The program is terminated. \n\n"
+						+ "Created by: \n"
+						+ "Kevin Arindaeng, Rami Abou-Nassar, Abasifreke James, Daniel McVicar, Behshad Sebthosseini";
+				JOptionPane.showMessageDialog(frame, detail,
+						"ASCII Tablature to PDF Manual",
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
 		// ImageIcon icon =
 		// createImageIcon("/home/behshad/Desktop/open-file.png");
-		JButton OpenB = new JButton("Open");
+		JButton OpenB = new JButton("Preview and Convert");
 
-		JButton QuickB = new JButton("Fast Convert");
+		JButton QuickB = new JButton("Convert Only");
 		QuickB.addActionListener(new ActionListener() {
 
 			@Override
@@ -186,6 +195,8 @@ public class GUI extends JFrame {
 					}
 
 				}
+				JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
+						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
 
@@ -202,8 +213,15 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frame, "how our program works.",
-						"guitar note converter manual",
+				
+				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
+						+ "Convert Only: Converts the ASCII to PDF according to default settings. \n"
+						+ "About: How to use the program. \n"
+						+ "Exit: The program is terminated. \n\n"
+						+ "Created by: \n"
+						+ "Kevin Arindaeng, Rami Abou-Nassar, Abasifreke James, Daniel McVicar, Behshad Sebthosseini";
+				JOptionPane.showMessageDialog(frame, detail,
+						"ASCII Tablature to PDF Manual",
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
@@ -313,10 +331,9 @@ public class GUI extends JFrame {
 				+ name.getText() + ".pdf"));
 		preview();
 
-		JLabel NameL = new JLabel("Input Name:" + inputname);
+		JLabel NameL = new JLabel("Input Name: " + inputname);
 		NameL.setBounds(0, 0, 500, 30);
 		EditorPanel.add(NameL);
-
 		JLabel OUTNAME = new JLabel("Output Name:");
 		OUTNAME.setBounds(0, 30, 200, 30);
 		EditorPanel.add(OUTNAME);
@@ -442,7 +459,7 @@ public class GUI extends JFrame {
 		});
 
 		final JSlider setBarSpacing = new JSlider(4, 10, 7);
-		JLabel SBSL = new JLabel("set Bar Spacing: Range between 1-10");
+		JLabel SBSL = new JLabel("Set Bar Spacing: Range between 1-10");
 		SBSL.setBounds(0, 360, 380, 30);
 		EditorPanel.add(SBSL);
 
@@ -483,7 +500,7 @@ public class GUI extends JFrame {
 		});
 
 		final JSlider setNoteFontSize = new JSlider(2, 10,Integer.parseInt(SNFF.getText()));
-		JLabel SNFL = new JLabel("set Note Font Size: Range between 2-10");
+		JLabel SNFL = new JLabel("Set Note Font Size: Range between 2-10");
 		SNFL.setBounds(0, 415, 380, 30);
 		setNoteFontSize.setBounds(0, 445, 280, 30);
 
