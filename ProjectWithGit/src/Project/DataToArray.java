@@ -71,18 +71,15 @@ public class DataToArray {
 		for (int t = 0; t < chars.size(); t++) //Check every element in the cars and split them up as needed
 		{
 			boolean alreadyBottomed = false;
-			char[][] d = new char[6][chars.get(t)[0].length]; //Make it as long as the old element, and we'll trim it later
-			int n = 0;
-			for (int v = 0; v < chars.get(t).length; v++) //Read every column
+			char[][] d = new char[6][chars.get(t).length]; //Make it as long as the old element, and we'll trim it later
+			for (int v = 0; v < chars.get(t)[0].length; v++) //Read every column
 			{
 				for (int w = 0; w < 6; w++) //Then read every row
 				{
 					char currentChar = chars.get(t)[w][v];
-					d[w][n] = currentChar;
-					System.out.print(currentChar);
+					d[w][v] = currentChar;
 					if (w == 5 && currentChar == '|' && !alreadyBottomed)
 					{
-						n = 0; //The new element should start at position 0, obviously
 						v--; //The last column should be printed in twice, so back up one and do this column again
 						newchars.add(d); //Add the new element to the list
 						d = new char[6][chars.get(t)[0].length]; //Reset the array we are writing so it is blank
@@ -93,22 +90,62 @@ public class DataToArray {
 						alreadyBottomed = false;
 					}
 				}
-				System.out.println();
 			}
 			
 		}
-		// Test to see printed lines
-		for (int a = 0; a < newchars.get(0).length; a++)
+		
+		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
+		
+		for (int p = 0; p < newchars.size(); p++)
 		{
-			for (int b = 0; b < 6; b++)
-			{
-				System.out.print(newchars.get(0)[b][a]);
-			}
-			System.out.println();
+			finalChars.add(TrimElement(newchars.get(p))); //Trim every element to remove extra white space, all elements should now only contain characters and be the proper length
 		}
+		
+		
+		//Test to see printed lines
+				for (int i = 0; i<lines.size(); i++)
+				{
+					//System.out.println(lines.get(i));
+				}
+					
+				//Test to see if characters properly placed in 2-d array.
+				for (int i = 0; i<newchars.size(); i++)
+				{
+					System.out.println(Arrays.deepToString(newchars.get(i)));
+				}
 				
 		
-		return newchars; 
+		return finalChars; 
+	}
+	
+	private static char[][] TrimElement(char[][] element) //Takes an element and trims off any white space before, after, or during input. Assumes all rows are the same length
+	{
+		int actualLength = 0;
+		for (int a = 0; a < element[0].length; a++)
+		{
+			if (element[0][a] != ' ')
+			{
+				actualLength++;
+			}
+			//System.out.println(a);
+		}
+		
+		
+		char[][] newestElement = new char[6][actualLength];
+		for (int b = 0; b < 6; b ++)
+		{
+			int actualColumn = 0;
+			for (int a = 0; a < element[0].length; a++)
+			{
+				if (element[b][a] != ' ')
+				{
+					//System.out.println("a: " + a + " b: " + b + " Ac: " + actualColumn);
+					newestElement[b][actualColumn] = element[b][a];
+					actualColumn++;
+				}
+			}
+		}
+		return newestElement;
 	}
 
 	public static void LengthOfPartition() {
