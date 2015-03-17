@@ -109,6 +109,7 @@ public class BarLinesPDF
 			boolean EOB = false;
 			boolean doneWriting = false;
 			boolean lastBarred = false;
+			boolean firstBarOfLine = true;
 			if(chars.size() >= 1) //As long as there is something in the file, trim the end to avoid extra repeating | symbols for the full line.
 			{
 				char[][] tempCharArray = chars.get(chars.size() - 1); //Get the last bar
@@ -184,9 +185,12 @@ public class BarLinesPDF
 							{
 								if(i - barSpacing > 0)
 								{
-									line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-									cb.moveTo(q, i + j);
-									cb.lineTo(q, i + j - barSpacing);
+									if (firstBarOfLine || colPos != 0)
+									{
+										line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+										cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j - barSpacing);
+									}
 									
 									//cancelBarDraw = true; //Don't draw a bar line if this is at the end, we have already done that
 									
@@ -404,8 +408,8 @@ public class BarLinesPDF
 									cb.moveTo(q, i + j + noteFontSize); //We are drawing the curve backwards, so set start point to our current location
 									cb.curveTo((q + marginLeft)/2 , i + j + (noteFontSize*2), marginLeft, i + j + noteFontSize); 
 									
-									cb.moveTo(marginRight, lastWriteY);
-									cb.curveTo((lastWriteX + marginRight)/2 , lastWriteY + (noteFontSize*2), lastWriteX , lastWriteY + noteFontSize);
+									cb.moveTo(pageWidth - marginRight, lastWriteY + noteFontSize);
+									cb.curveTo((lastWriteX + (pageWidth - marginRight))/2 , lastWriteY + (noteFontSize*2), lastWriteX , lastWriteY + noteFontSize);
 								}
 								
 								colPos++;
@@ -586,7 +590,7 @@ public class BarLinesPDF
 									}
 								}
 						        
-						        colPos++; //TO DO change this increment to a method
+						        colPos++; //TODO change this increment to a method
 						        if (colPos == barLength)
 						        {
 						        	colPos = 0;
@@ -631,7 +635,9 @@ public class BarLinesPDF
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(pageWidth , i + j );
 				        }
+						firstBarOfLine = false;
 					}
+					firstBarOfLine = true;
 					rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
 	        		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 	        		rowSave[rowPos][2] = barLength; //Keep track of how long this section is, to avoid index errors
