@@ -15,7 +15,7 @@ public class DataToArray {
 	private static ArrayList<String> lines = new ArrayList<String>();
 	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	private static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
-	public static String textFile = "Test.txt";
+	public static String textFile = "MoonlightSonata.txt";
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
@@ -65,44 +65,50 @@ public class DataToArray {
 			}
 			chars.add(c);
 		}
-
-		// Test to see printed lines
-		// for (int i = 0; i<lines.size(); i++)
-		// {
-		// System.out.println(lines.get(i));
-		// }
-		//
-		// Test to see if characters properly placed in 2-d array.
-		// for (int i = 0; i<chars.size(); i++)
-		// {
-		// System.out.println(Arrays.deepToString(chars.get(i)));
-		// }
-		//
-
-		//System.out
-		//		.println("Done. TxtToPdf successfully got the txt to an array. \n");
+		
 		input.close();
-
-		// Added by Daniel McVicar, reprocesses Chars to place one bar per
-		// element.
-		/*
-		 * char[][] indchar = new char[6][chars.get(0)[0].length/2]; //Needs to
-		 * be made variable length for (int q = 0; q < 6; q++) { indchar[q][0] =
-		 * '|'; } for (int a = 0; a < chars.size(); a++) //move between bars {
-		 * int increment = 0; for (int b = 1; b < 27 chars.get(a)[0].length - 1;
-		 * b ++) //Move between columns, ignore first column and fill manually
-		 * to avoid double first element { for (int r = 0; r < 6; r ++) //Move
-		 * between rows { char temp = chars.get(a)[r][b]; if (temp == '|') { if
-		 * (r == 0) { newchars.add(indchar); indchar = new
-		 * char[6][chars.get(a)[0].length/2]; //make a new character array to
-		 * hold everything from here indchar[r][b -
-		 * (chars.get(a)[0].length/2)*increment] = chars.get(a)[r][b];
-		 * increment++; } indchar[r][b] = chars.get(a)[r][b]; } else {
-		 * indchar[r][b] = chars.get(a)[r][b]; } } } } for (int i = 0;
-		 * i<newchars.size(); i++) {
-		 * System.out.println(Arrays.deepToString(newchars.get(i))); }
-		 */
-		return chars; // Change to use newchars soon
+		
+		for (int t = 0; t < chars.size(); t++) //Check every element in the cars and split them up as needed
+		{
+			boolean alreadyBottomed = false;
+			char[][] d = new char[6][chars.get(t)[0].length]; //Make it as long as the old element, and we'll trim it later
+			int n = 0;
+			for (int v = 0; v < chars.get(t).length; v++) //Read every column
+			{
+				for (int w = 0; w < 6; w++) //Then read every row
+				{
+					char currentChar = chars.get(t)[w][v];
+					d[w][n] = currentChar;
+					System.out.print(currentChar);
+					if (w == 5 && currentChar == '|' && !alreadyBottomed)
+					{
+						n = 0; //The new element should start at position 0, obviously
+						v--; //The last column should be printed in twice, so back up one and do this column again
+						newchars.add(d); //Add the new element to the list
+						d = new char[6][chars.get(t)[0].length]; //Reset the array we are writing so it is blank
+						alreadyBottomed = true;
+					}
+					if (w == 5 && currentChar != '|' && alreadyBottomed)
+					{
+						alreadyBottomed = false;
+					}
+				}
+				System.out.println();
+			}
+			
+		}
+		// Test to see printed lines
+		for (int a = 0; a < newchars.get(0).length; a++)
+		{
+			for (int b = 0; b < 6; b++)
+			{
+				System.out.print(newchars.get(0)[b][a]);
+			}
+			System.out.println();
+		}
+				
+		
+		return newchars; 
 	}
 
 	public static void LengthOfPartition() {
