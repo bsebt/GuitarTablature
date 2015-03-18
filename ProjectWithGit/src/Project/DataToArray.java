@@ -26,6 +26,10 @@ public class DataToArray {
 
 	public static ArrayList<char[][]> textToArray(String source)
 			throws DocumentException, IOException {
+		lines = new ArrayList<String>();
+		chars = new ArrayList<char[][]>();
+		newchars = new ArrayList<char[][]>();
+		partitionLength = new ArrayList<Integer>();
 		chars.clear();
 		lines.clear();
 		Title = " ";
@@ -77,7 +81,7 @@ public class DataToArray {
 				for (int w = 0; w < 6; w++) //Then read every row
 				{
 					char currentChar = chars.get(t)[w][v];
-					System.out.println("w: " + w + " v: " + v);
+					//System.out.println("w: " + w + " v: " + v);
 					d[w][v] = currentChar;
 					if (w == 5 && currentChar == '|' && !alreadyBottomed)
 					{
@@ -112,7 +116,7 @@ public class DataToArray {
 				//Test to see if characters properly placed in 2-d array.
 				for (int i = 0; i<newchars.size(); i++)
 				{
-					System.out.println(Arrays.deepToString(newchars.get(i)));
+					//System.out.println(Arrays.deepToString(newchars.get(i)));
 				}
 		
 				

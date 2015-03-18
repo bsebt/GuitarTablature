@@ -87,7 +87,7 @@ public class GUI extends JFrame {
 		JMenuBar mb = new JMenuBar();
 		frame.setJMenuBar(mb);
 
-		// making menus on the bar
+		/* making menus on the bar (not necessary from the prof. 3/8/2015
 		JMenu file = new JMenu("File");
 		mb.add(file);
 		JMenu help = new JMenu("Help");
@@ -129,6 +129,7 @@ public class GUI extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
+		*/
 		// ImageIcon icon =
 		// createImageIcon("/home/behshad/Desktop/open-file.png");
 		JButton OpenB = new JButton("Preview and Convert");
