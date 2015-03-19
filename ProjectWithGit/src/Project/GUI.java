@@ -9,11 +9,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.tools.JavaFileManager;
-
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfDocument.Destination;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -73,68 +71,69 @@ public class GUI extends JFrame {
 		TitleF = new JTextField(DataToArray.getsubTitle());
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
-		SNFF = new JTextField("6");
-		frame.setLocationByPlatform(true);
-		frame.setSize(320, 210);
+		SNFF = new JTextField("6");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+
+		final JButton OpenB = new JButton("Preview and Convert");
+
+		final JButton QuickB = new JButton("Convert Only");
+		final JButton ExitB = new JButton("Exit");
+		final JButton AboutB = new JButton("About");
+		final JPanel OpenerPanel = new JPanel(null);
+		final JButton opening = new JButton("Open");
+
+//		main GUI
+//		opening.setBounds(10, 55, 150, 50);
+//		OpenerPanel.add(opening);
+//		
+//		 //original is 
+		
+		frame.setSize(310,140);
+		opening.setBounds(5, 5, 150, 50);
+		OpenerPanel.add(opening);
+		AboutB.setBounds(155, 5, 150, 50);
+		OpenerPanel.add(AboutB);
+		ExitB.setBounds(5, 55, 300, 50);
+		OpenerPanel.add(ExitB);
+		frame.add(OpenerPanel);
+		
 		frame.setVisible(true);
-
-		JMenuItem open = new JMenuItem("Open");
-
-		JMenuItem about = new JMenuItem("About");
-
-		// creating a menu
-		JMenuBar mb = new JMenuBar();
-		frame.setJMenuBar(mb);
-
-		/* making menus on the bar (not necessary from the prof. 3/8/2015
-		JMenu file = new JMenu("File");
-		mb.add(file);
-		JMenu help = new JMenu("Help");
-		mb.add(help);
-
-		file.add(open);
-		open.addActionListener(new ActionListener() {
+		frame.setResizable(false);
+		
+		opening.addActionListener(new ActionListener() {
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				final JFileChooser fc = new JFileChooser();
+				JFileChooser fc = new JFileChooser();
+				FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+				fc.setFileFilter(filter);
+				File mnmn = new File("/home/behshad/Desktop");
+				fc.setCurrentDirectory(mnmn);
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText("Input Address: "
-							+ fc.getSelectedFile().getPath());
-				}
+					input.setText(fc.getSelectedFile().getPath());
+					name.setText(fc.getSelectedFile().getName());
+					destination.setText(fc.getSelectedFile().getParent());
+					}
+				frame.setResizable(true);
+				OpenerPanel.remove(opening);
+				frame.setSize(320,200);
+				OpenB.setBounds(10, 5, 300, 50);
+				OpenerPanel.add(OpenB);
+				QuickB.setBounds(10, 55, 150, 50);
+				OpenerPanel.add(QuickB);
+				AboutB.setBounds(160, 55, 150, 50);
+				OpenerPanel.add(AboutB);
+				ExitB.setBounds(10, 105, 300, 50);
+				OpenerPanel.add(ExitB);
+				frame.add(OpenerPanel);
+				frame.setResizable(false);
+				
 			}
 		});
-
-		file.add(exitMI);
-		exitMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(1);
-			}
-		});
-
-		help.add(about);
-		about.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
-						+ "Convert Only: Converts the ASCII to PDF according to default settings. Output name is the same as the input name. \n"
-						+ "About: How to use the program. \n"
-						+ "Exit: The program is terminated. \n\n"
-						+ "Created by: \n"
-						+ "Kevin Arindaeng, Rami Abou-Nassar, Abasifreke James, Daniel McVicar, Behshad Sebthosseini";
-				JOptionPane.showMessageDialog(frame, detail,
-						"ASCII Tablature to PDF Manual",
-						JOptionPane.INFORMATION_MESSAGE, null);
-			}
-		});
-		*/
-		// ImageIcon icon =
-		// createImageIcon("/home/behshad/Desktop/open-file.png");
-		JButton OpenB = new JButton("Preview and Convert");
-
-		JButton QuickB = new JButton("Convert Only");
+		
+		
 		QuickB.addActionListener(new ActionListener() {
 
 			@Override
@@ -162,21 +161,7 @@ public class GUI extends JFrame {
 				// name.setText(fc.getSelectedFile().getName());
 				// }
 				// System.out.println(n);
-				JFileChooser fc = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"Text Files", "txt");
-				fc.setFileFilter(filter);
-				File mnmn = new File("/home/behshad/Desktop");
-				fc.setCurrentDirectory(mnmn);
-				int response = fc.showOpenDialog(GUI.this);
-				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText(fc.getSelectedFile().getPath());
-					name.setText(fc.getSelectedFile().getName());
-					destination.setText(fc.getSelectedFile().getParent());
-
-					StringBuffer buffer = new StringBuffer(name.getText()
-							.substring(0, name.getText().indexOf('.')));
-					name.setText(buffer.toString());
+				
 					try {
 						DataToArray.textToArray(input.getText());
 					} catch (DocumentException | IOException e2) {
@@ -187,28 +172,21 @@ public class GUI extends JFrame {
 					TitleF.setText(DataToArray.getTitle());
 					STitleF.setText(DataToArray.getsubTitle());
 					try {
-						BarLinesPDF.convertPDF(
-								input.getText(),
-								(destination.getText() + "/" + name.getText() + ".pdf"));
+						BarLinesPDF.convertPDF(input.getText(),(destination.getText() + "/" + name.getText() + ".pdf"));
+						JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
+								JOptionPane.INFORMATION_MESSAGE, null);
 					} catch (DocumentException | IOException e1) {
 
 						e1.printStackTrace();
 					}
-
 				}
-				JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
-						JOptionPane.INFORMATION_MESSAGE, null);
-			}
 		});
-
-		JButton ExitB = new JButton("Exit");
 		ExitB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
 		});
-
-		JButton AboutB = new JButton("About");
+		
 		AboutB.setIconTextGap(JOptionPane.INFORMATION_MESSAGE);
 		AboutB.addActionListener(new ActionListener() {
 
@@ -226,38 +204,16 @@ public class GUI extends JFrame {
 						JOptionPane.INFORMATION_MESSAGE, null);
 			}
 		});
-		final JPanel OpenerPanel = new JPanel(null);
-		OpenB.setBounds(10, 5, 300, 50);
-		OpenerPanel.add(OpenB);
-		QuickB.setBounds(10, 55, 130, 50);
-		OpenerPanel.add(QuickB);
-		AboutB.setBounds(180, 55, 130, 50);
-		OpenerPanel.add(AboutB);
-		ExitB.setBounds(10, 105, 300, 50);
-		OpenerPanel.add(ExitB);
-		frame.add(OpenerPanel);
 
-		frame.setResizable(false);
 
 		OpenB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				final JFileChooser fc = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"Text Files", "txt");
-				fc.setFileFilter(filter);
-				File mnmn = new File("/home/behshad/Desktop");
-				fc.setCurrentDirectory(mnmn);
-				int response = fc.showOpenDialog(GUI.this);
-				if (response == JFileChooser.APPROVE_OPTION) {
-					input.setText(fc.getSelectedFile().getPath());
-					name.setText(fc.getSelectedFile().getName());
-					destination.setText(fc.getSelectedFile().getParent());
-					frame.remove(OpenerPanel);
-					frame.repaint();
 					try {
+						OpenerPanel.removeAll();
+						frame.remove(OpenerPanel);
 						editorpanel();
 					} catch (DocumentException e1) {
 						e1.printStackTrace();
@@ -265,7 +221,7 @@ public class GUI extends JFrame {
 						e1.printStackTrace();
 					}
 				}
-			}
+//			}
 		});
 	}
 
@@ -284,20 +240,10 @@ public class GUI extends JFrame {
 				+ name.getText() + ".pdf"));
 
 		frame.setResizable(true);
-
-		// int height = (int) (screenSize.getHeight() - 20);
-		// int width = (int) (screenSize.getWidth() - 20);
-
-		//frame.setPreferredSize(screenSize);
 		frame.setSize(screenSize);
-		preview.setBounds(380, 0, frame.getWidth() - 380,
-				frame.getHeight() - 85);
-		EditorPanel.add(preview, BorderLayout.CENTER);
+		preview.setBounds(380, 0, frame.getWidth() - 380,frame.getHeight());
+		EditorPanel.add(preview);
 		frame.add(EditorPanel);
-		
-		
-		// frame.pack();
-		//frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
@@ -318,6 +264,7 @@ public class GUI extends JFrame {
 	private void editorpanel() throws DocumentException, IOException {
 		// left panel
 		// frame.setSize(1000, 1000);
+		
 		inputname = name.getText();
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
