@@ -1,12 +1,12 @@
 package Project;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
-
 import com.itextpdf.text.DocumentException;
 
 public class DataToArray {
@@ -24,34 +24,42 @@ public class DataToArray {
 
 	private static int col;
 
-	public static ArrayList<char[][]> textToArray(String source)
+	public static ArrayList<char[][]> textToArray(File[] source)
 			throws DocumentException, IOException {
 		lines = new ArrayList<String>();
 		chars = new ArrayList<char[][]>();
 		newchars = new ArrayList<char[][]>();
 		partitionLength = new ArrayList<Integer>();
+		String name = null;
 		chars.clear();
 		lines.clear();
 		Title = " ";
 		SubTitle = " ";
 		BufferedReader input = null;
-		input = new BufferedReader(new FileReader(source));
 		String line = "";
-		while (null != (line = input.readLine())) {
-			if (line.contains("subtitle") || line.contains("SUBTITLE")) {
-				SubTitle = line.substring(line.indexOf('=') + 1, line.length());
-			} else if (line.contains("title") || line.contains("TITLE")) {
-				Title = line.substring(line.indexOf('=') + 1, line.length());
+		for (int i = 0; i < source.length; i++) {
+			name = source[i].getPath();
+			input = new BufferedReader(new FileReader(name));
+			while (null != (line = input.readLine())) {
+				if (line.contains("subtitle") || line.contains("SUBTITLE")) {
+					SubTitle = line.substring(line.indexOf('=') + 1,
+							line.length());
+				} else if (line.contains("title") || line.contains("TITLE")) {
+					Title = line
+							.substring(line.indexOf('=') + 1, line.length());
+				}
+				if (line.contains("spacing") || line.contains("SPACING")) {
+					Spacing = Float.parseFloat(line.substring(
+							line.indexOf('=') + 1, line.length()));
+				}
+				if (line.trim().length() == 0) {
+					continue;
+				}
+				if (line.charAt(0) == '|') {
+					lines.add(line);
+				}	
 			}
-			if (line.contains("spacing") || line.contains("SPACING")) {
-				Spacing = Float.parseFloat(line.substring(line.indexOf('=') + 1, line.length()));
-			}
-			if (line.trim().length() == 0) {
-				continue;
-			}
-			if (line.charAt(0) == '|') {
-				lines.add(line);
-			}
+			input.close();
 		}
 		for (int z = 0; z < lines.size(); z = z + 6) {
 			col = lines.get(z).length();
@@ -69,83 +77,97 @@ public class DataToArray {
 			}
 			chars.add(c);
 		}
+
 		
-		input.close();
-		
-		for (int t = 0; t < chars.size(); t++) //Check every element in the cars and split them up as needed
+
+		for (int t = 0; t < chars.size(); t++) // Check every element in the
+												// cars and split them up as
+												// needed
 		{
 			boolean alreadyBottomed = true;
-			char[][] d = new char[6][chars.get(t)[0].length]; //Make it as long as the old element, and we'll trim it later
-			for (int v = 0; v < chars.get(t)[0].length; v++) //Read every column
+			char[][] d = new char[6][chars.get(t)[0].length]; // Make it as long
+																// as the old
+																// element, and
+																// we'll trim it
+																// later
+			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
+																// column
 			{
-				for (int w = 0; w < 6; w++) //Then read every row
+				for (int w = 0; w < 6; w++) // Then read every row
 				{
 					char currentChar = chars.get(t)[w][v];
-					//System.out.println("w: " + w + " v: " + v);
+					// System.out.println("w: " + w + " v: " + v);
 					d[w][v] = currentChar;
-					if (w == 5 && currentChar == '|' && !alreadyBottomed)
-					{
-						v--; //The last column should be printed in twice, so back up one and do this column again
-						newchars.add(d); //Add the new element to the list
-						d = new char[6][chars.get(t)[0].length]; //Reset the array we are writing so it is blank
+					if (w == 5 && currentChar == '|' && !alreadyBottomed) {
+						v--; // The last column should be printed in twice, so
+								// back up one and do this column again
+						newchars.add(d); // Add the new element to the list
+						d = new char[6][chars.get(t)[0].length]; // Reset the
+																	// array we
+																	// are
+																	// writing
+																	// so it is
+																	// blank
 						alreadyBottomed = true;
 					}
-					if (w == 5 && currentChar != '|' && alreadyBottomed)
-					{
+					if (w == 5 && currentChar != '|' && alreadyBottomed) {
 						alreadyBottomed = false;
 					}
 				}
 			}
-			
+
 		}
-		
+
 		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
-		
-		for (int p = 0; p < newchars.size(); p++)
-		{
-			finalChars.add(TrimElement(newchars.get(p))); //Trim every element to remove extra white space, all elements should now only contain characters and be the proper length
+
+		for (int p = 0; p < newchars.size(); p++) {
+			finalChars.add(TrimElement(newchars.get(p))); // Trim every element
+															// to remove extra
+															// white space, all
+															// elements should
+															// now only contain
+															// characters and be
+															// the proper length
 		}
-		
-		
-		//Test to see printed lines
-				for (int i = 0; i<lines.size(); i++)
-				{
-					//System.out.println(lines.get(i));
-				}
-					
-				//Test to see if characters properly placed in 2-d array.
-				for (int i = 0; i<newchars.size(); i++)
-				{
-					//System.out.println(Arrays.deepToString(newchars.get(i)));
-				}
-		
-				
-		
-		return finalChars; 
+
+		// Test to see printed lines
+		for (int i = 0; i < lines.size(); i++) {
+			// System.out.println(lines.get(i));
+		}
+
+		// Test to see if characters properly placed in 2-d array.
+		for (int i = 0; i < newchars.size(); i++) {
+			// System.out.println(Arrays.deepToString(newchars.get(i)));
+		}
+
+		return finalChars;
 	}
-	
-	private static char[][] TrimElement(char[][] element) //Takes an element and trims off any white space before, after, or during input. Assumes all rows are the same length
+
+	private static char[][] TrimElement(char[][] element) // Takes an element
+															// and trims off any
+															// white space
+															// before, after, or
+															// during input.
+															// Assumes all rows
+															// are the same
+															// length
 	{
 		int actualLength = 0;
-		for (int a = 0; a < element[0].length; a++) //Go through the full
+		for (int a = 0; a < element[0].length; a++) // Go through the full
 		{
-			if (element[0][a] != '\u0000')
-			{
+			if (element[0][a] != '\u0000') {
 				actualLength++;
 			}
-			//System.out.println(a);
+			// System.out.println(a);
 		}
-		
-		
+
 		char[][] newestElement = new char[6][actualLength];
-		for (int b = 0; b < 6; b ++)
-		{
+		for (int b = 0; b < 6; b++) {
 			int actualColumn = 0;
-			for (int a = 0; a < element[0].length; a++)
-			{
-				if (element[b][a] != '\u0000')
-				{
-					//System.out.println("a: " + a + " b: " + b + " Ac: " + actualColumn);
+			for (int a = 0; a < element[0].length; a++) {
+				if (element[b][a] != '\u0000') {
+					// System.out.println("a: " + a + " b: " + b + " Ac: " +
+					// actualColumn);
 					newestElement[b][actualColumn] = element[b][a];
 					actualColumn++;
 				}
@@ -222,8 +244,8 @@ public class DataToArray {
 	public static void main(String[] args) throws DocumentException,
 			IOException {
 		// textToArray();
-		DataToArray.textToArray(DataToArray.textFile);
-		LengthOfPartition();
-		DanielsPartition2(lines);
+		// DataToArray.textToArray(DataToArray.textFile);
+		// LengthOfPartition();
+		// DanielsPartition2(lines);
 	}
 }

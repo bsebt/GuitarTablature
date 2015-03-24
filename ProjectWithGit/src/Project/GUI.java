@@ -52,6 +52,7 @@ public class GUI extends JFrame {
 	public static JTextField SWSF = new JTextField("1.0");
 	public static JTextField SBSF = new JTextField("7");
 	public static JTextField SNFF = new JTextField("6");
+	public static File[] list;
 
 	// private static JTextField source = new JTextField();
 
@@ -72,6 +73,7 @@ public class GUI extends JFrame {
 		SBSF = new JTextField("7");
 		SNFF = new JTextField("6");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		list = new File[100];
 		
 
 		final JButton OpenB = new JButton("Preview and Convert");
@@ -103,8 +105,10 @@ public class GUI extends JFrame {
 				fc.setFileFilter(filter);
 				File mnmn = new File("/home/behshad/Desktop");
 				fc.setCurrentDirectory(mnmn);
+				fc.setMultiSelectionEnabled(true);
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
+					list = fc.getSelectedFiles();
 					input.setText(fc.getSelectedFile().getPath());
 					name.setText(fc.getSelectedFile().getName());
 					destination.setText(fc.getSelectedFile().getParent());
@@ -133,18 +137,29 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 					try {
-						DataToArray.textToArray(input.getText());
-					} catch (DocumentException | IOException e2) {
+						//DataToArray.textToArray(input.getText());
+						DataToArray.textToArray(list);
+					} catch (DocumentException | IOException | NullPointerException e2) {
 
-						e2.printStackTrace();
+						JOptionPane.showMessageDialog(frame, "There are no files selected.", "ASCII Tablature to PDF Message",
+								JOptionPane.INFORMATION_MESSAGE, null);
+						EditorPanel.removeAll();
+						frame.removeAll();
+						frame.setVisible(false);
+						new GUI();
 					}
 					SGSPF.setText(Double.toString(DataToArray.getSpacing()));
 					TitleF.setText(DataToArray.getTitle());
 					STitleF.setText(DataToArray.getsubTitle());
 					try {
-						BarLinesPDF.convertPDF(input.getText(),(destination.getText() + "/" + name.getText() + ".pdf"));
+						//BarLinesPDF.convertPDF(list,(destination.getText() + "/" + name.getText() + ".pdf"));
+						BarLinesPDF.convertPDF(list,(destination.getText() + "/" + name.getText() + ".pdf"));
 						JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
 								JOptionPane.INFORMATION_MESSAGE, null);
+						EditorPanel.removeAll();
+						frame.removeAll();
+						frame.setVisible(false);
+						new GUI();
 					} catch (DocumentException | IOException e1) {
 
 						e1.printStackTrace();
@@ -196,6 +211,7 @@ public class GUI extends JFrame {
 
 	public void preview() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
 		preview = new PreviewPan(new File(destination.getText() + "/"
 				+ name.getText() + ".pdf"));
 
@@ -213,7 +229,9 @@ public class GUI extends JFrame {
 		EditorPanel.remove(preview);
 		frame.remove(EditorPanel);
 		try {
-			BarLinesPDF.convertPDF(input.getText(), (destination.getText()
+			//BarLinesPDF.convertPDF(input.getText(), (destination.getText()
+			//		+ "/" + name.getText() + ".pdf"));
+			BarLinesPDF.convertPDF(list, (destination.getText()
 					+ "/" + name.getText() + ".pdf"));
 			preview();
 		} catch (DocumentException | IOException e1) {
@@ -229,11 +247,11 @@ public class GUI extends JFrame {
 		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
 				name.getText().indexOf('.')));
 		name.setText(buffer.toString());
-		DataToArray.textToArray(input.getText());
+		DataToArray.textToArray(list);
 		SGSPF.setText(Float.toString(DataToArray.getSpacing()));
 		TitleF.setText(DataToArray.getTitle());
 		STitleF.setText(DataToArray.getsubTitle());
-		BarLinesPDF.convertPDF(input.getText(), (destination.getText() + "/"
+		BarLinesPDF.convertPDF(list, (destination.getText() + "/"
 				+ name.getText() + ".pdf"));
 		preview();
 
@@ -521,5 +539,8 @@ public class GUI extends JFrame {
 
 	public static int getnotefont() {
 		return Integer.parseInt(SNFF.getText());
+	}
+	public static File[] getList(){
+		return list;
 	}
 }

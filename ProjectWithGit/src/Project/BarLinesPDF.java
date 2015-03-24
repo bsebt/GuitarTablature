@@ -1,10 +1,9 @@
 package Project;
 
-
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -61,7 +60,7 @@ public class BarLinesPDF
 	private static DataToArray data;
 	public static String destination1;
 
-	public static void convertPDF(String textFile, String Destination) throws DocumentException, IOException//Convert() throws DocumentException, IOException
+	public static void convertPDF(File[] textFile, String Destination) throws DocumentException, IOException//Convert() throws DocumentException, IOException
 	{	
 		
 		chars = DataToArray.textToArray(textFile); // Gets the array of information
