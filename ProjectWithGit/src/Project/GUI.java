@@ -1,5 +1,3 @@
-package Project;
-
 import javax.annotation.processing.FilerException;
 import javax.swing.*;
 import javax.swing.Timer;
@@ -25,10 +23,7 @@ import java.awt.*;
 
 public class GUI extends JFrame {
 
-	/**
-	 * 
-	 */
-	//private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	public static void main(String[] args) {
 		new GUI();
@@ -74,7 +69,6 @@ public class GUI extends JFrame {
 		SNFF = new JTextField("6");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		list = new File[100];
-		
 
 		final JButton OpenB = new JButton("Preview and Convert");
 
@@ -111,22 +105,21 @@ public class GUI extends JFrame {
 					list = fc.getSelectedFiles();
 					input.setText(fc.getSelectedFile().getPath());
 					name.setText(fc.getSelectedFile().getName());
-					destination.setText(fc.getSelectedFile().getParent());
+					destination.setText(list[0].getParent());
+					frame.setResizable(true);
+					OpenerPanel.removeAll();
+					frame.setSize(320,200);
+					OpenB.setBounds(10, 5, 300, 50);
+					OpenerPanel.add(OpenB);
+					QuickB.setBounds(10, 55, 150, 50);
+					OpenerPanel.add(QuickB);
+					AboutB.setBounds(160, 55, 150, 50);
+					OpenerPanel.add(AboutB);
+					ExitB.setBounds(10, 105, 300, 50);
+					OpenerPanel.add(ExitB);
+					frame.add(OpenerPanel);
+					frame.setResizable(false);
 					}
-				frame.setResizable(true);
-				OpenerPanel.removeAll();
-				frame.setSize(320,200);
-				OpenB.setBounds(10, 5, 300, 50);
-				OpenerPanel.add(OpenB);
-				QuickB.setBounds(10, 55, 150, 50);
-				OpenerPanel.add(QuickB);
-				AboutB.setBounds(160, 55, 150, 50);
-				OpenerPanel.add(AboutB);
-				ExitB.setBounds(10, 105, 300, 50);
-				OpenerPanel.add(ExitB);
-				frame.add(OpenerPanel);
-				frame.setResizable(false);
-				
 			}
 		});
 		
@@ -137,7 +130,6 @@ public class GUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 					try {
-						//DataToArray.textToArray(input.getText());
 						DataToArray.textToArray(list);
 					} catch (DocumentException | IOException | NullPointerException e2) {
 
@@ -148,11 +140,16 @@ public class GUI extends JFrame {
 						frame.setVisible(false);
 						new GUI();
 					}
+					inputname = list[0].getName();
+					deskeeper = destination.getText();
+					StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
+							list[0].getName().indexOf('.')));
+					System.out.println(buffer);
+					name.setText(buffer.toString());
 					SGSPF.setText(Double.toString(DataToArray.getSpacing()));
 					TitleF.setText(DataToArray.getTitle());
 					STitleF.setText(DataToArray.getsubTitle());
 					try {
-						//BarLinesPDF.convertPDF(list,(destination.getText() + "/" + name.getText() + ".pdf"));
 						BarLinesPDF.convertPDF(list,(destination.getText() + "/" + name.getText() + ".pdf"));
 						JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
 								JOptionPane.INFORMATION_MESSAGE, null);
@@ -229,8 +226,6 @@ public class GUI extends JFrame {
 		EditorPanel.remove(preview);
 		frame.remove(EditorPanel);
 		try {
-			//BarLinesPDF.convertPDF(input.getText(), (destination.getText()
-			//		+ "/" + name.getText() + ".pdf"));
 			BarLinesPDF.convertPDF(list, (destination.getText()
 					+ "/" + name.getText() + ".pdf"));
 			preview();
@@ -242,10 +237,10 @@ public class GUI extends JFrame {
 
 	private void editorpanel() throws DocumentException, IOException {
 		
-		inputname = name.getText();
+		inputname = list[0].getName();
 		deskeeper = destination.getText();
-		StringBuffer buffer = new StringBuffer(name.getText().substring(0,
-				name.getText().indexOf('.')));
+		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
+				list[0].getName().indexOf('.')));
 		name.setText(buffer.toString());
 		DataToArray.textToArray(list);
 		SGSPF.setText(Float.toString(DataToArray.getSpacing()));
@@ -284,13 +279,8 @@ public class GUI extends JFrame {
 						"PDF Files", "pdf");
 				fc.setFileFilter(filter);
 				int n = fc.showSaveDialog(GUI.this);
-
-				// FileNameExtensionFilter filter = new
-				// FileNameExtensionFilter("JPG & GIF Images", "jpg", "gif");
-				// fc.setFileFilter(filter);
-
 				if (n == JFileChooser.APPROVE_OPTION) {
-					destination.setText(fc.getSelectedFile().getParent());
+					destination.setText(list[0].getParent());
 					name.setText(fc.getSelectedFile().getName());
 					EditorPanel.repaint();
 				}
@@ -318,7 +308,7 @@ public class GUI extends JFrame {
 		SGBSL.setBounds(0, 190, 375, 30);
 		EditorPanel.add(SGBSL);
 
-		final JSlider setGroupBarSpacing = new JSlider(50, 90);
+		final JSlider setGroupBarSpacing = new JSlider(50, 90, Integer.parseInt(SGBSF.getText()));
 		setGroupBarSpacing.setBounds(5, 220, 280, 30);
 		EditorPanel.add(setGroupBarSpacing);
 
