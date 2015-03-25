@@ -108,7 +108,7 @@ public class BarLinesPDF
 			boolean EOB = false;
 			boolean doneWriting = false;
 			boolean lastBarred = false;
-			boolean firstBarOfLine = true;
+			int firstBarOfLine = 0;
 			if(chars.size() >= 1) //As long as there is something in the file, trim the end to avoid extra repeating | symbols for the full line.
 			{
 				char[][] tempCharArray = chars.get(chars.size() - 1); //Get the last bar
@@ -184,7 +184,7 @@ public class BarLinesPDF
 							{
 								if(i - barSpacing > 0)
 								{
-									if (firstBarOfLine || colPos != 0)
+									if (firstBarOfLine == 0 || colPos != 0)
 									{
 										line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 										cb.moveTo(q, i + j);
@@ -542,9 +542,18 @@ public class BarLinesPDF
 									{
 										if (chars.get(barPos)[rowPos+1][colPos] == '|') //There was a number, but below is a bar line so this is a repeat symbol. Print a repeat line above the lines, and draw a normal bar line here
 										{
-											currentChar = new Phrase(("Repeat " + arrayChar + " times" ), numberFont); //Replace this with the character from the array we are currently proccessing.
-											column.setSimpleColumn(currentChar, q - 12*noteFontSize , i + j +noteFontSize , q, i + j + noteFontSize*2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
-									        column.go();
+											if (firstBarOfLine == 0 || firstBarOfLine == 1) //If we read a character at the start of a line, it should be drawn at the top right of the last bar instead, because of how bars are partitioned
+											{
+												currentChar = new Phrase(("Repeat " + arrayChar + " times" ), numberFont); //Replace this with the character from the array we are currently proccessing.
+												column.setSimpleColumn(currentChar, pageWidth - marginLeft - 12*noteFontSize , i + j +noteFontSize + groupBarSpacing, pageWidth - marginLeft, i + j + noteFontSize*2 + groupBarSpacing, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+										        column.go();
+											}
+											else
+											{
+												currentChar = new Phrase(("Repeat " + arrayChar + " times" ), numberFont); //Replace this with the character from the array we are currently proccessing.
+												column.setSimpleColumn(currentChar, q - 12*noteFontSize , i + j +noteFontSize , q, i + j + noteFontSize*2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+										        column.go();
+											}
 									        
 									        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 											cb.moveTo(q, i + j); //This draws the vertical bar line where the number was. there might be some problems with using this naked, check first for errors
@@ -634,9 +643,9 @@ public class BarLinesPDF
 							cb.moveTo(lineStart, i + j);
 							cb.lineTo(pageWidth , i + j );
 				        }
-						firstBarOfLine = false;
+						firstBarOfLine += 1;
 					}
-					firstBarOfLine = true;
+					firstBarOfLine = 0;
 					rowSave[rowPos][0] = barPos; //Keeps track of what bar we are at on this line
 	        		rowSave[rowPos][1] = colPos; //Start of new bar, so we are at column 0
 	        		rowSave[rowPos][2] = barLength; //Keep track of how long this section is, to avoid index errors
