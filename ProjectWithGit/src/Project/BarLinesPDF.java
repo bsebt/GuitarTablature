@@ -38,7 +38,7 @@ public class BarLinesPDF
 	private static Paragraph composer = new Paragraph (COMPOSER_STRING, composerFont);
 	
 	private static Phrase currentChar;
-	private static int noteFontSize = 6; //Size of the characters to be written to the page
+	private static float noteFontSize = 9; //Size of the characters to be written to the page
 	private static float givenSpacing = (float)DataToArray.getSpacing(); //The spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; //Space between individual lines to be drawn
 	private static float whiteSpace = 1.0f; //Space around a written number that does not have a bar line
@@ -74,7 +74,7 @@ public class BarLinesPDF
 		destination1 = Destination;
 		whiteSpace = GUI.getWhiteSpacing();
 		barSpacing = GUI.getbarspacing();
-		noteFontSize = GUI.getnotefont();
+		SetNoteFontSize(GUI.getnotefont()); //TODO replace all of these with set methods rather than direct assignment
 		groupBarSpacing = GUI.getgroupbarspacing();
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
@@ -452,12 +452,12 @@ public class BarLinesPDF
 							else if (arrayChar == '>') //Draw a diamond after a > symbol, the starting < can be ignored since it doesn't actualy carry any info
 							{
 								line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-								cb.moveTo(q - noteFontSize, i + j);
-								cb.lineTo(q - noteFontSize/2, i + j + noteFontSize/2);
+								cb.moveTo(q - noteFontSize/2, i + j);
+								cb.lineTo(q - noteFontSize/4, i + j + noteFontSize/4);
 								cb.lineTo(q, i + j); 
-								cb.lineTo(q - noteFontSize/2, i + j - noteFontSize/2);
-								cb.lineTo(q - noteFontSize, i + j);
-								cb.lineTo(q - noteFontSize/2, i + j + noteFontSize/2); //Draws a diamond, with an extra leg to eliminate the starting area having a mark
+								cb.lineTo(q - noteFontSize/4, i + j - noteFontSize/4);
+								cb.lineTo(q - noteFontSize/2, i + j);
+								cb.lineTo(q - noteFontSize/4, i + j + noteFontSize/4); //Draws a diamond, with an extra leg to eliminate the starting area having a mark
 								
 								if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
 								{
@@ -518,8 +518,8 @@ public class BarLinesPDF
 								if (IsDigit(nextChar)) //it is a two digit number, print them out together
 								{
 									currentChar = new Phrase(("" + arrayChar + nextChar), numberFont); //Replace this with the character from the array we are currently proccessing.
-									column.setSimpleColumn(currentChar, q - noteFontSize - noteFontSize/2, i + j - noteFontSize/2, q + noteFontSize/2, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
-							        column.go();
+									column.setSimpleColumn(currentChar, q - noteFontSize/2f - noteFontSize*(3f/4f), i + j - noteFontSize*(1f/4f), q + noteFontSize/2f + noteFontSize*(1f/4f), i + j + noteFontSize*(3f/4f), noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+									column.go();
 							        
 							        line.drawLine(cb, 0f, 0f, 0f); //This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 							        if ((q - whiteSpace*2 - noteFontSize) - lineStart > 0) //Do not draw lines backwards, if there isn't enough space just draw no line at all. This should be used everywhere, but is most prominent here TO DO: Apply this change everywhere needed
@@ -571,7 +571,7 @@ public class BarLinesPDF
 											}
 											
 											currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
-											column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+											column.setSimpleColumn(currentChar, q-noteFontSize*(3f/4f) , i + j - noteFontSize*(1f/4f), q+noteFontSize*(1f/4f), i + j + noteFontSize*(3f/4f), noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 									        column.go();
 									        lineStart = (int) (q + whiteSpace);
 									        
@@ -589,7 +589,7 @@ public class BarLinesPDF
 										}
 										
 										currentChar = new Phrase(("" + arrayChar), numberFont); //Replace this with the character from the array we are currently proccessing.
-										column.setSimpleColumn(currentChar, q - noteFontSize, i + j - noteFontSize/2, q, i + j + noteFontSize/2, noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
+										column.setSimpleColumn(currentChar, q-noteFontSize*(3f/4f) , i + j - noteFontSize*(1f/4f), q+noteFontSize*(1f/4f), i + j + noteFontSize*(3f/4f), noteFontSize, Element.ALIGN_LEFT); //Writes the character curentChar
 								        column.go();
 								        lineStart = (int) (q + whiteSpace);
 								        
@@ -722,7 +722,7 @@ public class BarLinesPDF
 		}
 	}
 	
-	public static boolean SetNoteFontSize(int newSpacing)
+	public static boolean SetNoteFontSize(float newSpacing)
 	{
 		if (newSpacing < 0)
 		{
@@ -731,6 +731,7 @@ public class BarLinesPDF
 		else
 		{
 			noteFontSize = newSpacing;
+			numberFont.setSize(newSpacing);
 			return true;
 		}
 	}

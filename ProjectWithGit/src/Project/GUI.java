@@ -48,7 +48,7 @@ public class GUI extends JFrame {
 	public static String deskeeper;
 	public static JTextField SWSF = new JTextField("1.0");
 	public static JTextField SBSF = new JTextField("7");
-	public static JTextField SNFF = new JTextField("6");
+	public static JTextField SNFF = new JTextField("9");
 	public static File[] list;
 
 	// private static JTextField source = new JTextField();
@@ -68,7 +68,7 @@ public class GUI extends JFrame {
 		TitleF = new JTextField(DataToArray.getsubTitle());
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
-		SNFF = new JTextField("6");		
+		SNFF = new JTextField("9");		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		list = new File[100];
 
@@ -415,7 +415,7 @@ public class GUI extends JFrame {
 			}
 		});
 
-		final JSlider setNoteFontSize = new JSlider(2, 10,Integer.parseInt(SNFF.getText()));
+		final FloatJSlider setNoteFontSize = new FloatJSlider(2f, 10f,Float.parseFloat(SNFF.getText()));
 		JLabel SNFL = new JLabel("Set Note Font Size: Range between 2-10");
 		SNFL.setBounds(0, 415, 380, 30);
 		setNoteFontSize.setBounds(0, 445, 280, 30);
@@ -428,13 +428,13 @@ public class GUI extends JFrame {
 		setNoteFontSize.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				SNFF.setText(Integer.toString(setNoteFontSize.getValue()));
+				SNFF.setText(Float.toString(setNoteFontSize.getValue()));
 			}
 		});
 		SNFF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
+				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
 			}
 		});
 
@@ -529,8 +529,8 @@ public class GUI extends JFrame {
 		return Integer.parseInt(SBSF.getText());
 	}
 
-	public static int getnotefont() {
-		return Integer.parseInt(SNFF.getText());
+	public static Float getnotefont() {
+		return Float.parseFloat(SNFF.getText());
 	}
 	public static File[] getList(){
 		return list;
