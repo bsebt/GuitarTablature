@@ -25,14 +25,16 @@ public class PDFTester
 		@Test (expected = FileNotFoundException.class)//Tests to see if the PDF has an empty destination. If it works, open it.
 		public void emptyPDFDestination() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF(".txt", ".pdf");
+			File file[] = {new File(".txt")};
+			BarLinesPDF.convertPDF(file, ".pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File(".pdf"));
 		}
 		@Test //Tests to see if the PDF creation was successful for Test.txt. If it works, open it.
 		public void testPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("Test.txt", "test.pdf");
+			File file[] = {new File("Test.txt")};
+			BarLinesPDF.convertPDF(file, "test.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("test.pdf"));
 		}
@@ -40,7 +42,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for EmptyFile.txt. If it works, open it.
 		public void testEmptyFilePDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("EmptyFile.txt", "EmptyFile.pdf");
+			File file[] = {new File("EmptyFile.txt")};
+			BarLinesPDF.convertPDF(file, "EmptyFile.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("EmptyFile.pdf"));
 		}
@@ -48,7 +51,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for MoonlightSonata.txt. If it works, open it.
 		public void testMoonlightSonataPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("MoonlightSonata.txt", "MoonlightSonata.pdf");
+			File file[] = {new File("MoonlightSonata.txt")};
+			BarLinesPDF.convertPDF(file, "MoonlightSonata.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("MoonlightSonata.pdf"));
 		}
@@ -56,30 +60,32 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void testRememberingRainPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("RememberingRain.txt", "RememberingRain.pdf");
+			File file[] = {new File("RememberingRain.txt")};
+			BarLinesPDF.convertPDF(file, "RememberingRain.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("RememberingRain.pdf"));
 		}
-		/*
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void unevenLinesPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("UnevenLines.txt", "UnevenLines.pdf");
+			File file[] = {new File("UnevenLines.txt")};
+			BarLinesPDF.convertPDF(file, "UnevenLines.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("UnevenLines.pdf"));
 		}
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void incompleteBarPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("IncompleteBar.txt", "IncompleteBar.pdf");
+			File file[] = {new File("IncompleteBar.txt")};
+			BarLinesPDF.convertPDF(file, "IncompleteBar.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("IncompleteBar.pdf"));
 		}
-		*/
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void ProsePDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("Prose.txt", "Prose.pdf");
+			File file[] = {new File("Prose.txt")};
+			BarLinesPDF.convertPDF(file, "Prose.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("Prose.pdf"));
 		}
@@ -87,7 +93,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void extendedASCIIPDF() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("ExtendedASCII.txt", "ExtendedASCII.pdf");
+			File file[] = {new File("ExtendedASCII.txt")};
+			BarLinesPDF.convertPDF(file, "ExtendedASCII.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("ExtendedASCII.pdf"));
 		}
@@ -95,7 +102,8 @@ public class PDFTester
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
 		public void emptyFileWithInfo() throws DocumentException, IOException
 		{
-			BarLinesPDF.convertPDF("EmptyFileWithInfo.txt", "EmptyFileWithInfo.pdf");
+			File file[] = {new File("EmptyFileWithInfo.txt")};
+			BarLinesPDF.convertPDF(file, "EmptyFileWithInfo.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("EmptyFileWithInfo.pdf"));
 		}

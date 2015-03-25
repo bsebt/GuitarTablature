@@ -2,6 +2,7 @@ package Project;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +23,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the test file.
 		public void testData() throws DocumentException, IOException
 		{
-			test = DataToArray.textToArray("test.txt");
+			File file[] = {new File("test.txt")};
+			test = DataToArray.textToArray(file);
 			emptyResult = (test.isEmpty()) ? false : true;
 			barResult = (test.size() == 15) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -31,22 +33,16 @@ public class DataTester
 		//Tests to see if the conversion works with a non-existing file.
 		public void noData() throws DocumentException, IOException
 		{
-			NoFile = DataToArray.textToArray("");
+			File file[] = {new File("")};
+			NoFile = DataToArray.textToArray(file);
 			emptyResult = (NoFile.isEmpty()) ? false : true;
-			assertTrue(emptyResult);
-		}
-		@Test(expected = NullPointerException.class)
-		//Tests to see if the conversion works for a null file.
-		public void nullData() throws DocumentException, IOException
-		{
-			NullFile = DataToArray.textToArray(null);
-			emptyResult = (NullFile.isEmpty()) ? false : true;
 			assertTrue(emptyResult);
 		}
 		@Test //Tests to see if the conversion works for an empty file.
 		public void EmptyFileData() throws DocumentException, IOException
 		{
-			EmptyFile = DataToArray.textToArray("EmptyFile.txt");
+			File file[] = {new File("EmptyFile.txt")};
+			EmptyFile = DataToArray.textToArray(file);
 			emptyResult = (EmptyFile.isEmpty()) ? true : false;
 			barResult = (EmptyFile.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -54,7 +50,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the MoonlightSonata file.
 		public void MoonlightSonataData() throws DocumentException, IOException
 		{
-			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
+			File file[] = {new File("MoonlightSonata.txt")};
+			MoonlightSonata = DataToArray.textToArray(file);
 			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
 			barResult = (MoonlightSonata.size() == 35) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -63,7 +60,8 @@ public class DataTester
 		//Tests to see if the conversion works for the IncompleteBar file.
 		public void IncompleteBarData() throws DocumentException, IOException
 		{
-			IncompleteBar = DataToArray.textToArray("IncompleteBar.txt");
+			File file[] = {new File("IncompleteBar.txt")};
+			IncompleteBar = DataToArray.textToArray(file);
 			emptyResult = (IncompleteBar.isEmpty()) ? false : true;
 			barResult = (IncompleteBar.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -71,7 +69,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the RememberingRain file.
 		public void RememberingRainData() throws DocumentException, IOException
 		{
-			RememberingRain = DataToArray.textToArray("RememberingRain.txt");
+			File file[] = {new File("RememberingRain.txt")};
+			RememberingRain = DataToArray.textToArray(file);
 			emptyResult = (RememberingRain.isEmpty()) ? false : true;
 			barResult = (RememberingRain.size() == 15) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -79,7 +78,8 @@ public class DataTester
 		@Test(expected = ArrayIndexOutOfBoundsException.class) //Tests to see if the conversion works for the UnevenLines file.
 		public void UnevenLinesData() throws DocumentException, IOException
 		{
-			UnevenLines = DataToArray.textToArray("UnevenLines.txt");
+			File file[] = {new File("UnevenLines.txt")};
+			UnevenLines = DataToArray.textToArray(file);
 			emptyResult = (UnevenLines.isEmpty()) ? false : true;
 			barResult = (UnevenLines.size() == 1) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -87,7 +87,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the Prose file.
 		public void ProseData() throws DocumentException, IOException
 		{
-			ProseFile = DataToArray.textToArray("Prose.txt");
+			File file[] = {new File("Prose.txt")};
+			ProseFile = DataToArray.textToArray(file);
 			emptyResult = (ProseFile.isEmpty()) ? false : true;
 			barResult = (ProseFile.size() == 1) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -95,7 +96,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the ExtendedASCII file.
 		public void ExtendedASCIIData() throws DocumentException, IOException
 		{
-			ExtendedASCII = DataToArray.textToArray("ExtendedASCII.txt");
+			File file[] = {new File("ExtendedASCII.txt")};
+			ExtendedASCII = DataToArray.textToArray(file);
 			emptyResult = (ExtendedASCII.isEmpty()) ? false : true;
 			barResult = (ExtendedASCII.size() == 3) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -103,7 +105,8 @@ public class DataTester
 		@Test //Tests to see if the conversion works for the EmptyFileWithInfoData file.
 		public void EmptyFileWithInfoData() throws DocumentException, IOException
 		{
-			EmptyFileWithInfo = DataToArray.textToArray("EmptyFileWithInfo.txt");
+			File file[] = {new File("EmptyFileWithInfo.txt")};
+			EmptyFileWithInfo = DataToArray.textToArray(file);
 			emptyResult = (EmptyFileWithInfo.isEmpty()) ? true : false;
 			barResult = (EmptyFileWithInfo.size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
@@ -111,7 +114,8 @@ public class DataTester
 		@Test //Tests to see if the getter methods work for MoonlightSonata after conversion for the MoonlightSonata file.
 		public void MSDataDecisionTable() throws DocumentException, IOException
 		{
-			MoonlightSonata = DataToArray.textToArray("MoonlightSonata.txt");
+			File file[] = {new File("MoonlightSonata.txt")};
+			MoonlightSonata = DataToArray.textToArray(file);
 			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
 			barResult = (MoonlightSonata.size() == 15) ? true : false;
 			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
@@ -125,7 +129,8 @@ public class DataTester
 		@Test //Testing boundary values at empty file construction.
 		public void DefaultCreationBoundaryTests() throws DocumentException, IOException
 		{
-			EmptyFile = DataToArray.textToArray("EmptyFile.txt");
+			File file[] = {new File("EmptyFile.txt")};
+			EmptyFile = DataToArray.textToArray(file);
 			emptyResult = (EmptyFile.isEmpty()) ? false : true;
 			barResult = (EmptyFile.size() == 0) ? true : false;
 			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
