@@ -9,9 +9,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.tools.JavaFileManager;
+
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfDocument.Destination;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -99,7 +101,7 @@ public class GUI extends JFrame {
 				JFileChooser fc = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
 				fc.setFileFilter(filter);
-				File mnmn = new File("/home/behshad/Desktop");
+				File mnmn = new File("C:\\Users\\Behshad\\Desktop");
 				fc.setCurrentDirectory(mnmn);
 				fc.setMultiSelectionEnabled(true);
 				int response = fc.showOpenDialog(GUI.this);
@@ -370,6 +372,7 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setWhiteSpace.setFloatValue(Float.parseFloat(SWSF.getText()));
+				
 				//EditorPanel.repaint();
 			}
 		});
@@ -384,6 +387,35 @@ public class GUI extends JFrame {
 		SBSF.setBounds(285, 385, 40, 30);
 		EditorPanel.add(SBSF);
 		EditorPanel.add(setBarSpacing);
+		final FloatJSlider setNoteFontSize = new FloatJSlider(2, 10,Float.parseFloat(SNFF.getText()));
+		
+		JButton Default = new JButton("Default");
+		Default.setBounds(10, frame.getHeight() - 180, 210, 30);
+		EditorPanel.add(Default);
+		
+		Default.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+				SGBSF.setText("75");
+				SGSPF.setText(Float.toString(DataToArray.getSpacing()));
+				STitleF.setText(DataToArray.getsubTitle());
+				TitleF.setText(DataToArray.getsubTitle());
+				SWSF.setText("1.0"); 
+				SBSF.setText("7");
+				SNFF.setText("9");
+				setWhiteSpace.setFloatValue(Float.parseFloat(SWSF.getText()));
+				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
+				setBarSpacing.setValue(Integer.parseInt(SBSF.getText()));
+				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
+				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
+//				name.setText((String) input.getName());
+//				destination.setText(list[0].getParent());
+				modify();
+			}
+		});
 
 		setBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
@@ -415,7 +447,7 @@ public class GUI extends JFrame {
 			}
 		});
 
-		final FloatJSlider setNoteFontSize = new FloatJSlider(2f, 10f,Float.parseFloat(SNFF.getText()));
+		
 		JLabel SNFL = new JLabel("Set Note Font Size: Range between 2-10");
 		SNFL.setBounds(0, 415, 380, 30);
 		setNoteFontSize.setBounds(0, 445, 280, 30);
@@ -428,7 +460,7 @@ public class GUI extends JFrame {
 		setNoteFontSize.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				SNFF.setText(Float.toString(setNoteFontSize.getValue()));
+				SNFF.setText(Float.toString(setNoteFontSize.getFloatValue()));
 			}
 		});
 		SNFF.addActionListener(new ActionListener() {
