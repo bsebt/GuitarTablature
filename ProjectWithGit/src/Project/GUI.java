@@ -52,6 +52,10 @@ public class GUI extends JFrame {
 	public static JTextField SBSF = new JTextField("7");
 	public static JTextField SNFF = new JTextField("9");
 	public static File[] list;
+	public static String[] list1 = { "COURIER", "COURIER_BOLD", "COURIER_BOLDOBLIQUE", "COURIER_OBLIQUE",
+		"defaultEmbedding", "defaultEncoding", "HELVETICA", "HELVETICA_BOLD", "HELVETICA_BOLDOBLIQUE",
+		"HELVETICA_OBLIQUE", "SYMBOL", "TIMES", "TIMES_BOLD","TIMES_BOLDITALIC","TIMES_ITALIC","TIMES_ROMAN","ZAPFDINGBATS"};
+	public static int index;
 
 	// private static JTextField source = new JTextField();
 
@@ -70,7 +74,7 @@ public class GUI extends JFrame {
 		TitleF = new JTextField(DataToArray.getsubTitle());
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
-		SNFF = new JTextField("9");		
+		SNFF = new JTextField("9");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		list = new File[100];
 
@@ -81,8 +85,8 @@ public class GUI extends JFrame {
 		final JButton AboutB = new JButton("About");
 		final JPanel OpenerPanel = new JPanel(null);
 		final JButton opening = new JButton("Open");
-		
-		frame.setSize(310,140);
+
+		frame.setSize(310, 140);
 		opening.setBounds(5, 5, 150, 50);
 		OpenerPanel.add(opening);
 		AboutB.setBounds(155, 5, 150, 50);
@@ -90,16 +94,17 @@ public class GUI extends JFrame {
 		ExitB.setBounds(5, 55, 300, 50);
 		OpenerPanel.add(ExitB);
 		frame.add(OpenerPanel);
-		
+
 		frame.setVisible(true);
 		frame.setResizable(false);
-		
+
 		opening.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fc = new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Files", "txt");
+				FileNameExtensionFilter filter = new FileNameExtensionFilter(
+						"Text Files", "txt");
 				fc.setFileFilter(filter);
 				File mnmn = new File("C:\\Users\\Behshad\\Desktop");
 				fc.setCurrentDirectory(mnmn);
@@ -112,7 +117,7 @@ public class GUI extends JFrame {
 					destination.setText(list[0].getParent());
 					frame.setResizable(true);
 					OpenerPanel.removeAll();
-					frame.setSize(320,200);
+					frame.setSize(320, 200);
 					OpenB.setBounds(10, 5, 300, 50);
 					OpenerPanel.add(OpenB);
 					QuickB.setBounds(10, 55, 150, 50);
@@ -123,62 +128,65 @@ public class GUI extends JFrame {
 					OpenerPanel.add(ExitB);
 					frame.add(OpenerPanel);
 					frame.setResizable(false);
-					}
+				}
 			}
 		});
-		
-		
+
 		QuickB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-					try {
-						DataToArray.textToArray(list);
-					} catch (DocumentException | IOException | NullPointerException e2) {
 
-						JOptionPane.showMessageDialog(frame, "There are no files selected.", "ASCII Tablature to PDF Message",
-								JOptionPane.INFORMATION_MESSAGE, null);
-						EditorPanel.removeAll();
-						frame.removeAll();
-						frame.setVisible(false);
-						new GUI();
-					}
-					inputname = list[0].getName();
-					deskeeper = destination.getText();
-					StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
-							list[0].getName().indexOf('.')));
-					System.out.println(buffer);
-					name.setText(buffer.toString());
-					SGSPF.setText(Double.toString(DataToArray.getSpacing()));
-					TitleF.setText(DataToArray.getTitle());
-					STitleF.setText(DataToArray.getsubTitle());
-					try {
-						BarLinesPDF.convertPDF(list,(destination.getText() + "/" + name.getText() + ".pdf"));
-						JOptionPane.showMessageDialog(frame, "Conversion Complete", "ASCII Tablature to PDF Message",
-								JOptionPane.INFORMATION_MESSAGE, null);
-						EditorPanel.removeAll();
-						frame.removeAll();
-						frame.setVisible(false);
-						new GUI();
-					} catch (DocumentException | IOException e1) {
+				try {
+					DataToArray.textToArray(list);
+				} catch (DocumentException | IOException | NullPointerException e2) {
 
-						e1.printStackTrace();
-					}
+					JOptionPane.showMessageDialog(frame,
+							"There are no files selected.",
+							"ASCII Tablature to PDF Message",
+							JOptionPane.INFORMATION_MESSAGE, null);
+					EditorPanel.removeAll();
+					frame.removeAll();
+					frame.setVisible(false);
+					new GUI();
 				}
+				inputname = list[0].getName();
+				deskeeper = destination.getText();
+				StringBuffer buffer = new StringBuffer(list[0].getName()
+						.substring(0, list[0].getName().indexOf('.')));
+				System.out.println(buffer);
+				name.setText(buffer.toString());
+				SGSPF.setText(Double.toString(DataToArray.getSpacing()));
+				TitleF.setText(DataToArray.getTitle());
+				STitleF.setText(DataToArray.getsubTitle());
+				try {
+					BarLinesPDF.convertPDF(list, (destination.getText() + "/"
+							+ name.getText() + ".pdf"));
+					JOptionPane.showMessageDialog(frame, "Conversion Complete",
+							"ASCII Tablature to PDF Message",
+							JOptionPane.INFORMATION_MESSAGE, null);
+					EditorPanel.removeAll();
+					frame.removeAll();
+					frame.setVisible(false);
+					new GUI();
+				} catch (DocumentException | IOException e1) {
+
+					e1.printStackTrace();
+				}
+			}
 		});
 		ExitB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
 			}
 		});
-		
+
 		AboutB.setIconTextGap(JOptionPane.INFORMATION_MESSAGE);
 		AboutB.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
 						+ "Convert Only: Converts the ASCII to PDF according to default settings. Output name is the same as the input name. \n"
 						+ "About: How to use the program. \n"
@@ -196,51 +204,52 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-					try {
-						OpenerPanel.removeAll();
-						frame.remove(OpenerPanel);
-						editorpanel();
-					} catch (DocumentException e1) {
-						e1.printStackTrace();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+				try {
+					OpenerPanel.removeAll();
+					frame.remove(OpenerPanel);
+					editorpanel();
+				} catch (DocumentException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
 				}
-//			}
+			}
+			// }
 		});
 	}
 
 	public void preview() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		preview = new PreviewPan(new File(destination.getText() + "/"
 				+ name.getText() + ".pdf"));
 
 		frame.setResizable(true);
 		frame.setSize(screenSize);
-		preview.setBounds(380, 0, frame.getWidth() - 380,frame.getHeight()-40);
+		preview.setBounds(380, 0, frame.getWidth() - 380,
+				frame.getHeight() - 40);
 		EditorPanel.add(preview);
 		frame.add(EditorPanel);
 		frame.setVisible(true);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+
 	}
 
 	public void modify() {
 		EditorPanel.remove(preview);
 		frame.remove(EditorPanel);
 		try {
-			BarLinesPDF.convertPDF(list, (destination.getText()
-					+ "/" + name.getText() + ".pdf"));
+			BarLinesPDF.convertPDF(list,
+					(destination.getText() + "/" + name.getText() + ".pdf"));
 			preview();
 		} catch (DocumentException | IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 	}
 
 	private void editorpanel() throws DocumentException, IOException {
-		
+
 		inputname = list[0].getName();
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
@@ -250,8 +259,8 @@ public class GUI extends JFrame {
 		SGSPF.setText(Float.toString(DataToArray.getSpacing()));
 		TitleF.setText(DataToArray.getTitle());
 		STitleF.setText(DataToArray.getsubTitle());
-		BarLinesPDF.convertPDF(list, (destination.getText() + "/"
-				+ name.getText() + ".pdf"));
+		BarLinesPDF.convertPDF(list,
+				(destination.getText() + "/" + name.getText() + ".pdf"));
 		preview();
 
 		JLabel NameL = new JLabel("Input Name: " + inputname);
@@ -312,7 +321,8 @@ public class GUI extends JFrame {
 		SGBSL.setBounds(0, 190, 375, 30);
 		EditorPanel.add(SGBSL);
 
-		final JSlider setGroupBarSpacing = new JSlider(50, 90, Integer.parseInt(SGBSF.getText()));
+		final JSlider setGroupBarSpacing = new JSlider(50, 90,
+				Integer.parseInt(SGBSF.getText()));
 		setGroupBarSpacing.setBounds(5, 220, 280, 30);
 		EditorPanel.add(setGroupBarSpacing);
 
@@ -339,7 +349,7 @@ public class GUI extends JFrame {
 		setGroupBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				//BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
+				// BarLinesPDF.SetGroupBarSpacing(setGroupBarSpacing.getValue());
 				SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 			}
 		});
@@ -365,15 +375,15 @@ public class GUI extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				SWSF.setText(Float.toString(setWhiteSpace.getFloatValue()));
-				//EditorPanel.repaint();
+				// EditorPanel.repaint();
 			}
 		});
 		SWSF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setWhiteSpace.setFloatValue(Float.parseFloat(SWSF.getText()));
-				
-				//EditorPanel.repaint();
+
+				// EditorPanel.repaint();
 			}
 		});
 
@@ -387,23 +397,24 @@ public class GUI extends JFrame {
 		SBSF.setBounds(285, 385, 40, 30);
 		EditorPanel.add(SBSF);
 		EditorPanel.add(setBarSpacing);
-		final FloatJSlider setNoteFontSize = new FloatJSlider(2, 10,Float.parseFloat(SNFF.getText()));
-		
+		final FloatJSlider setNoteFontSize = new FloatJSlider(2, 10,
+				Float.parseFloat(SNFF.getText()));
+
 		JButton Default = new JButton("Default");
 		Default.setBounds(10, frame.getHeight() - 180, 210, 30);
 		EditorPanel.add(Default);
-		
+
 		Default.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				SGBSF.setText("75");
 				SGSPF.setText(Float.toString(DataToArray.getSpacing()));
 				STitleF.setText(DataToArray.getsubTitle());
 				TitleF.setText(DataToArray.getsubTitle());
-				SWSF.setText("1.0"); 
+				SWSF.setText("1.0");
 				SBSF.setText("7");
 				SNFF.setText("9");
 				setWhiteSpace.setFloatValue(Float.parseFloat(SWSF.getText()));
@@ -411,8 +422,8 @@ public class GUI extends JFrame {
 				setBarSpacing.setValue(Integer.parseInt(SBSF.getText()));
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
-//				name.setText((String) input.getName());
-//				destination.setText(list[0].getParent());
+				// name.setText((String) input.getName());
+				// destination.setText(list[0].getParent());
 				modify();
 			}
 		});
@@ -435,7 +446,7 @@ public class GUI extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
 				SGSPF.setText(Float.toString(setGivenSpacing.getFloatValue()));
-				//EditorPanel.repaint();
+				// EditorPanel.repaint();
 			}
 		});
 
@@ -443,11 +454,10 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
-				//EditorPanel.repaint();
+				// EditorPanel.repaint();
 			}
 		});
 
-		
 		JLabel SNFL = new JLabel("Set Note Font Size: Range between 2-10");
 		SNFL.setBounds(0, 415, 380, 30);
 		setNoteFontSize.setBounds(0, 445, 280, 30);
@@ -467,6 +477,23 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
+			}
+		});
+
+		final JComboBox<String> drop = new JComboBox<String>();
+		
+		for(int i=0;i<=list1.length-1;i++)
+			drop.addItem(list1[i]);
+		drop.setBounds(10, 480, 200, 30);
+		drop.setSelectedItem("HELVETICA");
+		EditorPanel.add(drop);
+		
+		drop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				index = drop.getSelectedIndex();
+				
 			}
 		});
 
@@ -508,7 +535,8 @@ public class GUI extends JFrame {
 						"No, delete the file and exit" };
 				int n = JOptionPane.showOptionDialog(frame,
 						"Would you like to save the PDF before you exit?",
-						"ASCII Guitar Tablature to PDF", JOptionPane.YES_NO_OPTION,
+						"ASCII Guitar Tablature to PDF",
+						JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, // do not use a
 						// custom Icon
 						options, // the titles of buttons
@@ -564,7 +592,11 @@ public class GUI extends JFrame {
 	public static Float getnotefont() {
 		return Float.parseFloat(SNFF.getText());
 	}
-	public static File[] getList(){
+
+	public static File[] getList() {
 		return list;
+	}
+	public static String getFont1(){
+		return list1[index];
 	}
 }

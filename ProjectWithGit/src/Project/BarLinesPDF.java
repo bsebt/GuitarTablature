@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
@@ -76,6 +78,9 @@ public class BarLinesPDF
 		barSpacing = GUI.getbarspacing();
 		SetNoteFontSize(GUI.getnotefont()); //TODO replace all of these with set methods rather than direct assignment
 		groupBarSpacing = GUI.getgroupbarspacing();
+		Font font = FontFactory.getFont(GUI.getFont1());
+		titleFont = font;
+		
 		
 		Document document = new Document(PageSize.LETTER, marginLeft, marginRight, marginTop, marginBottom);
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(Destination));
