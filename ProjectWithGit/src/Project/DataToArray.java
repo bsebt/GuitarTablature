@@ -63,10 +63,10 @@ public class DataToArray {
 		}
 		for (int z = 0; z < lines.size(); z = z + 6) {
 			col = lines.get(z).length();
-			c = new char[6][col];
+			c = new char[6][];
 			int temp = z;
 			for (int i = 0; i < 6; i++, temp++) {
-				//c[i] = new char[lines.get(temp).length()];
+				c[i] = new char[lines.get(temp).length()];
 				for (int j = 0; j < lines.get(temp).length(); j++) {
 					c[i][j] = lines.get(temp).charAt(j);
 				}
