@@ -66,21 +66,19 @@ public class DataToArray {
 			c = new char[6][col];
 			int temp = z;
 			for (int i = 0; i < 6; i++, temp++) {
-
-				// System.out.println(temp);
+				//c[i] = new char[lines.get(temp).length()];
 				for (int j = 0; j < lines.get(temp).length(); j++) {
 					c[i][j] = lines.get(temp).charAt(j);
-					// System.out.println("i = " + i + " temp = " + temp +
-					// " j = " + j);
-					// System.out.println(j);
 				}
 			}
 			chars.add(c);
 		}
+		//System.out.println("done");
+		
 
 		
 
-		for (int t = 0; t < chars.size(); t++) // Check every element in the
+		for (int t = 0; t < chars.size()-1; t++) // Check every element in the
 												// cars and split them up as
 												// needed
 		{
@@ -90,7 +88,7 @@ public class DataToArray {
 																// element, and
 																// we'll trim it
 																// later
-			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
+			for (int v = 0; v < chars.get(t)[0].length-1; v++) // Read every
 																// column
 			{
 				for (int w = 0; w < 6; w++) // Then read every row

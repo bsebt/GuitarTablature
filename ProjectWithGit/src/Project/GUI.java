@@ -52,9 +52,7 @@ public class GUI extends JFrame {
 	public static JTextField SBSF = new JTextField("7");
 	public static JTextField SNFF = new JTextField("9");
 	public static File[] list;
-	public static String[] list1 = { "COURIER", "COURIER_BOLD", "COURIER_BOLDOBLIQUE", "COURIER_OBLIQUE",
-		"defaultEmbedding", "defaultEncoding", "HELVETICA", "HELVETICA_BOLD", "HELVETICA_BOLDOBLIQUE",
-		"HELVETICA_OBLIQUE", "SYMBOL", "TIMES", "TIMES_BOLD","TIMES_BOLDITALIC","TIMES_ITALIC","TIMES_ROMAN","ZAPFDINGBATS"};
+	public static String[] list1 = { "COURIER", "HELVETICA", "SYMBOL", "TIMES"};
 	public static int index;
 
 	// private static JTextField source = new JTextField();
@@ -86,7 +84,7 @@ public class GUI extends JFrame {
 		final JPanel OpenerPanel = new JPanel(null);
 		final JButton opening = new JButton("Open");
 
-		frame.setSize(310, 140);
+		frame.setSize(315, 140);
 		opening.setBounds(5, 5, 150, 50);
 		OpenerPanel.add(opening);
 		AboutB.setBounds(155, 5, 150, 50);
@@ -250,6 +248,22 @@ public class GUI extends JFrame {
 
 	private void editorpanel() throws DocumentException, IOException {
 
+		JLabel fontLabel = new JLabel("Select your font:");
+		final JComboBox<String> drop = new JComboBox<String>();
+		for(int i=0;i<=list1.length-1;i++)
+			drop.addItem(list1[i]);
+		drop.setSelectedItem("HELVETICA");
+		index = drop.getSelectedIndex();
+		
+		drop.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				index = drop.getSelectedIndex();
+				//System.out.println(index);
+			}
+		});
+
 		inputname = list[0].getName();
 		deskeeper = destination.getText();
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
@@ -262,6 +276,11 @@ public class GUI extends JFrame {
 		BarLinesPDF.convertPDF(list,
 				(destination.getText() + "/" + name.getText() + ".pdf"));
 		preview();
+		
+		drop.setBounds(110, 480, 200, 30);
+		EditorPanel.add(drop);
+		fontLabel.setBounds(10, 480, 100, 30);
+		EditorPanel.add(fontLabel);
 
 		JLabel NameL = new JLabel("Input Name: " + inputname);
 		NameL.setBounds(0, 0, 500, 30);
@@ -397,11 +416,11 @@ public class GUI extends JFrame {
 		SBSF.setBounds(285, 385, 40, 30);
 		EditorPanel.add(SBSF);
 		EditorPanel.add(setBarSpacing);
-		final FloatJSlider setNoteFontSize = new FloatJSlider(2, 10,
-				Float.parseFloat(SNFF.getText()));
+		final JSlider setNoteFontSize = new JSlider(9, 15,
+				Integer.parseInt(SNFF.getText()));
 
 		JButton Default = new JButton("Default");
-		Default.setBounds(10, frame.getHeight() - 180, 210, 30);
+		Default.setBounds(10, frame.getHeight() - 170, 210, 30);
 		EditorPanel.add(Default);
 
 		Default.addActionListener(new ActionListener() {
@@ -421,7 +440,7 @@ public class GUI extends JFrame {
 				setGroupBarSpacing.setValue(Integer.parseInt(SGBSF.getText()));
 				setBarSpacing.setValue(Integer.parseInt(SBSF.getText()));
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
-				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
+				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
 				// name.setText((String) input.getName());
 				// destination.setText(list[0].getParent());
 				modify();
@@ -470,35 +489,18 @@ public class GUI extends JFrame {
 		setNoteFontSize.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent arg0) {
-				SNFF.setText(Float.toString(setNoteFontSize.getFloatValue()));
+				SNFF.setText(Integer.toString(setNoteFontSize.getValue()));
 			}
 		});
 		SNFF.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				setNoteFontSize.setFloatValue(Float.parseFloat(SNFF.getText()));
+				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
 			}
 		});
-
-		final JComboBox<String> drop = new JComboBox<String>();
-		
-		for(int i=0;i<=list1.length-1;i++)
-			drop.addItem(list1[i]);
-		drop.setBounds(10, 480, 200, 30);
-		drop.setSelectedItem("HELVETICA");
-		EditorPanel.add(drop);
-		
-		drop.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				index = drop.getSelectedIndex();
 				
-			}
-		});
-
 		JButton apply = new JButton("Apply");
-		apply.setBounds(118, frame.getHeight() - 140, 102, 30);
+		apply.setBounds(118, frame.getHeight() - 135, 102, 30);
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -514,7 +516,7 @@ public class GUI extends JFrame {
 		});
 
 		JButton save = new JButton("Save");
-		save.setBounds(10, frame.getHeight() - 140, 103, 30);
+		save.setBounds(10, frame.getHeight() - 135, 103, 30);
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -590,7 +592,7 @@ public class GUI extends JFrame {
 	}
 
 	public static Float getnotefont() {
-		return Float.parseFloat(SNFF.getText());
+		return Float.parseFloat(SNFF.getText()+"f");
 	}
 
 	public static File[] getList() {
