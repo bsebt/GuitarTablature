@@ -113,8 +113,12 @@ public class DataToArray {
 					}
 				}
 			}
-
+			if (!alreadyBottomed)
+			{
+				newchars.add(d);
+			}
 		}
+		
 
 		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
 

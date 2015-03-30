@@ -82,6 +82,9 @@ public class BarLinesPDF {
 	private static int maxCol; // The maximum # of the columns in the array.
 	private static int totalRows;
 	private static int bars;
+	
+	private static float doubleBarLineWidth = 3;
+	private static float singleBarLineWidth = 1;
 
 	private static LineSeparator line = new LineSeparator();
 	private static DataToArray data;
@@ -130,6 +133,7 @@ public class BarLinesPDF {
 		// Creating the document:
 		document.open();
 		PdfContentByte cb = writer.getDirectContent(); // writer to draw lines
+		cb.setLineWidth(singleBarLineWidth);
 		document.add(title);
 		document.add(composer);
 
@@ -255,7 +259,7 @@ public class BarLinesPDF {
 						{
 							// System.out.println("Column: " + colPos + " Row: "
 							// + rowPos + " Bar: " + barPos);
-							while (arrayChar == ' ') // TO DO do this check when
+							while (arrayChar == ' ' || arrayChar == '&') // TO DO do this check when
 							// we read in data,
 							// empty space is
 							// normaly a mistake or
@@ -301,31 +305,64 @@ public class BarLinesPDF {
 								// the this line
 							} else if (arrayChar == '|') {
 								if (i - barSpacing > 0) {
-									if (firstBarOfLine == 0 || colPos != 0) {
-										line.drawLine(cb, 0f, 0f, 0f); // This
-										// is
-										// used
-										// to
-										// draw
-										// the
-										// lines,
-										// it
-										// allows
-										// cb.lineTo
-										// to
-										// function.
-										// Draws
-										// nothing
-										// on
-										// its
-										// own.
-										cb.moveTo(q, i + j);
-										cb.lineTo(q, i + j - barSpacing);
+									if (firstBarOfLine == 0 || colPos != 0) 
+									{
+										if (colPos == barLength-1 && barPos < chars.size()) //If we are at the end of the element, and there is another element to read
+										{
+											if (chars.get(barPos+1).length>=2)//Check if there are at least two characters in it, so we don't index out of bounds
+											{
+												if (chars.get(barPos+1)[rowPos][1] == '|') //There is a double line starting the next section, so we need to draw a double line
+												{
+													line.drawLine(cb, 0f, 0f, 0f);
+													cb.setLineWidth(doubleBarLineWidth);
+													cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+													cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+													cb.stroke();
+													cb.setLineWidth(singleBarLineWidth);
+													
+													char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+													tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+													chars.set(barPos+1, tempCharArrayDoubleBar);												
+												}
+												else if (IsDigit(chars.get(barPos+1)[rowPos][1]))
+												{
+													if (rowPos == 0 && chars.get(barPos+1)[2][1] == '|')
+													{
+														line.drawLine(cb, 0f, 0f, 0f);
+														cb.setLineWidth(doubleBarLineWidth);
+														cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth -1));
+														cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth -1));
+														cb.stroke();
+														cb.setLineWidth(singleBarLineWidth);	
+													}
+													else
+													{
+														line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+														cb.moveTo(q, i + j);
+														cb.lineTo(q, i + j - barSpacing);
+													}
+												}
+												else //It isn't a double bar, do the normal line drawing
+												{
+													line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+													cb.moveTo(q, i + j);
+													cb.lineTo(q, i + j - barSpacing);
+												}
+											}
+											else //The next bar isn't long enough, checking would index out of bounds
+											{
+												line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+												cb.moveTo(q, i + j);
+												cb.lineTo(q, i + j - barSpacing);
+											}
+										}
+										else // We arn't at the end of the element, or this is the last bar entirely
+										{
+											line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+											cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j - barSpacing); //This is writting the lines at the start (and others) but I don't know how to change it
+										}
 									}
-
-									// cancelBarDraw = true; //Don't draw a bar
-									// line if this is at the end, we have
-									// already done that
 
 									colPos++;
 									if (colPos == barLength) {
@@ -897,7 +934,7 @@ public class BarLinesPDF {
 									// writes the
 									// "Repeat for # times"
 									{
-										if (chars.get(barPos)[rowPos + 1][colPos] == '|') // There
+										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&') // There
 										// was
 										// a
 										// number,
@@ -1023,43 +1060,18 @@ public class BarLinesPDF {
 												// curentChar
 												column.go();
 											}
-
-											line.drawLine(cb, 0f, 0f, 0f); // This
-											// is
-											// used
-											// to
-											// draw
-											// the
-											// lines,
-											// it
-											// allows
-											// cb.lineTo
-											// to
-											// function.
-											// Draws
-											// nothing
-											// on
-											// its
-											// own.
-											cb.moveTo(q, i + j); // This draws
-											// the
-											// vertical
-											// bar line
-											// where the
-											// number
-											// was.
-											// there
-											// might be
-											// some
-											// problems
-											// with
-											// using
-											// this
-											// naked,
-											// check
-											// first for
-											// errors
-											cb.lineTo(q, i + j - barSpacing);
+											/*
+											if (chars.get(barPos)[rowPos + 1][colPos] != '&')
+											{
+												line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+												cb.moveTo(q, i + j);
+												cb.lineTo(q, i + j - barSpacing);
+											}
+											*/
+											//else
+											{
+												q -= givenSpacing;
+											}
 
 											cancelBarDraw = true; // Don't draw
 											// a bar
@@ -1418,5 +1430,6 @@ public class BarLinesPDF {
 		canvas.curveTo(x - r * b, y - r, x - r, y - r * b, x - r, y);
 		canvas.curveTo(x - r, y + r * b, x - r * b, y + r, x, y + r);
 		canvas.curveTo(x + r * b, y + r, x + r, y + r * b, x + r, y);
+		canvas.closePathFillStroke();
 	}
 }
