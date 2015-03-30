@@ -78,7 +78,7 @@ public class DataToArray {
 
 		
 
-		for (int t = 0; t < chars.size()-1; t++) // Check every element in the
+		for (int t = 0; t < chars.size(); t++) // Check every element in the
 												// cars and split them up as
 												// needed
 		{
