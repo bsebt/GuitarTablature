@@ -88,7 +88,7 @@ public class DataToArray {
 																// element, and
 																// we'll trim it
 																// later
-			for (int v = 0; v < chars.get(t)[0].length-1; v++) // Read every
+			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
 																// column
 			{
 				for (int w = 0; w < 6; w++) // Then read every row
