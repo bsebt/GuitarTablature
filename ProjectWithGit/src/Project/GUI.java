@@ -45,7 +45,7 @@ public class GUI extends JFrame {
 			.getSpacing()));
 	static JPanel EditorPanel = new JPanel(null);
 	public static JTextField STitleF = new JTextField(DataToArray.getsubTitle());
-	public static JTextField TitleF = new JTextField(DataToArray.getsubTitle());
+	public static JTextField TitleF = new JTextField(DataToArray.getTitle());
 	public static String inputname;
 	public static String deskeeper;
 	public static JTextField SWSF = new JTextField("1.0");
@@ -69,7 +69,7 @@ public class GUI extends JFrame {
 		SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
 		EditorPanel = new JPanel(null);
 		STitleF = new JTextField(DataToArray.getsubTitle());
-		TitleF = new JTextField(DataToArray.getsubTitle());
+		TitleF = new JTextField(DataToArray.getTitle());
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
 		SNFF = new JTextField("9");
@@ -432,7 +432,7 @@ public class GUI extends JFrame {
 				SGBSF.setText("75");
 				SGSPF.setText(Float.toString(DataToArray.getSpacing()));
 				STitleF.setText(DataToArray.getsubTitle());
-				TitleF.setText(DataToArray.getsubTitle());
+				TitleF.setText(DataToArray.getTitle());
 				SWSF.setText("1.0");
 				SBSF.setText("7");
 				SNFF.setText("9");
