@@ -1,7 +1,5 @@
 package Project;
 
-
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -21,7 +19,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^([0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-)+([0-9]|\\|)";
+	public static String correctLine = "^([0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)$";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -51,17 +49,19 @@ public class DataToArray {
 					Title = line
 							.substring(line.indexOf('=') + 1, line.length());
 				}
-				if (line.contains("spacing") || line.contains("SPACING")) {
+				else if (line.contains("spacing") || line.contains("SPACING")) {
 					Spacing = Float.parseFloat(line.substring(
 							line.indexOf('=') + 1, line.length()));
 				}
-				if (line.trim().length() == 0) {
+				else if (line.trim().length() == 0) {
 					continue;
 				}
-				if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine)) {
-					// line.trim();
+				else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
+					
 					lines.add(line.substring(0, line.lastIndexOf('|') + 1));
-					//System.out.println(line);
+					System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+				}else{
+					System.out.println("ignore"+line);
 				}
 			}
 			input.close();
@@ -134,7 +134,7 @@ public class DataToArray {
 
 		// Test to see printed lines
 		for (int i = 0; i < lines.size(); i++) {
-			System.out.println(lines.get(i));
+			//System.out.println(lines.get(i));
 		}
 
 		// Test to see if characters properly placed in 2-d array.
@@ -247,7 +247,10 @@ public class DataToArray {
 			IOException {
 		File[] source1 = new File[1];
 		File source = new File("/home/behshad/Desktop/El Negrito.txt");
-		source1[0]= source;
+		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
+		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
+		source1[0]= source3;
+		//source1[0]=source2;
 		DataToArray.textToArray(source1);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
