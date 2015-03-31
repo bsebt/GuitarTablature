@@ -1,5 +1,7 @@
 package Project;
 
+
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -19,6 +21,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
+	public static String correctLine = "^([0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-)+([0-9]|\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -55,9 +58,11 @@ public class DataToArray {
 				if (line.trim().length() == 0) {
 					continue;
 				}
-				if (line.charAt(0) == '|') {
-					lines.add(line);
-				}	
+				if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine)) {
+					// line.trim();
+					lines.add(line.substring(0, line.lastIndexOf('|') + 1));
+					//System.out.println(line);
+				}
 			}
 			input.close();
 		}
@@ -73,23 +78,20 @@ public class DataToArray {
 			}
 			chars.add(c);
 		}
-		//System.out.println("done");
-		
-
-		
+		// System.out.println("done");
 
 		for (int t = 0; t < chars.size(); t++) // Check every element in the
-												// cars and split them up as
-												// needed
+		// cars and split them up as
+		// needed
 		{
 			boolean alreadyBottomed = true;
 			char[][] d = new char[6][chars.get(t)[0].length]; // Make it as long
-																// as the old
-																// element, and
-																// we'll trim it
-																// later
+			// as the old
+			// element, and
+			// we'll trim it
+			// later
 			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
-																// column
+			// column
 			{
 				for (int w = 0; w < 6; w++) // Then read every row
 				{
@@ -98,14 +100,14 @@ public class DataToArray {
 					d[w][v] = currentChar;
 					if (w == 5 && currentChar == '|' && !alreadyBottomed) {
 						v--; // The last column should be printed in twice, so
-								// back up one and do this column again
+						// back up one and do this column again
 						newchars.add(d); // Add the new element to the list
 						d = new char[6][chars.get(t)[0].length]; // Reset the
-																	// array we
-																	// are
-																	// writing
-																	// so it is
-																	// blank
+						// array we
+						// are
+						// writing
+						// so it is
+						// blank
 						alreadyBottomed = true;
 					}
 					if (w == 5 && currentChar != '|' && alreadyBottomed) {
@@ -113,28 +115,26 @@ public class DataToArray {
 					}
 				}
 			}
-			if (!alreadyBottomed)
-			{
+			if (!alreadyBottomed) {
 				newchars.add(d);
 			}
 		}
-		
 
 		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
 
 		for (int p = 0; p < newchars.size(); p++) {
 			finalChars.add(TrimElement(newchars.get(p))); // Trim every element
-															// to remove extra
-															// white space, all
-															// elements should
-															// now only contain
-															// characters and be
-															// the proper length
+			// to remove extra
+			// white space, all
+			// elements should
+			// now only contain
+			// characters and be
+			// the proper length
 		}
 
 		// Test to see printed lines
 		for (int i = 0; i < lines.size(); i++) {
-			// System.out.println(lines.get(i));
+			System.out.println(lines.get(i));
 		}
 
 		// Test to see if characters properly placed in 2-d array.
@@ -146,13 +146,13 @@ public class DataToArray {
 	}
 
 	private static char[][] TrimElement(char[][] element) // Takes an element
-															// and trims off any
-															// white space
-															// before, after, or
-															// during input.
-															// Assumes all rows
-															// are the same
-															// length
+	// and trims off any
+	// white space
+	// before, after, or
+	// during input.
+	// Assumes all rows
+	// are the same
+	// length
 	{
 		int actualLength = 0;
 		for (int a = 0; a < element[0].length; a++) // Go through the full
@@ -245,6 +245,10 @@ public class DataToArray {
 
 	public static void main(String[] args) throws DocumentException,
 			IOException {
+		File[] source1 = new File[1];
+		File source = new File("/home/behshad/Desktop/El Negrito.txt");
+		source1[0]= source;
+		DataToArray.textToArray(source1);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
 		// LengthOfPartition();
