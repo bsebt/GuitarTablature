@@ -107,4 +107,20 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("EmptyFileWithInfo.pdf"));
 		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testElNegritoPDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("elnegrito.txt")};
+			BarLinesPDF.convertPDF(file, "ElNegrito.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("ElNegrito.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testBohemianRhapsodyPDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("bohemianrhapsody.txt")};
+			BarLinesPDF.convertPDF(file, "BohemianRhapsody.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("BohemianRhapsody.pdf"));
+		}
 }

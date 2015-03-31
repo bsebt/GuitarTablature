@@ -100,8 +100,8 @@ public class BarLinesPDF {
 		// information
 		maxCol = DataToArray.getMaxColumnAmount();
 		totalRows = DataToArray.getTotalRowAmount();
-		TITLE_STRING = GUI.getTitle1();
-		COMPOSER_STRING = GUI.getsubTitle1();
+		TITLE_STRING = DataToArray.getTitle();
+		COMPOSER_STRING = DataToArray.getsubTitle();
 		titleFont = FontFactory.getFont(GUI.getFont1(), 30);
 		composerFont = FontFactory.getFont(GUI.getFont1(), 14);
 		numberFont = FontFactory.getFont(GUI.getFont1(), GUI.getnotefont());
