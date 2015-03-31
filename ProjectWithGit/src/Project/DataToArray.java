@@ -42,14 +42,14 @@ public class DataToArray {
 			name = source[i].getPath();
 			input = new BufferedReader(new FileReader(name));
 			while (null != (line = input.readLine())) {
-				if (line.contains("subtitle") || line.contains("SUBTITLE")) {
+				if (line.contains("SUBTITLE")) {
 					SubTitle = line.substring(line.indexOf('=') + 1,
 							line.length());
-				} else if (line.contains("title") || line.contains("TITLE")) {
+				} else if (line.contains("TITLE")) {
 					Title = line
 							.substring(line.indexOf('=') + 1, line.length());
 				}
-				else if (line.contains("spacing") || line.contains("SPACING")) {
+				else if (line.contains("SPACING")) {
 					Spacing = Float.parseFloat(line.substring(
 							line.indexOf('=') + 1, line.length()));
 				}
@@ -59,9 +59,9 @@ public class DataToArray {
 				else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
 					
 					lines.add(line.substring(0, line.lastIndexOf('|') + 1));
-					System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+					//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 				}else{
-					System.out.println("ignore"+line);
+					//System.out.println("ignore"+line);
 				}
 			}
 			input.close();
