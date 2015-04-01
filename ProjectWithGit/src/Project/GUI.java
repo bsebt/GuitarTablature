@@ -563,7 +563,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		frame.repaint();
+		EditorPanel.repaint();
 	}
 
 	public static float getgivenspacing() {

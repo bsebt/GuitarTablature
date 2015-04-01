@@ -57,7 +57,7 @@ public class DataToArray {
 					continue;
 				}
 				else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
-					
+
 					lines.add(line.substring(0, line.lastIndexOf('|') + 1));
 					//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 				}else{
@@ -66,23 +66,27 @@ public class DataToArray {
 			}
 			input.close();
 		}
+		int temp = 0;
 		for (int z = 0; z < lines.size(); z = z + 6) {
-			col = lines.get(z).length();
-			c = new char[6][];
-			int temp = z;
-			for (int i = 0; i < 6; i++, temp++) {
+			if(lines.size()-temp >= 6)
+			{c = new char[6][];}else{
+				c = new char[lines.size()-temp][];}
+			//temp++;
+			for (int i = 0; i < 6 && temp < lines.size(); i++, temp++) {
 				c[i] = new char[lines.get(temp).length()];
 				for (int j = 0; j < lines.get(temp).length(); j++) {
 					c[i][j] = lines.get(temp).charAt(j);
+					//System.out.print(c[i][j]);
 				}
 			}
 			chars.add(c);
 		}
+		
 		// System.out.println("done");
 
 		for (int t = 0; t < chars.size(); t++) // Check every element in the
-		// cars and split them up as
-		// needed
+			// cars and split them up as
+			// needed
 		{
 			boolean alreadyBottomed = true;
 			char[][] d = new char[6][chars.get(t)[0].length]; // Make it as long
@@ -91,11 +95,14 @@ public class DataToArray {
 			// we'll trim it
 			// later
 			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
-			// column
+				// column
 			{
-				for (int w = 0; w < 6; w++) // Then read every row
-				{
+				
+				for (int w = 0; w < chars.get(t).length; w++) // Then read every row
+				{	
 					char currentChar = chars.get(t)[w][v];
+					System.out.println(chars.get(t)[w].length);
+					
 					// System.out.println("w: " + w + " v: " + v);
 					d[w][v] = currentChar;
 					if (w == 5 && currentChar == '|' && !alreadyBottomed) {
@@ -244,12 +251,12 @@ public class DataToArray {
 	}
 
 	public static void main(String[] args) throws DocumentException,
-			IOException {
+	IOException {
 		File[] source1 = new File[1];
 		File source = new File("/home/behshad/Desktop/El Negrito.txt");
 		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
 		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
-		source1[0]= source3;
+		source1[0]= source;
 		//source1[0]=source2;
 		DataToArray.textToArray(source1);
 		// textToArray();
