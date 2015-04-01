@@ -105,7 +105,8 @@ public class DataToArray {
 					
 					// System.out.println("w: " + w + " v: " + v);
 					d[w][v] = currentChar;
-					if (w == 5 && currentChar == '|' && !alreadyBottomed) {
+					if (w == 5 && currentChar == '|' && !alreadyBottomed) 
+					{
 						v--; // The last column should be printed in twice, so
 						// back up one and do this column again
 						newchars.add(d); // Add the new element to the list
@@ -117,14 +118,19 @@ public class DataToArray {
 						// blank
 						alreadyBottomed = true;
 					}
-					if (w == 5 && currentChar != '|' && alreadyBottomed) {
+					if (w == 5 && currentChar != '|' && alreadyBottomed) 
+					{
 						alreadyBottomed = false;
 					}
 				}
 			}
-			if (!alreadyBottomed) {
+			/*
+			if (alreadyBottomed)
+			{
 				newchars.add(d);
+				d = new char[6][chars.get(t)[0].length];
 			}
+			*/
 		}
 
 		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();

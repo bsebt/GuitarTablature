@@ -309,31 +309,110 @@ public class BarLinesPDF {
 									{
 										if (colPos == barLength-1 && barPos < chars.size()) //If we are at the end of the element, and there is another element to read
 										{
-											if (chars.get(barPos+1).length>=2)//Check if there are at least two characters in it, so we don't index out of bounds
+											if (chars.get(barPos+1)[0].length>=2)//Check if there are at least two characters in it, so we don't index out of bounds
 											{
 												if (chars.get(barPos+1)[rowPos][1] == '|') //There is a double line starting the next section, so we need to draw a double line
 												{
-													line.drawLine(cb, 0f, 0f, 0f);
-													cb.setLineWidth(doubleBarLineWidth);
-													cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
-													cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
-													cb.stroke();
-													cb.setLineWidth(singleBarLineWidth);
-													
-													char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
-													tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
-													chars.set(barPos+1, tempCharArrayDoubleBar);												
+													if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
+													{
+														line.drawLine(cb, 0f, 0f, 0f);
+														cb.setLineWidth(doubleBarLineWidth);
+														cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+														cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+														cb.stroke();
+														cb.setLineWidth(singleBarLineWidth);
+														
+														char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+														tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+														chars.set(barPos+1, tempCharArrayDoubleBar);
+													}
+													else //there isn't enough space, so we need to check if we need to draw fancy lines
+													{
+														if (chars.get(barPos)[2][colPos-1] == '*') //Draw the thick bar on the top line
+														{
+															line.drawLine(cb, 0f, 0f, 0f);
+															cb.setLineWidth(doubleBarLineWidth);
+															cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+															cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+															cb.stroke();
+															cb.setLineWidth(singleBarLineWidth);
+														}
+														else //Draw a normal line at the top, a thick line at the bottom
+														{
+															line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+															cb.moveTo(q, i + j);
+															cb.lineTo(q, i + j - barSpacing);
+														}
+														if (chars.get(barPos+1)[2][2] == '*') //There is a repeat symbol at the bottom too
+														{
+															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+															tempCharArrayDoubleBar[rowPos][1] = '%'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar);		
+														}
+														else //There is no repeat bar at the bottom, draw a normal line
+														{
+															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+															tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar);
+														}
+													}
 												}
 												else if (IsDigit(chars.get(barPos+1)[rowPos][1]))
 												{
 													if (rowPos == 0 && chars.get(barPos+1)[2][1] == '|')
 													{
-														line.drawLine(cb, 0f, 0f, 0f);
-														cb.setLineWidth(doubleBarLineWidth);
-														cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth -1));
-														cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth -1));
-														cb.stroke();
-														cb.setLineWidth(singleBarLineWidth);	
+														if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
+														{
+															line.drawLine(cb, 0f, 0f, 0f);
+															cb.setLineWidth(doubleBarLineWidth);
+															cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+															cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+															cb.stroke();
+															cb.setLineWidth(singleBarLineWidth);
+															
+															if (rowPos != 0)
+															{
+																char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																chars.set(barPos+1, tempCharArrayDoubleBar);
+															}
+														}
+														else //there isn't enough space, so we need to check if we need to draw fancy lines
+														{
+															if (chars.get(barPos)[2][colPos-1] == '*') //Draw the thick bar on the top line
+															{
+																line.drawLine(cb, 0f, 0f, 0f);
+																cb.setLineWidth(doubleBarLineWidth);
+																cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+																cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+																cb.stroke();
+																cb.setLineWidth(singleBarLineWidth);
+															}
+															else //Draw a normal line at the top, a thick line at the bottom
+															{
+																line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+																cb.moveTo(q, i + j);
+																cb.lineTo(q, i + j - barSpacing);
+															}
+															if (chars.get(barPos+1)[2][2] == '*') //There is a repeat symbol at the bottom too
+															{
+																if (rowPos != 0)
+																{
+																	char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																	tempCharArrayDoubleBar[rowPos][1] = '%'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																	chars.set(barPos+1, tempCharArrayDoubleBar);		
+																}
+															}
+															else //There is no repeat bar at the bottom, draw a normal line
+															{
+																if (rowPos != 0)
+																{
+																	char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																	tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																	chars.set(barPos+1, tempCharArrayDoubleBar);
+																}
+															}
+														}
 													}
 													else
 													{
@@ -807,7 +886,57 @@ public class BarLinesPDF {
 									// write
 									barLength = chars.get(barPos)[rowPos].length;
 								}
-							} else // Otherwise it's a normal character, print
+							} 
+							else if (arrayChar == '%')
+							{
+								line.drawLine(cb, 0f, 0f, 0f);
+								cb.setLineWidth(doubleBarLineWidth);
+								cb.moveTo(q - givenSpacing, i + j - (doubleBarLineWidth - 1));
+								cb.lineTo(q - givenSpacing, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+								cb.stroke();
+								cb.setLineWidth(singleBarLineWidth);
+								
+								q -= givenSpacing/2;
+								
+								colPos++;
+								if (colPos == barLength) {
+									colPos = 0;
+									barPos++;
+									if (barPos < chars.size()) {
+										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+												- marginRight - q)) {
+											noSpaceAvailable = true;
+										}
+									}
+
+								}
+								if (barPos >= chars.size()) {
+									EOB = true;
+									if (rowPos == 5) {
+										if (!lastBarred) {
+											cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j + barSpacing
+													* 5);// draw the very
+											// last bar line
+											lastBarred = true;
+										}
+										doneWriting = true; // If there are
+										// no more bars
+										// to write,
+										// stop
+									}
+								}
+								if (!EOB) {
+									arrayChar = chars.get(barPos)[rowPos][colPos]; // Load
+									// the
+									// next
+									// char
+									// to
+									// write
+									barLength = chars.get(barPos)[rowPos].length;
+								}
+							}
+							else // Otherwise it's a normal character, print
 									// it out. Make sure to catch all special
 									// characters before this section
 							{
@@ -934,7 +1063,7 @@ public class BarLinesPDF {
 									// writes the
 									// "Repeat for # times"
 									{
-										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&') // There
+										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&' || chars.get(barPos)[rowPos + 1][colPos] == '#') // There
 										// was
 										// a
 										// number,
