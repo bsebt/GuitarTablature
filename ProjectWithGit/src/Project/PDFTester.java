@@ -21,23 +21,7 @@ public class PDFTester
 		}
 
 //Testing BarLinesPDF ------------------------------------------------------------------
-		
-		@Test (expected = FileNotFoundException.class)//Tests to see if the PDF has an empty destination. If it works, open it.
-		public void emptyPDFDestination() throws DocumentException, IOException
-		{
-			File file[] = {new File(".txt")};
-			BarLinesPDF.convertPDF(file, ".pdf");
-			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
-			desktop.open(new File(".pdf"));
-		}
-		@Test //Tests to see if the PDF creation was successful for Test.txt. If it works, open it.
-		public void testPDF() throws DocumentException, IOException
-		{
-			File file[] = {new File("Test.txt")};
-			BarLinesPDF.convertPDF(file, "test.pdf");
-			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
-			desktop.open(new File("test.pdf"));
-		}
+	
 		
 		@Test //Tests to see if the PDF creation was successful for EmptyFile.txt. If it works, open it.
 		public void testEmptyFilePDF() throws DocumentException, IOException
@@ -122,5 +106,29 @@ public class PDFTester
 			BarLinesPDF.convertPDF(file, "BohemianRhapsody.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("BohemianRhapsody.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testExtraWhiteSpacesPDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("ExtraWhiteSpaces.txt")};
+			BarLinesPDF.convertPDF(file, "ExtraWhiteSpaces.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("ExtraWhiteSpaces.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testGarbageInLine() throws DocumentException, IOException
+		{
+			File file[] = {new File("GarbageInLine.txt")};
+			BarLinesPDF.convertPDF(file, "GarbageInLine.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("GarbageInLine.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testWhitespaceInLinePDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("WhitespaceInLine.txt")};
+			BarLinesPDF.convertPDF(file, "WhitespaceInLine.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("WhitespaceInLine.pdf"));
 		}
 }
