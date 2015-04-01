@@ -52,7 +52,7 @@ public class GUI extends JFrame {
 	public static JTextField SBSF = new JTextField("7");
 	public static JTextField SNFF = new JTextField("9");
 	public static File[] list;
-	public static String[] list1 = { "COURIER", "HELVETICA", "SYMBOL", "TIMES"};
+	public static String[] list1 = { "HELVETICA", "COURIER", "SYMBOL", "TIMES"};
 	public static int index;
 
 	// private static JTextField source = new JTextField();
