@@ -19,7 +19,8 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^([0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)$";
+	public static String correctLine = "^( |[0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)";
+	public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -42,12 +43,12 @@ public class DataToArray {
 			name = source[i].getPath();
 			input = new BufferedReader(new FileReader(name));
 			while (null != (line = input.readLine())) {
+				line = line.trim();
 				if (line.contains("SUBTITLE")) {
 					SubTitle = line.substring(line.indexOf('=') + 1,
 							line.length());
 				} else if (line.contains("TITLE")) {
-					Title = line
-							.substring(line.indexOf('=') + 1, line.length());
+					Title = line.substring(line.indexOf('=') + 1, line.length());
 				}
 				else if (line.contains("SPACING")) {
 					Spacing = Float.parseFloat(line.substring(
@@ -57,7 +58,6 @@ public class DataToArray {
 					continue;
 				}
 				else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
-
 					lines.add(line.substring(0, line.lastIndexOf('|') + 1));
 					//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 				}else{
@@ -101,7 +101,7 @@ public class DataToArray {
 				for (int w = 0; w < chars.get(t).length; w++) // Then read every row
 				{	
 					char currentChar = chars.get(t)[w][v];
-					System.out.println(chars.get(t)[w].length);
+					//System.out.println(chars.get(t)[w].length);
 					
 					// System.out.println("w: " + w + " v: " + v);
 					d[w][v] = currentChar;
@@ -252,13 +252,13 @@ public class DataToArray {
 
 	public static void main(String[] args) throws DocumentException,
 	IOException {
-		File[] source1 = new File[1];
-		File source = new File("/home/behshad/Desktop/El Negrito.txt");
-		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
-		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
-		source1[0]= source;
-		//source1[0]=source2;
-		DataToArray.textToArray(source1);
+//		File[] source1 = new File[1];
+//		File source = new File("/home/behshad/Desktop/El Negrito.txt");
+//		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
+//		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
+//		File source4 = new File("/home/behshad/Desktop/crasher.txt");
+//		source1[0]= source;
+//		DataToArray.textToArray(source1);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
 		// LengthOfPartition();

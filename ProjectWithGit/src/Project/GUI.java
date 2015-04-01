@@ -277,9 +277,9 @@ public class GUI extends JFrame {
 				(destination.getText() + "/" + name.getText() + ".pdf"));
 		preview();
 		
-		drop.setBounds(110, 480, 200, 30);
+		drop.setBounds(160, 480, 150, 30);
 		EditorPanel.add(drop);
-		fontLabel.setBounds(10, 480, 100, 30);
+		fontLabel.setBounds(10, 480, 150, 30);
 		EditorPanel.add(fontLabel);
 
 		JLabel NameL = new JLabel("Input Name: " + inputname);
