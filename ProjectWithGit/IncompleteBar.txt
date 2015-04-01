@@ -1,5 +1,5 @@
 TITLE=Incomplete Bar
-SUBTITLE=This is missing its 6th line.
+SUBTITLE=A bar missing the 6th line
 SPACING=5
 
 |-------------------------|-------------------------|

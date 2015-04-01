@@ -1,5 +1,5 @@
 TITLE=Uneven Lines
-SUBTITLE=This is not a proper bar.
+SUBTITLE=Extra characters in lines 3 and 5
 SPACING=5
 
 |-------------------------|-------------------------|
