@@ -91,24 +91,35 @@ public class DataToArray {
 		}
 		
 		// System.out.println("done");
+		ArrayList<char[][]> copyOfChars = new ArrayList<char[][]>();
+		for (int p = 0; p < newchars.size(); p++) {
+			copyOfChars.add(TrimElement(chars.get(p))); // Trim every element
+			// to remove extra
+			// white space, all
+			// elements should
+			// now only contain
+			// characters and be
+			// the proper length
+		}
 
-		for (int t = 0; t < chars.size(); t++) // Check every element in the
+		
+		for (int t = 0; t < copyOfChars.size(); t++) // Check every element in the
 			// cars and split them up as
 			// needed
 		{
 			boolean alreadyBottomed = true;
-			char[][] d = new char[6][chars.get(t)[0].length]; // Make it as long
+			char[][] d = new char[6][copyOfChars.get(t)[0].length]; // Make it as long
 			// as the old
 			// element, and
 			// we'll trim it
 			// later
-			for (int v = 0; v < chars.get(t)[0].length; v++) // Read every
+			for (int v = 0; v < copyOfChars.get(t)[0].length; v++) // Read every
 				// column
 			{
 				
-				for (int w = 0; w < chars.get(t).length; w++) // Then read every row
+				for (int w = 0; w < copyOfChars.get(t).length; w++) // Then read every row
 				{	
-					char currentChar = chars.get(t)[w][v];
+					char currentChar = copyOfChars.get(t)[w][v];
 					//System.out.println(chars.get(t)[w].length);
 					
 					// System.out.println("w: " + w + " v: " + v);
@@ -118,7 +129,7 @@ public class DataToArray {
 						v--; // The last column should be printed in twice, so
 						// back up one and do this column again
 						newchars.add(d); // Add the new element to the list
-						d = new char[6][chars.get(t)[0].length]; // Reset the
+						d = new char[6][copyOfChars.get(t)[0].length]; // Reset the
 						// array we
 						// are
 						// writing
@@ -270,7 +281,7 @@ public class DataToArray {
 		File source = new File("/home/behshad/Desktop/El Negrito.txt");
 		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
 		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
-		File source4 = new File("elnegrito.txt");
+		File source4 = new File("WhitespaceInLine.txt");
 		source1[0]= source4;
 		DataToArray.textToArray(source1);
 		// textToArray();
