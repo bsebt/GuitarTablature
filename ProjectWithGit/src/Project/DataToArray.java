@@ -85,7 +85,7 @@ public class DataToArray {
 		chars.clear();
 		lines.clear();
 		Title = " ";
-		SubTitle = " ";
+		SubTitle = " "; 
 		BufferedReader input = null;
 		String line = "";
 		for (int i = 0; i < source.length; i++) {
