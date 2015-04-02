@@ -58,15 +58,18 @@ public class DataToArray {
 					continue;
 				}
 				else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
+					if((line.charAt(0)+"").matches("[0-9]")){
+						line = line.replace(line.charAt(0), '|');
+					}
 					try{
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2));
-						System.out.println("insude: "+ line.substring(0, line.lastIndexOf('|') + 2));
+						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 					}catch(StringIndexOutOfBoundsException e){
 						lines.add(line.substring(0, line.lastIndexOf('|') + 1));
 						System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 					}
 				}else{
-					//System.out.println("ignore"+line);
+					System.out.println("ignore: "+line);
 				}
 			}
 			input.close();
@@ -267,7 +270,7 @@ public class DataToArray {
 		File source = new File("/home/behshad/Desktop/El Negrito.txt");
 		File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
 		File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
-		File source4 = new File("RememberingRain.txt");
+		File source4 = new File("elnegrito.txt");
 		source1[0]= source4;
 		DataToArray.textToArray(source1);
 		// textToArray();
