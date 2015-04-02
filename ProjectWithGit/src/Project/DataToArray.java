@@ -25,6 +25,55 @@ public class DataToArray {
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
 	private static int col;
+	public static char[][] TrimElement(char[][] element) // Takes an element
+	// and trims off any
+	// white space
+	// before, after, or
+	// during input.
+	// Assumes all rows
+	// are the same
+	// length
+	{
+//		int actualLength = 0;
+		char[][] newestElement = new char[element.length][];
+		for(int i=0 ; i<element.length;i++){
+			element[i] = new char[element[i].length];
+			for(int j=0; j<element[i].length;j++){
+				if((element[i][j]+"") != " "){
+					System.out.println("passed");
+					newestElement[i][j] = element[i][j];
+					System.out.println(element[i][j]);
+				}
+				else{
+					
+				}
+			}
+		}
+		
+//		
+//		for (int a = 0; a < element[0].length; a++) // Go through the full
+//		{
+//			if (element[a][a] != '\u0000') {
+//				actualLength++;
+//			}
+//			// System.out.println(a);
+//		}
+//
+//		
+//		for (int b = 0; b < 6; b++) {
+//			int actualColumn = 0;
+//			for (int a = 0; a < element[0].length; a++) {
+//				if (element[b][a] != '\u0000') {
+//					// System.out.println("a: " + a + " b: " + b + " Ac: " +
+//					// actualColumn);
+//					newestElement[b][actualColumn] = element[b][a];
+//					actualColumn++;
+//				}
+//			}
+//		}
+		return newestElement;
+	}
+
 
 	public static ArrayList<char[][]> textToArray(File[] source)
 			throws DocumentException, IOException {
@@ -84,16 +133,18 @@ public class DataToArray {
 				c[i] = new char[lines.get(temp).length()];
 				for (int j = 0; j < lines.get(temp).length(); j++) {
 					c[i][j] = lines.get(temp).charAt(j);
-					//System.out.print(c[i][j]);
+					//System.out.println(c[i][j]);
 				}
 			}
 			chars.add(c);
 		}
 		
 		// System.out.println("done");
-		ArrayList<char[][]> copyOfChars = new ArrayList<char[][]>();
-		for (int p = 0; p < newchars.size(); p++) {
-			copyOfChars.add(TrimElement(chars.get(p))); // Trim every element
+		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
+		for (int p = 0; p < chars.size(); p++) {
+			//System.out.println((chars.get(p))[p][p]);
+			finalChars.add(TrimElement(chars.get(p)));
+			// Trim every element
 			// to remove extra
 			// white space, all
 			// elements should
@@ -103,23 +154,23 @@ public class DataToArray {
 		}
 
 		
-		for (int t = 0; t < copyOfChars.size(); t++) // Check every element in the
+		for (int t = 0; t < finalChars.size(); t++) // Check every element in the
 			// cars and split them up as
 			// needed
 		{
 			boolean alreadyBottomed = true;
-			char[][] d = new char[6][copyOfChars.get(t)[0].length]; // Make it as long
+			char[][] d = new char[finalChars.size()][finalChars.get(t)[0].length]; // Make it as long
 			// as the old
 			// element, and
 			// we'll trim it
 			// later
-			for (int v = 0; v < copyOfChars.get(t)[0].length; v++) // Read every
+			for (int v = 0; v < finalChars.get(t)[0].length; v++) // Read every
 				// column
 			{
 				
-				for (int w = 0; w < copyOfChars.get(t).length; w++) // Then read every row
+				for (int w = 0; w < finalChars.get(t).length; w++) // Then read every row
 				{	
-					char currentChar = copyOfChars.get(t)[w][v];
+					char currentChar = finalChars.get(t)[w][v];
 					//System.out.println(chars.get(t)[w].length);
 					
 					// System.out.println("w: " + w + " v: " + v);
@@ -129,7 +180,7 @@ public class DataToArray {
 						v--; // The last column should be printed in twice, so
 						// back up one and do this column again
 						newchars.add(d); // Add the new element to the list
-						d = new char[6][copyOfChars.get(t)[0].length]; // Reset the
+						d = new char[6][finalChars.get(t)[0].length]; // Reset the
 						// array we
 						// are
 						// writing
@@ -152,21 +203,21 @@ public class DataToArray {
 			*/
 		}
 
-		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
-
-		for (int p = 0; p < newchars.size(); p++) {
-			finalChars.add(TrimElement(newchars.get(p))); // Trim every element
-			// to remove extra
-			// white space, all
-			// elements should
-			// now only contain
-			// characters and be
-			// the proper length
-		}
+//		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
+//
+//		for (int p = 0; p < newchars.size(); p++) {
+//			finalChars.add(TrimElement(newchars.get(p))); // Trim every element
+//			// to remove extra
+//			// white space, all
+//			// elements should
+//			// now only contain
+//			// characters and be
+//			// the proper length
+//		}
 
 		// Test to see printed lines
-		for (int i = 0; i < lines.size(); i++) {
-			//System.out.println(lines.get(i));
+		for (int i = 0; i < finalChars.size(); i++) {
+			System.out.println(finalChars.get(i));
 		}
 
 		// Test to see if characters properly placed in 2-d array.
@@ -177,38 +228,6 @@ public class DataToArray {
 		return finalChars;
 	}
 
-	private static char[][] TrimElement(char[][] element) // Takes an element
-	// and trims off any
-	// white space
-	// before, after, or
-	// during input.
-	// Assumes all rows
-	// are the same
-	// length
-	{
-		int actualLength = 0;
-		for (int a = 0; a < element[0].length; a++) // Go through the full
-		{
-			if (element[0][a] != '\u0000') {
-				actualLength++;
-			}
-			// System.out.println(a);
-		}
-
-		char[][] newestElement = new char[6][actualLength];
-		for (int b = 0; b < 6; b++) {
-			int actualColumn = 0;
-			for (int a = 0; a < element[0].length; a++) {
-				if (element[b][a] != '\u0000') {
-					// System.out.println("a: " + a + " b: " + b + " Ac: " +
-					// actualColumn);
-					newestElement[b][actualColumn] = element[b][a];
-					actualColumn++;
-				}
-			}
-		}
-		return newestElement;
-	}
 
 	public static void LengthOfPartition() {
 		int length;
