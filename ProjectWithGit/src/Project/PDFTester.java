@@ -127,6 +127,7 @@ public class PDFTester
 		public void testWhitespaceInLinePDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("WhitespaceInLine.txt")};
+			BarLinesPDF.convertPDF(file, "WhitespaceInLine.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("WhitespaceInLine.pdf"));
 		}
