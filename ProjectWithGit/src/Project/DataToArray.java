@@ -82,7 +82,7 @@ public static ArrayList<char[][]> textToArray(File[] source)
 		name = source[i].getPath();
 		input = new BufferedReader(new FileReader(name));
 		while (null != (line = input.readLine())) {
-			line = line.trim();
+			//line = line.trim();
 			if (line.contains("SUBTITLE")) {
 				SubTitle = line.substring(line.indexOf('=') + 1,
 						line.length());
@@ -96,7 +96,13 @@ public static ArrayList<char[][]> textToArray(File[] source)
 			else if (line.trim().length() == 0) {
 				continue;
 			}
-			else if (line.substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
+			else if(line.trim().length() < 8){
+				continue;
+			}
+			else if (line.charAt(0) == ' '){
+				continue;
+			}
+			else if (line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
 				if((line.charAt(0)+"").matches("[0-9]")){
 					line = line.replace(line.charAt(0), '|');
 				}
@@ -141,6 +147,8 @@ public static ArrayList<char[][]> textToArray(File[] source)
 		}
 		chars.add(c);
 	}
+	
+	
 	
 //	for (int t = 0; t < chars.size(); t++) // Check every element in the
 //		// cars and split them up as
@@ -287,11 +295,15 @@ public static float getSpacing() {
 public static void main(String[] args) throws DocumentException,
 IOException {
 	File[] source1 = new File[1];
-	File source = new File("/home/behshad/Desktop/El Negrito.txt");
+	File source = new File("elnegrito.txt");
 	File source2 = new File("/home/behshad/Desktop/MoonlightSonata.txt");
-	File source3 = new File("/home/behshad/Desktop/Bohemian Rhapsody.txt");
-	File source4 = new File("WhitespaceInLine.txt");
-	source1[0]= source4;
+	File source3 = new File("bohemianrhapsody.txt");
+	File source4 = new File("ExtraWhiteSpaces.txt");
+	File source5 = new File("WhitespaceInLine.txt");
+	File source6 = new File("IncompleteBar.txt");
+	File source7 = new File("GarbageInLine.txt");
+	File source8 = new File("UnevenLines.txt");
+	source1[0]= source8;
 	DataToArray.textToArray(source1);
 	// textToArray();
 	// DataToArray.textToArray(DataToArray.textFile);
