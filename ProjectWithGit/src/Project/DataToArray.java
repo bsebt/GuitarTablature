@@ -96,10 +96,10 @@ public static ArrayList<char[][]> textToArray(File[] source)
 			else if (line.trim().length() == 0) {
 				continue;
 			}
-			else if(line.trim().length() < 8){
+			else if(line.trim().length() < 8){ //new 
 				continue;
 			}
-			else if (line.charAt(0) == ' '){
+			else if (line.charAt(0) == ' '){ //new
 				continue;
 			}
 			else if (line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
