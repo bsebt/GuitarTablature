@@ -121,6 +121,7 @@ public class DataToArray {
 		}
 		
 		ArrayList<String>lines1 = new ArrayList<String>();
+		String lastLine = "";
 		for(int i=0; i<lines.size() ; i++){
 			StringBuffer adder = new StringBuffer();
 			for(int j=0;j<lines.get(i).length();j++){
@@ -129,15 +130,24 @@ public class DataToArray {
 				}
 			}
 			lines1.add(adder.toString().trim());
+			lastLine = adder.toString().trim();
+		}
+		lines1 = addDummyLines(lines1, lastLine);
+		for(int i = 0; i < lines1.size(); i++)
+		{
 			System.out.println(lines1.get(i));
 		}
-		lines1 = addDummyLines(lines1);
 		
 		int temp = 0;
 		for (int z = 0; z < lines1.size(); z = z + 6) {
 			if(lines1.size()-temp >= 6)
-			{c = new char[6][];}else{
-				c = new char[lines1.size()-temp][];}
+			{
+				c = new char[6][];
+			}
+			else
+			{
+				c = new char[lines1.size()-temp][];
+			}
 			//temp++;
 			for (int i = 0; i < 6 && temp < lines1.size(); i++, temp++) {
 				c[i] = new char[lines1.get(temp).length()];
@@ -282,12 +292,25 @@ public class DataToArray {
 		// LengthOfPartition();
 		// DanielsPartition2(lines);
 	}
-	private static ArrayList<String> addDummyLines(ArrayList<String> list)
+	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
-		String dummy;
+		String dummy = "";
+		if(list.size() % 6 != 0)
+		{
+			dummy = lastLine;
+			System.out.println("Dummy is " + dummy);
+			for(int i = 1; i < dummy.length() - 1; i++)
+			{
+				if(dummy.charAt(i) != '-' && dummy.charAt(i) != '|')
+				{
+					dummy = dummy.replace(dummy.charAt(i), '-');
+				}
+			}
+			dummy = "|" + dummy.substring(1, dummy.length()-1) + "|";
+			System.out.println("Dummy is " + dummy);
+		}
 		while(list.size() % 6 != 0)
 		{
-			dummy = list.get(0);
 			list.add(dummy);
 		}
 		return list;
