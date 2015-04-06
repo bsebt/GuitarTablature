@@ -178,7 +178,7 @@ public class BarLinesPDF {
 				// one we have
 				// changed.
 			}
-			int rowSave[][] = { { 0, 0, chars.get(barPos)[0].length, 0, 0 },
+			int rowSave[][] = { { 0, 0, DataToArray.getLargestNumber(chars.get(barPos)), 0, 0 },
 					{ 0, 0, chars.get(barPos)[1].length, 0, 0 },
 					{ 0, 0, chars.get(barPos)[2].length, 0, 0 },
 					{ 0, 0, chars.get(barPos)[3].length, 0, 0 },
@@ -309,11 +309,11 @@ public class BarLinesPDF {
 									{
 										if (colPos == barLength-1 && barPos < chars.size()) //If we are at the end of the element, and there is another element to read
 										{
-											if (chars.get(barPos+1)[0].length>=2)//Check if there are at least two characters in it, so we don't index out of bounds
+											if (DataToArray.getLargestNumber(chars.get(barPos+1))>=2)//Check if there are at least two characters in it, so we don't index out of bounds
 											{
 												if (chars.get(barPos+1)[rowPos][1] == '|') //There is a double line starting the next section, so we need to draw a double line
 												{
-													if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
+													if ((DataToArray.getLargestNumber(chars.get(barPos+1)) * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
 													{
 														line.drawLine(cb, 0f, 0f, 0f);
 														cb.setLineWidth(doubleBarLineWidth);
@@ -361,7 +361,7 @@ public class BarLinesPDF {
 												{
 													if (rowPos == 0 && chars.get(barPos+1)[2][1] == '|')
 													{
-														if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
+														if ((DataToArray.getLargestNumber(chars.get(barPos+1)) * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
 														{
 															line.drawLine(cb, 0f, 0f, 0f);
 															cb.setLineWidth(doubleBarLineWidth);
@@ -448,7 +448,7 @@ public class BarLinesPDF {
 										colPos = 0;
 										barPos++;
 										if (barPos < chars.size()) {
-											if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+											if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 													- marginRight - q)) {
 												noSpaceAvailable = true;
 											}
@@ -486,7 +486,7 @@ public class BarLinesPDF {
 										colPos = 0;
 										barPos++;
 										if (barPos < chars.size()) {
-											if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+											if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 													- marginRight - q)) {
 												noSpaceAvailable = true;
 												if (rowPos != 5) {
@@ -530,7 +530,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
@@ -579,7 +579,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
@@ -649,7 +649,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
@@ -752,7 +752,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
@@ -847,7 +847,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
@@ -903,7 +903,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 										}
@@ -1198,10 +1198,9 @@ public class BarLinesPDF {
 											}
 											*/
 											//else
-											{
-												q -= givenSpacing;
-											}
-
+											line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+											cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j - barSpacing);
 											cancelBarDraw = true; // Don't draw
 											// a bar
 											// line if
@@ -1392,7 +1391,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-										if ((chars.get(barPos)[0].length * givenSpacing) > (pageWidth
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
 												- marginRight - q)) {
 											noSpaceAvailable = true;
 											if (rowPos != 5 && !cancelBarDraw) {

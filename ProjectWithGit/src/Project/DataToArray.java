@@ -321,7 +321,7 @@ public class DataToArray {
 		}
 		return list;
 	}
-	private static int getLargestNumber(char[][] list)
+	public static int getLargestNumber(char[][] list)
 	{
 		int max=0;
 		for(int i=0; i<list.length;i++)
