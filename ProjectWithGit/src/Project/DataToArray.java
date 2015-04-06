@@ -254,6 +254,8 @@ public class DataToArray {
 		}
 	}
 	
+	
+	
 	public static int getMaxColumnAmount() {
 		return DataToArray.col;
 	}
