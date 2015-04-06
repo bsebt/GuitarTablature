@@ -283,7 +283,7 @@ public class DataToArray {
 		File file[] = {new File("ExtraWhiteSpaces.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("IncompleteBar.txt")};
-		File file4[] = {new File("elnegrito.txt")};
+		File file4[] = {new File("UnevenLines.txt")};
 //		DataToArray.textToArray(file);
 //		System.out.println("");
 //		DataToArray.textToArray(file2);
@@ -318,5 +318,13 @@ public class DataToArray {
 			list.add(dummy);
 		}
 		return list;
+	}
+	private static int getLargestNumber(char[][] list)
+	{
+		int max=0;
+		for(int i=0; i<list.length;i++)
+			if(list[i].length>max)
+				max = list[i].length;
+		return max;
 	}
 }
