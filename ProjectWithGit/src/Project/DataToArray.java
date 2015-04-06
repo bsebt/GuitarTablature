@@ -12,6 +12,7 @@ import com.itextpdf.text.DocumentException;
 public class DataToArray {
 
 	public static char[][] c;
+	public static char[][] c1;
 	public static ArrayList<String> lines = new ArrayList<String>();
 	public static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	public static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
@@ -134,30 +135,59 @@ public class DataToArray {
 			lastLine = adder.toString().trim();
 		}
 		lines1 = addDummyLines(lines1, lastLine);
-		for(int i = 0; i < lines1.size(); i++)
+		
+		ArrayList<String> lines2 = new ArrayList<String>();
+		for(int i=0;i<lines1.size();i++){
+//			System.out.println(lines1.get(i).indexOf('|', 2));
+//			System.out.println(lines1.get(i).lastIndexOf('|'));
+//			System.out.println(lines1.get(i).indexOf('|', 3));
+//			System.out.println(lines1.get(i).lastIndexOf('|')-1);
+//			System.out.println(lines1.get(i).length());
+			while((lines1.get(i).indexOf('|', 2)) != (lines1.get(i).length()-1) && (lines1.get(i).indexOf('|', 2))!= (lines1.get(i).length()-2)){
+				for(int j=i;j<i+6;j++){
+					//System.out.println(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
+					lines2.add(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
+					lines1.set(j, lines1.get(j).substring(lines1.get(j).indexOf('|', lines1.get(j).indexOf('|', 2))));
+				}
+			}
+				lines2.add(lines1.get(i));
+		}
+		
+		
+		
+		for(int i = 0; i < lines2.size(); i++)
 		{
-			System.out.println(lines1.get(i));
+			System.out.println(lines2.get(i));
 		}
 		
 		int temp = 0;
-		for (int z = 0; z < lines1.size(); z = z + 6) {
-			if(lines1.size()-temp >= 6)
+		for (int z = 0; z < lines2.size(); z = z + 6) {
+			if(lines2.size()-temp >= 6)
 			{
 				c = new char[6][];
 			}
 			else
 			{
-				c = new char[lines1.size()-temp][];
+				c = new char[lines2.size()-temp][];
 			}
 			//temp++;
-			for (int i = 0; i < 6 && temp < lines1.size(); i++, temp++) {
-				c[i] = new char[lines1.get(temp).length()];
-				for (int j = 0; j < lines1.get(temp).length(); j++) {
-					c[i][j] = lines1.get(temp).charAt(j);
+			for (int i = 0; i < 6 && temp < lines2.size(); i++, temp++) {
+				c[i] = new char[lines2.get(temp).length()];
+				for (int j = 0; j < lines2.get(temp).length(); j++) {
+					c[i][j] = lines2.get(temp).charAt(j);
 					//System.out.println(c[i][j]);
 				}
 			}
 			chars.add(c);
+		}
+		
+		
+		for (int i = 0; i < chars.size(); i++) {
+			for (int j = 0; j < chars.get(i).length; j++) {
+				for (int z = 0; z < chars.get(i)[j].length; z++) {
+
+				}
+			}
 		}
 		
 		
@@ -285,7 +315,7 @@ public class DataToArray {
 		File file[] = {new File("ExtraWhiteSpaces.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("IncompleteBar.txt")};
-		File file4[] = {new File("UnevenLines.txt")};
+		File file4[] = {new File("RememberingRain.txt")};
 //		DataToArray.textToArray(file);
 //		System.out.println("");
 //		DataToArray.textToArray(file2);
