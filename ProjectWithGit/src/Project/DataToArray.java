@@ -20,7 +20,7 @@ public class DataToArray {
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
 	public static String correctLine = "^( |[0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)";
-	public static String starter = "([0-9]| |\\|)";
+	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -104,7 +104,8 @@ public class DataToArray {
 				}
 				else if (line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
 					if((line.charAt(0)+"").matches("[0-9]")){
-						line = line.replace(line.charAt(0), '|');
+						//line = line.replace(line.charAt(0), '|');
+						line = "|" + line.substring(1);
 					}
 					try{
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2));
@@ -282,11 +283,14 @@ public class DataToArray {
 		File file[] = {new File("ExtraWhiteSpaces.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("IncompleteBar.txt")};
-		DataToArray.textToArray(file);
-		System.out.println("");
-		DataToArray.textToArray(file2);
-		System.out.println("");
-		DataToArray.textToArray(file3);
+		File file4[] = {new File("elnegrito.txt")};
+//		DataToArray.textToArray(file);
+//		System.out.println("");
+//		DataToArray.textToArray(file2);
+//		System.out.println("");
+//		DataToArray.textToArray(file3);
+//		System.out.println("");
+		DataToArray.textToArray(file4);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
 		// LengthOfPartition();
