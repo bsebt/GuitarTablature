@@ -303,7 +303,8 @@ public class BarLinesPDF {
 							if (noSpaceAvailable) {
 								// Do nothing, we are waiting until the end of
 								// the this line
-							} else if (arrayChar == '|') {
+							} else if (arrayChar == '|') 
+							{
 								if (i - barSpacing > 0) {
 									if (firstBarOfLine == 0 || colPos != 0) 
 									{
