@@ -164,7 +164,7 @@ public class BarLinesPDF {
 					// the
 					// character
 					// to
-					// '&'
+					// '-'
 					// for
 					// the
 					// last
@@ -303,17 +303,15 @@ public class BarLinesPDF {
 							if (noSpaceAvailable) {
 								// Do nothing, we are waiting until the end of
 								// the this line
-							} 
-							else if (arrayChar == '|') 
-							{
+							} else if (arrayChar == '|') {
 								if (i - barSpacing > 0) {
 									if (firstBarOfLine == 0 || colPos != 0) 
 									{
-										if ((colPos == barLength-2 || colPos == barLength-1) && barPos < chars.size()-1) //If we are at the end of the element, and there is another element to read
+										if (colPos == barLength-1 && barPos < chars.size()) //If we are at the end of the element, and there is another element to read
 										{
 											if (chars.get(barPos+1)[0].length>=2)//Check if there are at least two characters in it, so we don't index out of bounds
 											{
-												if (chars.get(barPos+1)[rowPos][0] == '|') //There is a double line starting the next section, so we need to draw a double line
+												if (chars.get(barPos+1)[rowPos][1] == '|') //There is a double line starting the next section, so we need to draw a double line
 												{
 													if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
 													{
@@ -345,7 +343,6 @@ public class BarLinesPDF {
 															cb.moveTo(q, i + j);
 															cb.lineTo(q, i + j - barSpacing);
 														}
-														
 														if (chars.get(barPos+1)[2][2] == '*') //There is a repeat symbol at the bottom too
 														{
 															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
@@ -360,9 +357,9 @@ public class BarLinesPDF {
 														}
 													}
 												}
-												else if (colPos <= barLength-2 && IsDigit(chars.get(barPos)[rowPos][colPos+1]))
+												else if (IsDigit(chars.get(barPos+1)[rowPos][1]))
 												{
-													if (rowPos == 0 && chars.get(barPos)[1][colPos+1] == '|')
+													if (rowPos == 0 && chars.get(barPos+1)[2][1] == '|')
 													{
 														if ((chars.get(barPos+1)[0].length * givenSpacing) <= (pageWidth - marginRight - q)) //Check if there is space for the next bar, or if it will require a line change
 														{
@@ -446,7 +443,6 @@ public class BarLinesPDF {
 										}
 									}
 
-								}
 									colPos++;
 									if (colPos == barLength) {
 										colPos = 0;
@@ -484,7 +480,7 @@ public class BarLinesPDF {
 										// write
 										barLength = chars.get(barPos)[rowPos].length;
 									}
-								else {
+								} else {
 									colPos++;
 									if (colPos == barLength) {
 										colPos = 0;
@@ -576,8 +572,7 @@ public class BarLinesPDF {
 									// write
 									barLength = chars.get(barPos)[rowPos].length;
 								}
-							} 
-							else if (arrayChar == '*') {
+							} else if (arrayChar == '*') {
 								createCircle(cb, q, i + j, noteFontSize / 6);
 								colPos++;
 								if (colPos == barLength) {
@@ -1068,7 +1063,7 @@ public class BarLinesPDF {
 									// writes the
 									// "Repeat for # times"
 									{
-										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&' || chars.get(barPos)[rowPos + 1][colPos] == '%') // There
+										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&' || chars.get(barPos)[rowPos + 1][colPos] == '#') // There
 										// was
 										// a
 										// number,
@@ -1131,12 +1126,20 @@ public class BarLinesPDF {
 											// are
 											// partitioned
 											{
-												line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-												cb.moveTo(q, i + j);
-												cb.lineTo(q, i + j - barSpacing);
 												currentChar = new Phrase(
 														("Repeat " + arrayChar + " times"),
-														numberFont); 
+														numberFont); // Replace
+												// this
+												// with
+												// the
+												// character
+												// from
+												// the
+												// array
+												// we
+												// are
+												// currently
+												// proccessing.
 												column.setSimpleColumn(
 														currentChar,
 														pageWidth - marginLeft
@@ -1158,8 +1161,7 @@ public class BarLinesPDF {
 												// character
 												// curentChar
 												column.go();
-											} 
-											else {
+											} else {
 												currentChar = new Phrase(
 														("Repeat " + arrayChar + " times"),
 														numberFont); // Replace
@@ -1174,9 +1176,6 @@ public class BarLinesPDF {
 												// are
 												// currently
 												// proccessing.
-												line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-												cb.moveTo(q, i + j);
-												cb.lineTo(q, i + j - barSpacing);
 												column.setSimpleColumn(
 														currentChar, q - 12
 																* noteFontSize,
@@ -1199,6 +1198,9 @@ public class BarLinesPDF {
 											}
 											*/
 											//else
+											{
+												q -= givenSpacing;
+											}
 
 											cancelBarDraw = true; // Don't draw
 											// a bar
