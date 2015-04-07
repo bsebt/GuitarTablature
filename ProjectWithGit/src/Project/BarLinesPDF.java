@@ -304,11 +304,184 @@ public class BarLinesPDF {
 							if (noSpaceAvailable) {
 								// Do nothing, we are waiting until the end of
 								// the this line
-							} else if (arrayChar == '|') {
-								if (i - barSpacing > 0) {
-									if (firstBarOfLine == 0 || colPos != 0) 
+							} else if (arrayChar == '|') 
+							{
+								if (i - barSpacing > 0)
+								{
+									/*
+									if (colPos < barLength-2)
 									{
-										if (colPos == barLength-1 && barPos < chars.size()) //If we are at the end of the element, and there is another element to read
+										if (chars.get(barPos)[5][colPos+1] == '|')
+										{
+											if (barPos < chars.size()-1)
+											{
+												if (DataToArray.getLargestNumber(chars.get(barPos+1)) >= 2)
+												{
+													if (colPos < 2 || (DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing <= (pageWidth - marginRight - q))
+													{
+														//Draw thick line
+														
+														line.drawLine(cb, 0f, 0f, 0f);
+														cb.setLineWidth(doubleBarLineWidth);
+														cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+														cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+														cb.stroke();
+														cb.setLineWidth(singleBarLineWidth);
+														
+														if (chars.get(barPos)[rowPos][colPos+1] == '|')
+														{
+															char[][] tempCharArrayDoubleBar = chars.get(barPos);
+															tempCharArrayDoubleBar[rowPos][colPos+1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos, tempCharArrayDoubleBar);
+															//Mark off the other side of the partition so we don't draw it twice
+														}
+														else
+														{
+															//Leave it alone
+														}
+														
+														if (chars.get(barPos+1)[5][0] == '|')
+														{
+															if (colPos >= 2)
+															{
+																char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																tempCharArrayDoubleBar[rowPos][0] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																chars.set(barPos+1, tempCharArrayDoubleBar);
+															}
+														}
+														else
+														{
+															//Leave it alone
+														}
+														if (chars.get(barPos+1)[5][1] == '|')
+														{
+															if (colPos >= 2)
+															{
+																//Also replace with '&' as long as we are at the end of a bar
+																char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																chars.set(barPos+1, tempCharArrayDoubleBar);
+															}
+															
+														}
+														else
+														{
+															//leave it alone
+														}
+													}
+													else
+													{
+														//There isn't enough space, so we'll have to make sure we draw thick lines on both lines if nessesary
+														if (chars.get(barPos)[2][colPos-1] == '*')
+														{
+															//Draw a thick line at the top
+															line.drawLine(cb, 0f, 0f, 0f);
+															cb.setLineWidth(doubleBarLineWidth);
+															cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+															cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+															cb.stroke();
+															cb.setLineWidth(singleBarLineWidth);
+															
+															if (chars.get(barPos)[rowPos][colPos+1] == '|')
+															{
+																char[][] tempCharArrayDoubleBar = chars.get(barPos);
+																tempCharArrayDoubleBar[rowPos][colPos+1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																chars.set(barPos, tempCharArrayDoubleBar);
+																//Mark off the other side of the partition so we don't draw it twice
+															}
+															else
+															{
+																//Leave it alone
+															}
+														}
+														else
+														{
+															//Draw a normal line at the top
+															line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+															cb.moveTo(q, i + j);
+															cb.lineTo(q, i + j - barSpacing);
+														}
+														
+														if (chars.get(barPos+1)[2][2] == '*')
+														{
+															//Draw a thick line at the bottom, replace them with a '%'
+															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+															tempCharArrayDoubleBar[rowPos][0] = '%'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar);
+															
+															char[][] tempCharArrayDoubleBar2 = chars.get(barPos+1);
+															tempCharArrayDoubleBar2[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar2);
+														}
+														else
+														{
+															//Draw a normal line on the bottom, replace the second column with '&' if they are '|' right now
+															if (chars.get(barPos+1)[5][1] == '|')
+															{
+																char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+																tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+																chars.set(barPos+1, tempCharArrayDoubleBar);
+															}
+														}
+													}
+												}
+												else
+												{
+													//The next bar isn't long enough to have a double bar, so just move on with our lives
+													line.drawLine(cb, 0f, 0f, 0f);
+													cb.setLineWidth(doubleBarLineWidth);
+													cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+													cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+													cb.stroke();
+													cb.setLineWidth(singleBarLineWidth);
+													
+													if (chars.get(barPos)[rowPos][colPos+1] == '|')
+													{
+														char[][] tempCharArrayDoubleBar = chars.get(barPos);
+														tempCharArrayDoubleBar[rowPos][colPos+1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+														chars.set(barPos, tempCharArrayDoubleBar);
+														//Mark off the other side of the partition so we don't draw it twice
+													}
+												}
+											}
+											else
+											{
+												line.drawLine(cb, 0f, 0f, 0f);
+												cb.setLineWidth(doubleBarLineWidth);
+												cb.moveTo(q+givenSpacing/2, i + j - (doubleBarLineWidth - 1));
+												cb.lineTo(q+givenSpacing/2, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+												cb.stroke();
+												cb.setLineWidth(singleBarLineWidth);
+												
+												if (chars.get(barPos)[rowPos][colPos+1] == '|')
+												{
+													char[][] tempCharArrayDoubleBar = chars.get(barPos);
+													tempCharArrayDoubleBar[rowPos][colPos+1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+													chars.set(barPos, tempCharArrayDoubleBar);
+													//Mark off the other side of the partition so we don't draw it twice
+												}
+												//Do nothing extra, there is no other bar after this to worry about
+											}
+										}
+										else
+										{
+											//Draw a normal line
+											line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+											cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j - barSpacing);
+										}
+									}
+									else
+									{
+										//Draw a normal line
+										line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+										cb.moveTo(q, i + j);
+										cb.lineTo(q, i + j - barSpacing);
+									}
+									*/
+									if (firstBarOfLine == 0 || colPos != 0 || (barPos == 0 && colPos == 0)) 
+									{
+										if (colPos == barLength-1 && barPos < chars.size()-1) //If we are at the end of the element, and there is another element to read
 										{
 											if (DataToArray.getLargestNumber(chars.get(barPos+1))>=2)//Check if there are at least two characters in it, so we don't index out of bounds
 											{
@@ -481,7 +654,8 @@ public class BarLinesPDF {
 										// write
 										barLength = chars.get(barPos)[rowPos].length;
 									}
-								} else {
+								}
+								else {
 									colPos++;
 									if (colPos == barLength) {
 										colPos = 0;
@@ -1200,9 +1374,10 @@ public class BarLinesPDF {
 											}
 											*/
 											//else
-											line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
-											cb.moveTo(q, i + j);
-											cb.lineTo(q, i + j - barSpacing);
+											q -= givenSpacing;
+											//line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+											//cb.moveTo(q, i + j);
+											//cb.lineTo(q, i + j - barSpacing);
 											cancelBarDraw = true; // Don't draw
 											// a bar
 											// line if
