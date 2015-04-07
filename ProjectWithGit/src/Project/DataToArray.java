@@ -20,7 +20,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^( |[0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)";
+	public static String correctLine = "^( |[0-9]|\\|)([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9]|\\|)";
 	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
@@ -104,16 +104,17 @@ public class DataToArray {
 					continue;
 				}
 				else if (line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")) {
+					
 					if((line.charAt(0)+"").matches("[0-9]")){
 						//line = line.replace(line.charAt(0), '|');
 						line = "|" + line.substring(1);
 					}
 					try{
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2));
-						//System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
+						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 					}catch(StringIndexOutOfBoundsException e){
 						lines.add(line.substring(0, line.lastIndexOf('|') + 1));
-						//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+						System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 					}
 				}else{
 					//System.out.println("ignore: "+line);
@@ -121,6 +122,14 @@ public class DataToArray {
 			}
 			input.close();
 		}
+		
+		
+//		for(int i = 0; i < lines.size(); i++)
+//		{	if(i%6 == 0){
+//			System.out.println();
+//		}
+//			System.out.println(lines.get(i));
+//		}
 		
 		ArrayList<String>lines1 = new ArrayList<String>();
 		String lastLine = "";
@@ -133,8 +142,27 @@ public class DataToArray {
 			}
 			lines1.add(adder.toString().trim());
 			lastLine = adder.toString().trim();
+			//System.out.println(adder.toString().trim());
 		}
 		lines1 = addDummyLines(lines1, lastLine);
+		for(int i=0; i<lines1.size() ; i=i+6){
+			System.out.println(i);
+			for(int j=0;j<lines1.get(i).length();j++){
+				if((lines1.get(i).charAt(j)+"").matches("[0-9]")){
+					if(lines1.get(i).charAt(j-1) == '|' && lines1.get(i+1).charAt(j) == '|'){
+						System.out.println("ok");
+					}else if(lines1.get(i+1).charAt(j) == '|'){
+					lines1.set(i, lines1.get(i).replaceFirst(lines1.get(i).charAt(j)+"", "|"));
+					}		
+				}
+			}
+		}
+//		for(int i = 0; i < lines1.size(); i++)
+//		{	if(i%6 == 0){
+//			System.out.println();
+//		}
+//			System.out.println(lines1.get(i));
+//		}
 		
 		ArrayList<String> lines2 = new ArrayList<String>();
 		for(int i=0;i<lines1.size();i++){
@@ -154,9 +182,10 @@ public class DataToArray {
 		}
 		
 		
-		
 		for(int i = 0; i < lines2.size(); i++)
-		{
+		{	if(i%6 == 0){
+			System.out.println();
+		}
 			System.out.println(lines2.get(i));
 		}
 		
@@ -314,15 +343,15 @@ public class DataToArray {
 	IOException {
 		File file[] = {new File("ExtraWhiteSpaces.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
-		File file3[] = {new File("IncompleteBar.txt")};
-		File file4[] = {new File("RememberingRain.txt")};
+		File file3[] = {new File("bohemianrhapsody.txt")};
+		File file4[] = {new File("UnevenLines.txt")};
 //		DataToArray.textToArray(file);
 //		System.out.println("");
 //		DataToArray.textToArray(file2);
 //		System.out.println("");
 //		DataToArray.textToArray(file3);
 //		System.out.println("");
-		DataToArray.textToArray(file4);
+		DataToArray.textToArray(file);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
 		// LengthOfPartition();
