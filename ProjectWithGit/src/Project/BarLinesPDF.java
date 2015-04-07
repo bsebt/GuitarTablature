@@ -307,6 +307,7 @@ public class BarLinesPDF {
 							{
 								if (i - barSpacing > 0)
 								{
+									/*
 									if (colPos < barLength-2)
 									{
 										if (chars.get(barPos)[5][colPos+1] == '|')
@@ -476,7 +477,7 @@ public class BarLinesPDF {
 										cb.moveTo(q, i + j);
 										cb.lineTo(q, i + j - barSpacing);
 									}
-									/*
+									*/
 									if (firstBarOfLine == 0 || colPos != 0 || (barPos == 0 && colPos == 0)) 
 									{
 										if (colPos == barLength-1 && barPos < chars.size()-1) //If we are at the end of the element, and there is another element to read
@@ -614,7 +615,6 @@ public class BarLinesPDF {
 											cb.lineTo(q, i + j - barSpacing); //This is writting the lines at the start (and others) but I don't know how to change it
 										}
 									}
-									*/
 
 									colPos++;
 									if (colPos == barLength) {
