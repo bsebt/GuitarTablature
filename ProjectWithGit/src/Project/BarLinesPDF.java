@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
@@ -397,7 +398,7 @@ public class BarLinesPDF {
 											{
 												if (barPos < chars.size() -1)
 												{
-													if (chars.get(barPos+1)[2][2] == '*' || (DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing <= (pageWidth - marginRight - q))
+													if (chars.get(barPos+1)[2][2] == '*' || (DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing > (pageWidth - marginRight - q))
 													{
 														//The next line is a repeat, so we'll collide with it unless we don't draw this. Do nothing
 													}
@@ -514,9 +515,8 @@ public class BarLinesPDF {
 									barLength = chars.get(barPos)[rowPos].length;
 								}
 							} 
-							else if (arrayChar == '*') 
-							{
-								createCircle(cb, q, i + j, noteFontSize / 6);
+							else if (arrayChar == '*') {
+								createCircle(q-(givenSpacing/2), i + j, cb);
 								colPos++;
 								if (colPos == barLength) {
 									colPos = 0;
@@ -741,28 +741,29 @@ public class BarLinesPDF {
 							// doesn't actualy
 							// carry any info
 							{
-								line.drawLine(cb, 0f, 0f, 0f); // This is used
-								// to draw the
-								// lines, it
-								// allows
-								// cb.lineTo to
-								// function.
-								// Draws nothing
-								// on its own.
-								cb.moveTo(q - noteFontSize / 2, i + j);
-								cb.lineTo(q - noteFontSize / 4, i + j
-										+ noteFontSize / 4);
-								cb.lineTo(q, i + j);
-								cb.lineTo(q - noteFontSize / 4, i + j
-										- noteFontSize / 4);
-								cb.lineTo(q - noteFontSize / 2, i + j);
-								cb.lineTo(q - noteFontSize / 4, i + j
-										+ noteFontSize / 4); // Draws a diamond,
-								// with an extra
-								// leg to
-								// eliminate the
-								// starting area
-								// having a mark
+								createDiamond(q - givenSpacing, i + j, cb);
+//								line.drawLine(cb, 0f, 0f, 0f); // This is used
+//								// to draw the
+//								// lines, it
+//								// allows
+//								// cb.lineTo to
+//								// function.
+//								// Draws nothing
+//								// on its own.
+//								cb.moveTo(q - noteFontSize / 2, i + j);
+//								cb.lineTo(q - noteFontSize / 4, i + j
+//										+ noteFontSize / 4);
+//								cb.lineTo(q, i + j);
+//								cb.lineTo(q - noteFontSize / 4, i + j
+//										- noteFontSize / 4);
+//								cb.lineTo(q - noteFontSize / 2, i + j);
+//								cb.lineTo(q - noteFontSize / 4, i + j
+//										+ noteFontSize / 4); // Draws a diamond,
+//								// with an extra
+//								// leg to
+//								// eliminate the
+//								// starting area
+//								// having a mark
 
 								if ((q - whiteSpace * 2 - noteFontSize)
 										- lineStart > 0) // Do not draw lines
@@ -1005,7 +1006,7 @@ public class BarLinesPDF {
 									// row, this section
 									// writes the
 									// "Repeat for # times"
-									{
+									{ 
 										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&' || chars.get(barPos)[rowPos + 1][colPos] == '#') // There
 										// was
 										// a
@@ -1494,7 +1495,7 @@ public class BarLinesPDF {
 		return destination1;
 	}
 
-	public static void createCircle(PdfContentByte canvas, float x, float y,
+/*	public static void createCircle(PdfContentByte canvas, float x, float y,
 			float r) {
 		float b = 0.5523f;
 		canvas.moveTo(x + r, y);
@@ -1503,6 +1504,36 @@ public class BarLinesPDF {
 		canvas.curveTo(x - r, y + r * b, x - r * b, y + r, x, y + r);
 		canvas.curveTo(x + r * b, y + r, x + r, y + r * b, x + r, y);
 		canvas.closePathFillStroke();
+		
+	}*/
+	
+	private static void createCircle(float currX, float currY, PdfContentByte draw) {
+		currX += 1.7f;
+		draw.circle(currX + (givenSpacing - 3f) / 2, currY, 1.5f);
+		draw.setColorFill(BaseColor.BLACK);
+		draw.fillStroke();
+	}
+	
+	private static void createDiamond(float currX, float currY, PdfContentByte draw) {
+		currY += 1.7f;
+		currX = currX + 2.4f;
+		draw.moveTo(currX + 0.175f, currY + 0.175f);
+		draw.lineTo(currX - 1.93f, currY - 1.93f);
+		draw.stroke();
+		
+		draw.moveTo(currX, currY);
+		draw.lineTo(currX + 1.93f, currY - 1.93f);
+		draw.stroke();
+		
+		currY = currY - (3.5f);
+		draw.moveTo(currX - 0.175f, currY - 0.175f);
+		draw.lineTo(currX + 1.93f, currY + 1.93f);
+		draw.stroke();
+		
+		draw.moveTo(currX, currY);
+		draw.lineTo(currX - 1.93f, currY + 1.93f);
+		draw.stroke();
+		currY -= 1.7f;
 	}
 	
 	private static Boolean InLeftSide(char[][] array, int col)
