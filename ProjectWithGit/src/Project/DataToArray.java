@@ -65,7 +65,7 @@ public class DataToArray {
 //	return newestElement;
 //}
 
-
+ 
 	public static ArrayList<char[][]> textToArray(File[] source)
 			throws DocumentException, IOException {
 		lines = new ArrayList<String>();
@@ -111,10 +111,10 @@ public class DataToArray {
 					}
 					try{
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2));
-						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
+						//System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 					}catch(StringIndexOutOfBoundsException e){
 						lines.add(line.substring(0, line.lastIndexOf('|') + 1));
-						System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+						//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 					}
 				}else{
 					//System.out.println("ignore: "+line);
@@ -146,11 +146,11 @@ public class DataToArray {
 		}
 		lines1 = addDummyLines(lines1, lastLine);
 		for(int i=0; i<lines1.size() ; i=i+6){
-			System.out.println(i);
+		//	System.out.println(i);
 			for(int j=0;j<lines1.get(i).length();j++){
 				if((lines1.get(i).charAt(j)+"").matches("[0-9]")){
 					if(lines1.get(i).charAt(j-1) == '|' && lines1.get(i+1).charAt(j) == '|'){
-						System.out.println("ok");
+						//System.out.println("ok");
 					}else if(lines1.get(i+1).charAt(j) == '|'){
 					lines1.set(i, lines1.get(i).replaceFirst(lines1.get(i).charAt(j)+"", "|"));
 					}		
@@ -163,6 +163,23 @@ public class DataToArray {
 //		}
 //			System.out.println(lines1.get(i));
 //		}
+		
+		for(int i=0; i<lines1.size() ; i=i+6){
+			int min=lines1.get(i).length();
+			if(!((lines1.get(i).length() == lines1.get(i+1).length()) && (lines1.get(i+2).length() == lines1.get(i+3).length()) && (lines1.get(i+4).length()==lines1.get(i+5).length()))){
+				for(int j=i;j < i+6;j++){
+					if(lines1.get(j).length()<min)
+						min = lines1.get(j).length();
+				}
+				for(int z=i;z <i+6 ;z++){
+					lines1.set(z, lines1.get(z).substring(0, min));
+					if(lines1.get(z).charAt(lines1.get(z).length()-1) != '|'){
+						lines1.set(z, lines1.get(z).substring(0, min-1)+"|");
+					}
+					System.out.println(lines1.get(z).substring(0, min));
+				}
+			}	
+		}
 		
 		ArrayList<String> lines2 = new ArrayList<String>();
 		for(int i=0;i<lines1.size();i++){
@@ -184,9 +201,9 @@ public class DataToArray {
 		
 		for(int i = 0; i < lines2.size(); i++)
 		{	if(i%6 == 0){
-			System.out.println();
+			//System.out.println();
 		}
-			System.out.println(lines2.get(i));
+			//System.out.println(lines2.get(i));
 		}
 		
 		int temp = 0;
@@ -286,7 +303,7 @@ public class DataToArray {
 	
 		// Test to see printed lines
 		for (int i = 0; i < chars.size(); i++) {
-			System.out.println(Arrays.deepToString(chars.get(i)));
+			//System.out.println(Arrays.deepToString(chars.get(i)));
 		}
 	
 		// Test to see if characters properly placed in 2-d array.
@@ -351,7 +368,7 @@ public class DataToArray {
 //		System.out.println("");
 //		DataToArray.textToArray(file3);
 //		System.out.println("");
-		DataToArray.textToArray(file);
+		DataToArray.textToArray(file3);
 		// textToArray();
 		// DataToArray.textToArray(DataToArray.textFile);
 		// LengthOfPartition();
@@ -363,7 +380,7 @@ public class DataToArray {
 		if(list.size() % 6 != 0)
 		{
 			dummy = lastLine;
-			System.out.println("Dummy is " + dummy);
+			//System.out.println("Dummy is " + dummy);
 			for(int i = 1; i < dummy.length() - 1; i++)
 			{
 				if(dummy.charAt(i) != '-' && dummy.charAt(i) != '|')
@@ -372,7 +389,7 @@ public class DataToArray {
 				}
 			}
 			dummy = "|" + dummy.substring(1, dummy.length()-1) + "|";
-			System.out.println("Dummy is " + dummy);
+			//System.out.println("Dummy is " + dummy);
 		}
 		while(list.size() % 6 != 0)
 		{
