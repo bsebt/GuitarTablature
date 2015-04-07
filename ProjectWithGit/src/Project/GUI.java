@@ -109,23 +109,33 @@ public class GUI extends JFrame {
 				fc.setMultiSelectionEnabled(true);
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
-					list = fc.getSelectedFiles();
-					input.setText(fc.getSelectedFile().getPath());
-					name.setText(fc.getSelectedFile().getName());
-					destination.setText(list[0].getParent());
-					frame.setResizable(true);
-					OpenerPanel.removeAll();
-					frame.setSize(320, 200);
-					OpenB.setBounds(10, 5, 300, 50);
-					OpenerPanel.add(OpenB);
-					QuickB.setBounds(10, 55, 150, 50);
-					OpenerPanel.add(QuickB);
-					AboutB.setBounds(160, 55, 150, 50);
-					OpenerPanel.add(AboutB);
-					ExitB.setBounds(10, 105, 300, 50);
-					OpenerPanel.add(ExitB);
-					frame.add(OpenerPanel);
-					frame.setResizable(false);
+					//System.out.println(fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().indexOf("."), fc.getSelectedFile().getName().length()));
+					//if(fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().indexOf("."), fc.getSelectedFile().getName().length()).equals(".txt")){
+						list = fc.getSelectedFiles();
+						input.setText(fc.getSelectedFile().getPath());
+						name.setText(fc.getSelectedFile().getName());
+						destination.setText(list[0].getParent());
+						frame.setResizable(true);
+						OpenerPanel.removeAll();
+						frame.setSize(320, 200);
+						OpenB.setBounds(10, 5, 300, 50);
+						OpenerPanel.add(OpenB);
+						QuickB.setBounds(10, 55, 150, 50);
+						OpenerPanel.add(QuickB);
+						AboutB.setBounds(160, 55, 150, 50);
+						OpenerPanel.add(AboutB);
+						ExitB.setBounds(10, 105, 300, 50);
+						OpenerPanel.add(ExitB);
+						frame.add(OpenerPanel);
+						frame.setResizable(false);
+//					}else{
+//						JOptionPane.showMessageDialog(frame,
+//								"There are no files selected or ",
+//								"ASCII Tablature to PDF Message",
+//								JOptionPane.INFORMATION_MESSAGE, null);
+					//}
+					
+					
 				}
 			}
 		});
