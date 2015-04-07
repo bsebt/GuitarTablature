@@ -1064,7 +1064,7 @@ public class BarLinesPDF {
 									// row, this section
 									// writes the
 									// "Repeat for # times"
-									{
+									{ 
 										if (chars.get(barPos)[rowPos + 1][colPos] == '|' || chars.get(barPos)[rowPos + 1][colPos] == '&' || chars.get(barPos)[rowPos + 1][colPos] == '#') // There
 										// was
 										// a
