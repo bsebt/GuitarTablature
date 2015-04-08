@@ -34,7 +34,7 @@ public class BarLinesPDF {
 	private static final float marginBottom = 0.0f;
 	// private static final int ROWS = 6;
 
-	public static Font titleFont = new Font(FontFamily.HELVETICA, 14);
+	public static Font titleFont = new Font(FontFamily.HELVETICA, 30);
 	public static Font composerFont = new Font(FontFamily.HELVETICA, 14);
 	public static Font numberFont = new Font(FontFamily.HELVETICA, 9);
 	public static Paragraph title = new Paragraph(TITLE_STRING, titleFont);

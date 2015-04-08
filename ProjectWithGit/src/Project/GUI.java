@@ -457,6 +457,7 @@ public class GUI extends JFrame {
 				setBarSpacing.setValue(Integer.parseInt(SBSF.getText()));
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
+				drop.setSelectedItem("HELVETICA");
 				// name.setText((String) input.getName());
 				// destination.setText(list[0].getParent());
 				modify();
