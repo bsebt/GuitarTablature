@@ -320,13 +320,16 @@ public class GUI extends JFrame {
 				JFileChooser fc = new JFileChooser();
 				File file = new File(BarLinesPDF.destination1);
 				fc.setSelectedFile(file);
-				FileNameExtensionFilter filter = new FileNameExtensionFilter(
-						"PDF Files", "pdf");
-				fc.setFileFilter(filter);
+				fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+				//FileNameExtensionFilter filter = new FileNameExtensionFilter("PDF Files", "pdf");
+				//fc.setFileFilter(filter);
 				int n = fc.showSaveDialog(GUI.this);
 				if (n == JFileChooser.APPROVE_OPTION) {
-					destination.setText(list[0].getParent());
-					name.setText(fc.getSelectedFile().getName());
+					destination.setText(fc.getSelectedFile().getAbsolutePath());
+					String s = list[0].getName();
+					s = s.split(".")[0];
+					name.setText(s);
+					//modify();
 					EditorPanel.repaint();
 				}
 
