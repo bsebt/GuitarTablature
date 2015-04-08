@@ -54,7 +54,8 @@ public class GUI extends JFrame {
 	public static File[] list;
 	public static String[] list1 = { "HELVETICA", "COURIER", "SYMBOL", "TIMES"};
 	public static int index;
-	public static int DBLP = 1;
+	public static int DBLP = 2;
+	public static int DBLPO = 2;
 
 	// private static JTextField source = new JTextField();
 
@@ -101,6 +102,7 @@ public class GUI extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				DBLP = DBLPO;
 				JFileChooser fc = new JFileChooser();
 				FileNameExtensionFilter filter = new FileNameExtensionFilter(
 						"Text Files", "txt");
@@ -515,6 +517,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(apply);
 		apply.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				DBLP = DBLPO;
 				if (destination.getText() + "/" + name != BarLinesPDF
 						.getDestination()) {
 					File file = new File(BarLinesPDF.getDestination());
@@ -531,7 +534,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DBLP = 0;
+				DBLP = 1;
 				modify();
 				JOptionPane.showMessageDialog(frame,
 						"The PDF has been saved with latest changes.", null,
