@@ -20,7 +20,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9]|\\|)";
+	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9a-zA-Z]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9a-zA-Z]|\\|)";
 	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
@@ -123,14 +123,19 @@ public class DataToArray {
 			}
 			input.close();
 		}
-
-		lines = ProperLines(lines);
 //		for(int i = 0; i < lines.size(); i++)
 //		{	if(i%6 == 0){
-//			System.out.println();
+//			//System.out.println();
 //		}
 //		System.out.println(lines.get(i));
 //		}
+		lines = ProperLines(lines);
+		for(int i = 0; i < lines.size(); i++)
+		{	if(i%6 == 0){
+			System.out.println();
+		}
+		System.out.println(lines.get(i));
+		}
 		lines = whiteSpaceRemover(lines);
 
 		try{
@@ -143,12 +148,12 @@ public class DataToArray {
 		lines = Partitioning(lines);
 		
 
-		for(int i = 0; i < lines.size(); i++)
-		{	if(i%6 == 0){
-			System.out.println();
-		}
-		System.out.println(lines.get(i));
-		}
+//		for(int i = 0; i < lines.size(); i++)
+//		{	if(i%6 == 0){
+//			System.out.println();
+//		}
+//		System.out.println(lines.get(i));
+//		}
 
 		int temp = 0;
 		for (int z = 0; z < lines.size(); z = z + 6) {
@@ -301,7 +306,7 @@ public class DataToArray {
 		File file4[] = {new File("UnevenLines.txt")};
 		File file5[] = {new File("bohemianrhapsody.txt")};
 		
-		DataToArray.textToArray(file5);
+		DataToArray.textToArray(file3);
 	}
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
@@ -334,21 +339,24 @@ public class DataToArray {
 				pack =true;
 				if(lines.get(i).length() == lines.get(i+1).length()){
 					for(int j=i;j < i+6;j++){
-						if(!(lines.get(i).length() == lines.get(j).length())){
+						if(!(lines.get(i).trim().length() == lines.get(j).trim().length())){
 							pack = false;
+							//System.out.println("fail= "+lines.get(j));
 							//System.out.println("pack= "+pack);
 							break;
+						}else{
+							//System.out.println("pass= "+lines.get(j));
 						}
 					}
 					if(pack){
 						for(int z=i;z<i+6;z++){
 							a.add(lines.get(z));
-
 						}i=i+5;
 					}else{
 						continue;
 					}
 				}else{
+					//System.out.println("first fail");
 					continue;
 				}
 			}
