@@ -106,7 +106,7 @@ public class DataToArray {
 				//	line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")
 				else if (line.matches(correctLine)) {
 
-					if((line.charAt(0)+"").matches("[0-9a-zA-Z]")){
+					if((line.charAt(0)+"").matches("[0-9a-zA-Z]")){ 
 						//line = line.replace(line.charAt(0), '|');
 						line = "|" + line.substring(1);
 					}
