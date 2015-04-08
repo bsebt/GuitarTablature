@@ -54,7 +54,7 @@ public class GUI extends JFrame {
 	public static File[] list;
 	public static String[] list1 = { "HELVETICA", "COURIER", "SYMBOL", "TIMES"};
 	public static int index;
-	public static int DBLP = 2;
+	public static int DBLP = 1;
 
 	// private static JTextField source = new JTextField();
 
@@ -531,7 +531,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(save);
 		save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				DBLP = 1;
+				DBLP = 0;
 				modify();
 				JOptionPane.showMessageDialog(frame,
 						"The PDF has been saved with latest changes.", null,
