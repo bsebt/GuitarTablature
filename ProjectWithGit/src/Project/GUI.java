@@ -69,6 +69,8 @@ public class GUI extends JFrame {
 		// private JPanel body;
 		SGBSF = new JTextField("75");
 		SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
+		STitleF = new JTextField(DataToArray.getsubTitle());
+		TitleF = new JTextField(DataToArray.getTitle());
 		EditorPanel = new JPanel(null);
 		STitleF = new JTextField(DataToArray.getsubTitle());
 		TitleF = new JTextField(DataToArray.getTitle());
