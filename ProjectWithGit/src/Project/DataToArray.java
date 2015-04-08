@@ -20,7 +20,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^([0-9]|\\||[A-Z])([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)";
+	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9]|\\|)";
 	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
@@ -106,7 +106,7 @@ public class DataToArray {
 				//	line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")
 				else if (line.matches(correctLine)) {
 
-					if((line.charAt(0)+"").matches("[0-9]")){
+					if((line.charAt(0)+"").matches("[0-9a-zA-Z]")){
 						//line = line.replace(line.charAt(0), '|');
 						line = "|" + line.substring(1);
 					}
@@ -125,21 +125,30 @@ public class DataToArray {
 		}
 
 		lines = ProperLines(lines);
-
-
-		lines = whiteSpaceRemover(lines);
-		lines = addDummyLines(lines, lines.get(lines.size()-1));
-		lines = changingNumToPipe(lines);
-		lines = sizeCutter(lines);
-		lines = Partitioning(lines);
-		
-
 //		for(int i = 0; i < lines.size(); i++)
 //		{	if(i%6 == 0){
 //			System.out.println();
 //		}
 //		System.out.println(lines.get(i));
 //		}
+		lines = whiteSpaceRemover(lines);
+
+		try{
+			lines = addDummyLines(lines, lines.get(lines.size()-1));
+		}catch(IndexOutOfBoundsException e){
+			System.out.println("empty file");
+		}
+		lines = changingNumToPipe(lines);
+		lines = sizeCutter(lines);
+		lines = Partitioning(lines);
+		
+
+		for(int i = 0; i < lines.size(); i++)
+		{	if(i%6 == 0){
+			System.out.println();
+		}
+		System.out.println(lines.get(i));
+		}
 
 		int temp = 0;
 		for (int z = 0; z < lines.size(); z = z + 6) {
@@ -290,7 +299,9 @@ public class DataToArray {
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("elnegrito.txt")};
 		File file4[] = {new File("UnevenLines.txt")};
-		DataToArray.textToArray(file3);
+		File file5[] = {new File("bohemianrhapsody.txt")};
+		
+		DataToArray.textToArray(file5);
 	}
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
@@ -325,7 +336,7 @@ public class DataToArray {
 					for(int j=i;j < i+6;j++){
 						if(!(lines.get(i).length() == lines.get(j).length())){
 							pack = false;
-						//	System.out.println("pack= "+pack);
+							//System.out.println("pack= "+pack);
 							break;
 						}
 					}
@@ -356,7 +367,7 @@ public class DataToArray {
 				}
 			}
 			lines1.add(adder.toString().trim());
-			//System.out.println(adder.toString().trim());
+			//	System.out.println(adder.toString().trim());
 		}
 		return lines1;
 	}
@@ -413,7 +424,7 @@ public class DataToArray {
 		}
 		return lines2;
 	}
-	
+
 
 	public static int getLargestNumber(char[][] list)
 	{
