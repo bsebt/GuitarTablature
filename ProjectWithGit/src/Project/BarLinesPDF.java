@@ -153,32 +153,7 @@ public class BarLinesPDF {
 			boolean doneWriting = false;
 			boolean lastBarred = false;
 			int firstBarOfLine = 0;
-			if (chars.size() >= 1) // As long as there is something in the file,
-			// trim the end to avoid extra repeating |
-			// symbols for the full line.
-			{
-				char[][] tempCharArray = chars.get(chars.size() - 1); // Get the
-				// last
-				// bar
-				for (int q = 0; q <= 5; q++) {
-					//tempCharArray[q][tempCharArray[0].length - 1] = '-'; // Set
-					// the
-					// character
-					// to
-					// '-'
-					// for
-					// the
-					// last
-					// column
-					// of
-					// each
-					// line
-				}
-				chars.set(chars.size() - 1, tempCharArray); // Reset the last
-				// bar to the new
-				// one we have
-				// changed.
-			}
+			
 			int rowSave[][] = { { 0, 0, DataToArray.getLargestNumber(chars.get(barPos)), 0, 0 },
 					{ 0, 0, chars.get(barPos)[1].length, 0, 0 },
 					{ 0, 0, chars.get(barPos)[2].length, 0, 0 },
@@ -266,6 +241,7 @@ public class BarLinesPDF {
 							// normaly a mistake or
 							// junk DataToArray.
 							// This is a quick fix
+								
 							{
 								colPos++;
 								if (colPos == barLength) {
@@ -307,7 +283,7 @@ public class BarLinesPDF {
 							} 
 							else if (arrayChar == '|') 
 							{
-								if (i - barSpacing > 0 && barPos < chars.size()-1)
+								if (i - barSpacing > 0 && barPos < chars.size())
 								{
 									if (InLeftSide(chars.get(barPos), colPos)) //We are on the left side of a bar looking to write
 									{
@@ -336,6 +312,17 @@ public class BarLinesPDF {
 												line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 												cb.moveTo(q, i + j);
 												cb.lineTo(q, i + j - barSpacing);
+												
+												if (chars.get(barPos)[rowPos][colPos+1] == '|' && colPos == 0)
+												{
+													char[][] tempCharArrayDoubleBar = chars.get(barPos);
+													tempCharArrayDoubleBar[rowPos][colPos+1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+													chars.set(barPos, tempCharArrayDoubleBar);
+												}
+											}
+											else
+											{
+												 q-= givenSpacing;
 											}
 										}
 									}
@@ -389,6 +376,30 @@ public class BarLinesPDF {
 											else
 											{
 												//This was already the end, do nothing.
+												if (barPos < chars.size()-1) //There is another bar, we should check it to see if there is a double bar
+												{
+													if ((DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing <= (pageWidth - marginRight - q)) 
+													{
+														//There is space for the next line, so we don't need it to draw it's own thick line
+														if (chars.get(barPos+1)[rowPos][0] == '|')
+														{
+															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+															tempCharArrayDoubleBar[rowPos][0] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar);
+														}
+														
+														if (chars.get(barPos+1)[rowPos][1] == '|')
+														{
+															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
+															tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
+															chars.set(barPos+1, tempCharArrayDoubleBar);
+														}
+													}
+													else
+													{
+														//The repeat is split across two bars, if there is at the bottom it will be handled by the left branch
+													}
+												}
 											}
 										}
 										else
@@ -396,17 +407,23 @@ public class BarLinesPDF {
 											//This is a normal line, draw a normal one.
 											if (colPos != 0 || firstBarOfLine == 0)
 											{
-												if (barPos < chars.size() -1)
+												if (barPos < chars.size()-1)
 												{
-													if (chars.get(barPos+1)[2][2] == '*' || (DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing > (pageWidth - marginRight - q))
-													{
-														//The next line is a repeat, so we'll collide with it unless we don't draw this. Do nothing
-													}
-													else //Draw a normal line
+													if (chars.get(barPos+1)[2][2] != '*')
 													{
 														line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
 														cb.moveTo(q, i + j);
 														cb.lineTo(q, i + j - barSpacing);
+													}
+													else if ((DataToArray.getLargestNumber(chars.get(barPos+1)) * givenSpacing) > (pageWidth - marginRight - q)) //Draw a normal line
+													{
+														line.drawLine(cb, 0f, 0f, 0f); // This is used to draw the lines, it allows cb.lineTo to function. Draws nothing on its own.
+														cb.moveTo(q, i + j);
+														cb.lineTo(q, i + j - barSpacing);
+													}
+													else
+													{
+														//The next line is a repeat, so we'll collide with it unless we don't draw this. Do nothing
 													}
 												}
 												else
@@ -443,8 +460,7 @@ public class BarLinesPDF {
 									if (rowPos == 5) {
 									if (!lastBarred) {
 									cb.moveTo(q, i + j);
-									cb.lineTo(q, i + j + barSpacing
-									* 5);// draw the very
+									//cb.lineTo(q, i + j + barSpacing * 5);// draw the very
 									// last bar line
 									lastBarred = true;
 									}
@@ -1084,23 +1100,7 @@ public class BarLinesPDF {
 												// are
 												// currently
 												// proccessing.
-												column.setSimpleColumn(
-														currentChar,
-														pageWidth - marginLeft
-																- 12
-																* noteFontSize,
-														i
-																+ j
-																+ noteFontSize
-																+ groupBarSpacing,
-														pageWidth - marginLeft,
-														i
-																+ j
-																+ noteFontSize
-																* 2
-																+ groupBarSpacing,
-														noteFontSize,
-														Element.ALIGN_LEFT); // Writes
+												column.setSimpleColumn(currentChar, pageWidth - marginLeft- 12 * noteFontSize, i+ j+ noteFontSize+ groupBarSpacing, pageWidth - marginLeft + 0 *noteFontSize, i+ j+ noteFontSize* 2+ groupBarSpacing,noteFontSize, Element.ALIGN_LEFT); // Writes
 												// the
 												// character
 												// curentChar
@@ -1121,10 +1121,10 @@ public class BarLinesPDF {
 												// currently
 												// proccessing.
 												column.setSimpleColumn(
-														currentChar, q - 12
+														currentChar, q - 8
 																* noteFontSize,
 														i + j + noteFontSize,
-														q, i + j + noteFontSize
+														q + 4*noteFontSize, i + j + noteFontSize
 																* 2,
 														noteFontSize,
 														Element.ALIGN_LEFT); // Writes
@@ -1539,7 +1539,7 @@ public class BarLinesPDF {
 	private static Boolean InLeftSide(char[][] array, int col)
 	{
 		int i = array[0].length/2;
-		if(col<i)
+		if(col<=i)
 		{
 			return true;
 		}
