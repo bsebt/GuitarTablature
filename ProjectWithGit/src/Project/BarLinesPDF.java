@@ -84,12 +84,14 @@ public class BarLinesPDF {
 	private static int totalRows;
 	private static int bars;
 	
-	private static float doubleBarLineWidth = 2;
 	private static float singleBarLineWidth = 1;
 
 	private static LineSeparator line = new LineSeparator();
 	private static DataToArray data;
 	public static String destination1;
+	
+	public static float doubleBarLineWidth = 2;
+	public static float doubleBarLinePreview = 2;
 
 	public static void convertPDF(File[] textFile, String Destination)
 			throws DocumentException, IOException// Convert() throws
@@ -116,6 +118,9 @@ public class BarLinesPDF {
 		// set methods rather than direct
 		// assignment
 		groupBarSpacing = GUI.getgroupbarspacing();
+		doubleBarLinePreview = GUI.getDBLP();
+		
+		
 		
 
 		Document document = new Document(PageSize.LETTER, marginLeft,
@@ -292,8 +297,8 @@ public class BarLinesPDF {
 											//This is a double bar line, draw a thick line
 											line.drawLine(cb, 0f, 0f, 0f);
 											cb.setLineWidth(doubleBarLineWidth);
-											cb.moveTo(q, i + j - (doubleBarLineWidth - 1));
-											cb.lineTo(q, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+											cb.moveTo(q, i + j - (doubleBarLinePreview - 1));
+											cb.lineTo(q, i + j - barSpacing + (doubleBarLinePreview - singleBarLineWidth));
 											cb.stroke();
 											cb.setLineWidth(singleBarLineWidth);
 											
@@ -346,8 +351,8 @@ public class BarLinesPDF {
 											cb.stroke();											
 											
 											cb.setLineWidth(doubleBarLineWidth);
-											cb.moveTo(q, i + j - (doubleBarLineWidth - 1));
-											cb.lineTo(q, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+											cb.moveTo(q, i + j - (doubleBarLinePreview - 1));
+											cb.lineTo(q, i + j - barSpacing + (doubleBarLinePreview - singleBarLineWidth));
 											cb.stroke();
 											cb.setLineWidth(singleBarLineWidth);
 											
@@ -884,8 +889,8 @@ public class BarLinesPDF {
 							{
 								line.drawLine(cb, 0f, 0f, 0f);
 								cb.setLineWidth(doubleBarLineWidth);
-								cb.moveTo(q - givenSpacing, i + j - (doubleBarLineWidth - 1));
-								cb.lineTo(q - givenSpacing, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
+								cb.moveTo(q - givenSpacing, i + j - (doubleBarLinePreview - 1));
+								cb.lineTo(q - givenSpacing, i + j - barSpacing + (doubleBarLinePreview - singleBarLineWidth));
 								cb.stroke();
 								cb.setLineWidth(singleBarLineWidth);
 								
