@@ -20,7 +20,7 @@ public class DataToArray {
 	public static String Title = "NO TITLE";
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
-	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9]|\\|)";
+	public static String correctLine = "^([0-9]|\\||[A-Z])([0-9]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+([0-9]|\\|)";
 	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
@@ -123,15 +123,17 @@ public class DataToArray {
 			}
 			input.close();
 		}
-		//		for(int i = 0; i < lines.size(); i++)
-		//		{	if(i%6 == 0){
-		//			System.out.println();
-		//		}
-		//		System.out.println(lines.get(i));
-		//		}
+
 		lines = ProperLines(lines);
 
-//
+
+		lines = whiteSpaceRemover(lines);
+		lines = addDummyLines(lines, lines.get(lines.size()-1));
+		lines = changingNumToPipe(lines);
+		lines = sizeCutter(lines);
+		lines = Partitioning(lines);
+		
+
 //		for(int i = 0; i < lines.size(); i++)
 //		{	if(i%6 == 0){
 //			System.out.println();
@@ -139,84 +141,9 @@ public class DataToArray {
 //		System.out.println(lines.get(i));
 //		}
 
-		ArrayList<String>lines1 = new ArrayList<String>();
-		String lastLine = "";
-		for(int i=0; i<lines.size() ; i++){
-			StringBuffer adder = new StringBuffer();
-			for(int j=0;j<lines.get(i).length();j++){
-				if(lines.get(i).charAt(j) != ' '){
-					adder.append((lines.get(i).charAt(j))+"");
-				}
-			}
-			lines1.add(adder.toString().trim());
-			lastLine = adder.toString().trim();
-			//System.out.println(adder.toString().trim());
-		}
-		lines1 = addDummyLines(lines1, lastLine);
-		for(int i=0; i<lines1.size() ; i=i+6){
-			//	System.out.println(i);
-			for(int j=0;j<lines1.get(i).length();j++){
-				if((lines1.get(i).charAt(j)+"").matches("[0-9]")){
-					if(lines1.get(i).charAt(j-1) == '|' && lines1.get(i+1).charAt(j) == '|'){
-						//System.out.println("ok");
-					}else if(lines1.get(i+1).charAt(j) == '|'){
-						lines1.set(i, lines1.get(i).replaceFirst(lines1.get(i).charAt(j)+"", "|"));
-					}		
-				}
-			}
-		}
-		//		for(int i = 0; i < lines1.size(); i++)
-		//		{	if(i%6 == 0){
-		//			System.out.println();
-		//		}
-		//			System.out.println(lines1.get(i));
-		//		}
-
-		for(int i=0; i<lines1.size() ; i=i+6){
-			int min=lines1.get(i).length();
-			if(!((lines1.get(i).length() == lines1.get(i+1).length()) && (lines1.get(i+2).length() == lines1.get(i+3).length()) && (lines1.get(i+4).length()==lines1.get(i+5).length()))){
-				for(int j=i;j < i+6;j++){
-					if(lines1.get(j).length()<min)
-						min = lines1.get(j).length();
-				}
-				for(int z=i;z <i+6 ;z++){
-					lines1.set(z, lines1.get(z).substring(0, min));
-					if(lines1.get(z).charAt(lines1.get(z).length()-1) != '|'){
-						lines1.set(z, lines1.get(z).substring(0, min-1)+"|");
-					}
-					System.out.println(lines1.get(z).substring(0, min));
-				}
-			}	
-		}
-
-		ArrayList<String> lines2 = new ArrayList<String>();
-		for(int i=0;i<lines1.size();i++){
-			//			System.out.println(lines1.get(i).indexOf('|', 2));
-			//			System.out.println(lines1.get(i).lastIndexOf('|'));
-			//			System.out.println(lines1.get(i).indexOf('|', 3));
-			//			System.out.println(lines1.get(i).lastIndexOf('|')-1);
-			//			System.out.println(lines1.get(i).length());
-			while((lines1.get(i).indexOf('|', 2)) != (lines1.get(i).length()-1) && (lines1.get(i).indexOf('|', 2))!= (lines1.get(i).length()-2)){
-				for(int j=i;j<i+6;j++){
-					//System.out.println(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
-					lines2.add(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
-					lines1.set(j, lines1.get(j).substring(lines1.get(j).indexOf('|', lines1.get(j).indexOf('|', 2))));
-				}
-			}
-			lines2.add(lines1.get(i));
-		}
-
-
-		//		for(int i = 0; i < lines2.size(); i++)
-		//		{	if(i%6 == 0){
-		//			System.out.println();
-		//		}
-		//			System.out.println(lines2.get(i));
-		//		}
-
 		int temp = 0;
-		for (int z = 0; z < lines2.size(); z = z + 6) {
-			if(lines2.size()-temp >= 6)
+		for (int z = 0; z < lines.size(); z = z + 6) {
+			if(lines.size()-temp >= 6)
 			{
 				c = new char[6][];
 			}
@@ -225,32 +152,18 @@ public class DataToArray {
 			//				c = new char[lines2.size()-temp][];
 			//			}
 			//temp++;
-			for (int i = 0; i < 6 && temp < lines2.size(); i++, temp++) 
+			for (int i = 0; i < 6 && temp < lines.size(); i++, temp++) 
 			{
-				c[i] = new char[lines2.get(temp).length()];
+				c[i] = new char[lines.get(temp).length()];
 
-				for (int j = 0; j < lines2.get(temp).length(); j++)
+				for (int j = 0; j < lines.get(temp).length(); j++)
 				{
-					c[i][j] = lines2.get(temp).charAt(j);
+					c[i][j] = lines.get(temp).charAt(j);
 					//System.out.println(c[i][j]);
 				}
 			}
 			chars.add(c);
 		}
-
-
-		/*		for (int i = 0; i < chars.size(); i++) 
-		{
-			for (int j = 0; j < chars.get(i).length; j++) 
-			{
-				for (int z = 0; z < chars.get(i)[j].length; z++) 
-				{
-
-				}
-			}
-		}*/
-
-
 
 		//	for (int t = 0; t < chars.size(); t++) // Check every element in the
 		//		// cars and split them up as
@@ -377,17 +290,7 @@ public class DataToArray {
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("elnegrito.txt")};
 		File file4[] = {new File("UnevenLines.txt")};
-		//		DataToArray.textToArray(file);
-		//		System.out.println("");
-		//		DataToArray.textToArray(file2);
-		//		System.out.println("");
-		//		DataToArray.textToArray(file3);
-		//		System.out.println("");
 		DataToArray.textToArray(file3);
-		// textToArray();
-		// DataToArray.textToArray(DataToArray.textFile);
-		// LengthOfPartition();
-		// DanielsPartition2(lines);
 	}
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
@@ -443,6 +346,74 @@ public class DataToArray {
 		}
 		return a;
 	}
+	public static ArrayList<String> whiteSpaceRemover(ArrayList<String> list){
+		ArrayList<String> lines1 = new ArrayList<String>();
+		for(int i=0; i<list.size() ; i++){
+			StringBuffer adder = new StringBuffer();
+			for(int j=0;j<list.get(i).length();j++){
+				if(list.get(i).charAt(j) != ' '){
+					adder.append((list.get(i).charAt(j))+"");
+				}
+			}
+			lines1.add(adder.toString().trim());
+			//System.out.println(adder.toString().trim());
+		}
+		return lines1;
+	}
+	public static ArrayList<String> changingNumToPipe(ArrayList<String> lines){
+		for(int i=0; i<lines.size() ; i=i+6){
+			//	System.out.println(i);
+			for(int j=0;j<lines.get(i).length();j++){
+				if((lines.get(i).charAt(j)+"").matches("[0-9]")){
+					if(lines.get(i).charAt(j-1) == '|' && lines.get(i+1).charAt(j) == '|'){
+						//System.out.println("ok");
+					}else if(lines.get(i+1).charAt(j) == '|'){
+						lines.set(i, lines.get(i).replaceFirst(lines.get(i).charAt(j)+"", "|"));
+					}		
+				}
+			}
+		}
+		return lines;
+	}
+	public static ArrayList<String> sizeCutter(ArrayList<String> lines1){
+		for(int i=0; i<lines1.size() ; i=i+6){
+			int min=lines1.get(i).length();
+			if(!((lines1.get(i).length() == lines1.get(i+1).length()) && (lines1.get(i+2).length() == lines1.get(i+3).length()) && (lines1.get(i+4).length()==lines1.get(i+5).length()))){
+				for(int j=i;j < i+6;j++){
+					if(lines1.get(j).length()<min)
+						min = lines1.get(j).length();
+				}
+				for(int z=i;z <i+6 ;z++){
+					lines1.set(z, lines1.get(z).substring(0, min));
+					if(lines1.get(z).charAt(lines1.get(z).length()-1) != '|'){
+						lines1.set(z, lines1.get(z).substring(0, min-1)+"|");
+					}
+					System.out.println(lines1.get(z).substring(0, min));
+				}
+			}	
+		}
+		return lines1;
+	}
+	public static ArrayList<String> Partitioning(ArrayList<String> lines1){
+		ArrayList<String> lines2 = new ArrayList<String>();
+		for(int i=0;i<lines1.size();i++){
+			//			System.out.println(lines1.get(i).indexOf('|', 2));
+			//			System.out.println(lines1.get(i).lastIndexOf('|'));
+			//			System.out.println(lines1.get(i).indexOf('|', 3));
+			//			System.out.println(lines1.get(i).lastIndexOf('|')-1);
+			//			System.out.println(lines1.get(i).length());
+			while((lines1.get(i).indexOf('|', 2)) != (lines1.get(i).length()-1) && (lines1.get(i).indexOf('|', 2))!= (lines1.get(i).length()-2)){
+				for(int j=i;j<i+6;j++){
+					//System.out.println(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
+					lines2.add(lines1.get(j).substring(0,lines1.get(j).indexOf('|', 2)) + "|");
+					lines1.set(j, lines1.get(j).substring(lines1.get(j).indexOf('|', lines1.get(j).indexOf('|', 2))));
+				}
+			}
+			lines2.add(lines1.get(i));
+		}
+		return lines2;
+	}
+	
 
 	public static int getLargestNumber(char[][] list)
 	{
