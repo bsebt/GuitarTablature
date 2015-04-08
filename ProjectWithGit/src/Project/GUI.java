@@ -113,7 +113,7 @@ public class GUI extends JFrame {
 				int response = fc.showOpenDialog(GUI.this);
 				if (response == JFileChooser.APPROVE_OPTION) {
 					//System.out.println(fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().indexOf("."), fc.getSelectedFile().getName().length()));
-					//if(fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().indexOf("."), fc.getSelectedFile().getName().length()).equals(".txt")){
+					if(fc.getSelectedFile().getName().substring(fc.getSelectedFile().getName().indexOf("."), fc.getSelectedFile().getName().length()).equals(".txt")){
 						list = fc.getSelectedFiles();
 						input.setText(fc.getSelectedFile().getPath());
 						name.setText(fc.getSelectedFile().getName());
@@ -131,12 +131,12 @@ public class GUI extends JFrame {
 						OpenerPanel.add(ExitB);
 						frame.add(OpenerPanel);
 						frame.setResizable(false);
-//					}else{
-//						JOptionPane.showMessageDialog(frame,
-//								"There are no files selected or ",
-//								"ASCII Tablature to PDF Message",
-//								JOptionPane.INFORMATION_MESSAGE, null);
-					//}
+					}else{
+						JOptionPane.showMessageDialog(frame,
+								"This file cannot be opened",
+								"Error: Not a text file",
+								JOptionPane.INFORMATION_MESSAGE, null);
+					}
 					
 					
 				}
@@ -171,8 +171,8 @@ public class GUI extends JFrame {
 				TitleF.setText(DataToArray.getTitle());
 				STitleF.setText(DataToArray.getsubTitle());
 				try {
-					BarLinesPDF.convertPDF(list, (destination.getText() + "/"
-							+ name.getText() + ".pdf"));
+					System.out.println(destination.getText() + "/" + name.getText() + ".pdf");
+					BarLinesPDF.convertPDF(list, (destination.getText() + "/" + name.getText() + ".pdf"));
 					JOptionPane.showMessageDialog(frame, "Conversion Complete",
 							"ASCII Tablature to PDF Message",
 							JOptionPane.INFORMATION_MESSAGE, null);

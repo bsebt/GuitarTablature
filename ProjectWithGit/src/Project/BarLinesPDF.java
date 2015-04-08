@@ -216,8 +216,11 @@ public class BarLinesPDF {
 					// co-ords for this line
 					// of music
 					lastWriteY = rowSave[rowPos][4];
-
-					arrayChar = chars.get(barPos)[rowPos][colPos];
+					System.out.println("barpos = " + barPos);
+					if (barPos < chars.size())
+					{
+						arrayChar = chars.get(barPos)[rowPos][colPos];
+					}
 
 					boolean noSpaceAvailable = false; // Used to check if there
 					// is enough space to
@@ -481,7 +484,7 @@ public class BarLinesPDF {
 									colPos = 0;
 									barPos++;
 									if (barPos < chars.size()) {
-									if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth
+									if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) >= (pageWidth
 									- marginRight - q)) {
 									noSpaceAvailable = true;
 									if (rowPos != 5) {

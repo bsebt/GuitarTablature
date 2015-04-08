@@ -201,9 +201,9 @@ public class DataToArray {
 		
 		for(int i = 0; i < lines2.size(); i++)
 		{	if(i%6 == 0){
-			//System.out.println();
+			System.out.println();
 		}
-			//System.out.println(lines2.get(i));
+			System.out.println(lines2.get(i));
 		}
 		
 		int temp = 0;
@@ -212,14 +212,17 @@ public class DataToArray {
 			{
 				c = new char[6][];
 			}
-			else
-			{
-				c = new char[lines2.size()-temp][];
-			}
+//			else
+//			{
+//				c = new char[lines2.size()-temp][];
+//			}
 			//temp++;
-			for (int i = 0; i < 6 && temp < lines2.size(); i++, temp++) {
+			for (int i = 0; i < 6 && temp < lines2.size(); i++, temp++) 
+			{
 				c[i] = new char[lines2.get(temp).length()];
-				for (int j = 0; j < lines2.get(temp).length(); j++) {
+				
+				for (int j = 0; j < lines2.get(temp).length(); j++)
+				{
 					c[i][j] = lines2.get(temp).charAt(j);
 					//System.out.println(c[i][j]);
 				}
@@ -228,13 +231,16 @@ public class DataToArray {
 		}
 		
 		
-		for (int i = 0; i < chars.size(); i++) {
-			for (int j = 0; j < chars.get(i).length; j++) {
-				for (int z = 0; z < chars.get(i)[j].length; z++) {
+/*		for (int i = 0; i < chars.size(); i++) 
+		{
+			for (int j = 0; j < chars.get(i).length; j++) 
+			{
+				for (int z = 0; z < chars.get(i)[j].length; z++) 
+				{
 
 				}
 			}
-		}
+		}*/
 		
 		
 		
@@ -303,12 +309,12 @@ public class DataToArray {
 	
 		// Test to see printed lines
 		for (int i = 0; i < chars.size(); i++) {
-			//System.out.println(Arrays.deepToString(chars.get(i)));
+			System.out.println(Arrays.deepToString(chars.get(i)));
 		}
 	
 		// Test to see if characters properly placed in 2-d array.
 		for (int i = 0; i < newchars.size(); i++) {
-			// System.out.println(Arrays.deepToString(newchars.get(i)));
+			//] System.out.println(Arrays.deepToString(newchars.get(i)));
 		}
 	
 		return chars;
@@ -360,7 +366,7 @@ public class DataToArray {
 	IOException {
 		File file[] = {new File("ExtraWhiteSpaces.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
-		File file3[] = {new File("bohemianrhapsody.txt")};
+		File file3[] = {new File("WhitespaceInLine.txt")};
 		File file4[] = {new File("UnevenLines.txt")};
 //		DataToArray.textToArray(file);
 //		System.out.println("");
