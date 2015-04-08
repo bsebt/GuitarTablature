@@ -352,7 +352,7 @@ public class GUI extends JFrame {
 		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
 
-		JLabel SGBSL = new JLabel("Set Group Bar Spacing: Range Between 50-90");
+		JLabel SGBSL = new JLabel("Set Line Spacing (50-90)");
 		SGBSL.setBounds(0, 190, 375, 30);
 		EditorPanel.add(SGBSL);
 
@@ -365,7 +365,7 @@ public class GUI extends JFrame {
 		SGBSF.setBounds(285, 220, 40, 30);
 		EditorPanel.add(SGBSF);
 
-		JLabel SGSPL = new JLabel("Set The Given Spacing: Range Between 2-10");
+		JLabel SGSPL = new JLabel("Set Note Spacing (2-10)");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
@@ -402,7 +402,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(SWSF);
 		setWhiteSpace.setBounds(5, 330, 280, 30);
 		EditorPanel.add(setWhiteSpace);
-		JLabel SWSL = new JLabel("Set White Space: Range between 1-10");
+		JLabel SWSL = new JLabel("Set Note Whitespace (1-5)");
 		SWSL.setBounds(0, 300, 320, 30);
 		EditorPanel.add(SWSL);
 
@@ -423,7 +423,7 @@ public class GUI extends JFrame {
 		});
 
 		final JSlider setBarSpacing = new JSlider(4, 10, 7);
-		JLabel SBSL = new JLabel("Set Bar Spacing: Range between 1-10");
+		JLabel SBSL = new JLabel("Set Line Height (4-10)");
 		SBSL.setBounds(0, 360, 380, 30);
 		EditorPanel.add(SBSL);
 
@@ -493,7 +493,7 @@ public class GUI extends JFrame {
 			}
 		});
 
-		JLabel SNFL = new JLabel("Set Note Font Size: Range between 2-10");
+		JLabel SNFL = new JLabel("Set Note Font Size (9-15)");
 		SNFL.setBounds(0, 415, 380, 30);
 		setNoteFontSize.setBounds(0, 445, 280, 30);
 
