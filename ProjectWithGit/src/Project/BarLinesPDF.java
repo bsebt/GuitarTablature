@@ -84,7 +84,7 @@ public class BarLinesPDF {
 	private static int totalRows;
 	private static int bars;
 	
-	private static float doubleBarLineWidth = 3;
+	private static float doubleBarLineWidth = 2;
 	private static float singleBarLineWidth = 1;
 
 	private static LineSeparator line = new LineSeparator();
@@ -296,6 +296,12 @@ public class BarLinesPDF {
 											cb.lineTo(q, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
 											cb.stroke();
 											cb.setLineWidth(singleBarLineWidth);
+											
+											cb.moveTo(q+givenSpacing, i + j);
+											cb.lineTo(q+givenSpacing, i + j - barSpacing);
+											cb.stroke();
+											
+											q+=givenSpacing;
 											//We also must get rid of the line that will be drawn after, because it is already taken care of
 											if (chars.get(barPos)[rowPos][1] == '|')
 											{
@@ -331,7 +337,14 @@ public class BarLinesPDF {
 										if (chars.get(barPos)[2][colPos-1] == '*')
 										{
 											//There should be a double line, draw a thick line
+											q+=givenSpacing;
+											
 											line.drawLine(cb, 0f, 0f, 0f);
+											cb.setLineWidth(singleBarLineWidth);
+											cb.moveTo(q-givenSpacing, i + j);
+											cb.lineTo(q-givenSpacing, i + j - barSpacing);
+											cb.stroke();											
+											
 											cb.setLineWidth(doubleBarLineWidth);
 											cb.moveTo(q, i + j - (doubleBarLineWidth - 1));
 											cb.lineTo(q, i + j - barSpacing + (doubleBarLineWidth - singleBarLineWidth));
@@ -366,6 +379,16 @@ public class BarLinesPDF {
 															tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
 															chars.set(barPos+1, tempCharArrayDoubleBar);
 														}
+														
+														if (chars.get(barPos+1)[2][2] == '*')
+														{
+															line.drawLine(cb, 0f, 0f, 0f);
+															cb.setLineWidth(singleBarLineWidth);
+															cb.moveTo(q+givenSpacing, i + j);
+															cb.lineTo(q+givenSpacing, i + j - barSpacing);
+															cb.stroke();
+															q+=givenSpacing;
+														}
 													}
 													else
 													{
@@ -380,7 +403,7 @@ public class BarLinesPDF {
 												{
 													if ((DataToArray.getLargestNumber(chars.get(barPos+1))) * givenSpacing <= (pageWidth - marginRight - q)) 
 													{
-														//There is space for the next line, so we don't need it to draw it's own thick line
+														//There is space for the next bar, so we don't need it to draw it's own thick line
 														if (chars.get(barPos+1)[rowPos][0] == '|')
 														{
 															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
@@ -393,6 +416,16 @@ public class BarLinesPDF {
 															char[][] tempCharArrayDoubleBar = chars.get(barPos+1);
 															tempCharArrayDoubleBar[rowPos][1] = '&'; // Set the bar to an empty space so it is ignored when we get to it, so everything lines up properly
 															chars.set(barPos+1, tempCharArrayDoubleBar);
+														}
+														
+														if (chars.get(barPos+1)[2][2] == '*')
+														{
+															line.drawLine(cb, 0f, 0f, 0f);
+															cb.setLineWidth(singleBarLineWidth);
+															cb.moveTo(q+givenSpacing, i + j);
+															cb.lineTo(q+givenSpacing, i + j - barSpacing);
+															cb.stroke();
+															q+=givenSpacing;
 														}
 													}
 													else
