@@ -21,11 +21,11 @@ import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.text.pdf.draw.LineSeparator;
 
 public class BarLinesPDF {
-	// public static String DEST; //Destination, this should be changed
+	 // public static String DEST; //Destination, this should be changed
 	// according to the GUI
-
-	public static String TITLE_STRING = DataToArray.getTitle();
-	public static String COMPOSER_STRING = DataToArray.getsubTitle();
+	public static DataToArray a = new DataToArray();
+	public static String TITLE_STRING = GUI.getTitle1();
+	public static String COMPOSER_STRING = GUI.getsubTitle1();
 
 	private static final float marginLeft = 50.0f; // Note original margins are
 	// 36.0f for letter size
@@ -37,30 +37,15 @@ public class BarLinesPDF {
 	public static Font titleFont = new Font(FontFamily.HELVETICA, 30);
 	public static Font composerFont = new Font(FontFamily.HELVETICA, 14);
 	public static Font numberFont = new Font(FontFamily.HELVETICA, 9);
-	public static Paragraph title = new Paragraph(TITLE_STRING, titleFont);
-	public static Paragraph composer = new Paragraph(COMPOSER_STRING,
-			composerFont);
+	public static Paragraph title;
+	public static Paragraph composer;
+		//	composerFont);
 
 	private static Phrase currentChar;
 	private static float noteFontSize = 9; // Size of the characters to be
 	// written to the page
-	private static float givenSpacing = (float) DataToArray.getSpacing(); // The
-	// spacing
-	// given
-	// at
-	// the
-	// start
-	// of
-	// the
-	// program,
-	// change
-	// to
-	// variable
-	// once
-	// we
-	// read
-	// it
-	// in
+	private static float givenSpacing = (float) a.getSpacing(); // The
+	// spacing given at the start of the program, change to variable once we read it in
 	private static int barSpacing = 7; // Space between individual lines to be
 	// drawn
 	private static float whiteSpace = 1.0f; // Space around a written number
@@ -99,12 +84,13 @@ public class BarLinesPDF {
 	// IOException
 	{
 
-		chars = DataToArray.textToArray(textFile); // Gets the array of
+		a = new DataToArray(textFile);
+		chars = a.getChars(); // Gets the array of
 		// information
-		maxCol = DataToArray.getMaxColumnAmount();
-		totalRows = DataToArray.getTotalRowAmount();
-		TITLE_STRING = GUI.getTitle1();
-		COMPOSER_STRING = GUI.getsubTitle1();
+		maxCol = a.getMaxColumnAmount();
+		totalRows = a.getTotalRowAmount();
+		TITLE_STRING = a.getTitle();
+		COMPOSER_STRING = a.getsubTitle();
 		titleFont = FontFactory.getFont(GUI.getFont1(), 30);
 		composerFont = FontFactory.getFont(GUI.getFont1(), 14);
 		numberFont = FontFactory.getFont(GUI.getFont1(), GUI.getnotefont());

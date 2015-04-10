@@ -14,7 +14,7 @@ public class DataToArray {
 	public static char[][] c;
 	public static char[][] c1;
 	public static ArrayList<String> lines = new ArrayList<String>();
-	public static ArrayList<char[][]> chars = new ArrayList<char[][]>();
+	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
 	public static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
 	public static String textFile = "MoonlightSonata.txt";
 	public static String Title = "NO TITLE";
@@ -27,46 +27,16 @@ public class DataToArray {
 
 	private static int col;
 
-	//	public static ArrayList<char[][]> TrimElement(ArrayList<char[][]> uncutArray) 
-	//	{
-	//		int actualLength = 0;
-	//		ArrayList<char[][]> newCharList = new ArrayList<>();
-	//		char[][] newElement = 
-	//		for (int p = 0; p < chars.size(); p++) {
-	//			for (int j=0;j<chars.get(p).length; j++){
-	//				for(int i =0; i< chars.get(p)[j].length;i++)
-	//					if()
-	//					System.out.println((chars.get(p))[j][i]);
-	//			}
-	//		}
-	//	}
-
-	//		
-	//		for (int a = 0; a < element[0].length; a++) // Go through the full
-	//		{
-	//			if (element[a][a] != '\u0000') {
-	//				actualLength++;
-	//			}
-	//			// System.out.println(a);
-	//		}
-	//
-	//		
-	//		for (int b = 0; b < 6; b++) {
-	//			int actualColumn = 0;
-	//			for (int a = 0; a < element[0].length; a++) {
-	//				if (element[b][a] != '\u0000') {
-	//					// System.out.println("a: " + a + " b: " + b + " Ac: " +
-	//					// actualColumn);
-	//					newestElement[b][actualColumn] = element[b][a];
-	//					actualColumn++;
-	//				}
-	//			}
-	//		}
-	//	return newestElement;
-	//}
 
 
-	public static ArrayList<char[][]> textToArray(File[] source)
+	public DataToArray(){
+		Title = "NO TITLE";
+		SubTitle = "NO SUBTITLE";
+		Spacing = 8.0f;
+			
+	}
+
+	public DataToArray(File[] source)
 			throws DocumentException, IOException {
 		lines = new ArrayList<String>();
 		chars = new ArrayList<char[][]>();
@@ -84,11 +54,15 @@ public class DataToArray {
 			input = new BufferedReader(new FileReader(name));
 			while (null != (line = input.readLine())) {
 				line = line.trim();
+				//System.out.print()
 				if (line.contains("SUBTITLE")) {
 					SubTitle = line.substring(line.indexOf('=') + 1,
 							line.length());
 				} else if (line.contains("TITLE")) {
-					Title = line.substring(line.indexOf('=') + 1, line.length());
+					setTitle(line.substring(line.indexOf('=') + 1, line.length()));
+					System.out.println(Title);
+					
+					//Title = line.substring(line.indexOf('=') + 1, line.length());
 				}
 				else if (line.contains("SPACING")) {
 					Spacing = Float.parseFloat(line.substring(
@@ -111,49 +85,41 @@ public class DataToArray {
 						line = "|" + line.substring(1);
 					}
 					try{
-						lines.add(line.substring(0, line.lastIndexOf('|') + 2));
+						lines.add(line.substring(0, line.lastIndexOf('|') + 2)); //making sure to add repeat bars
 						//System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 					}catch(StringIndexOutOfBoundsException e){
-						lines.add(line.substring(0, line.lastIndexOf('|') + 1));
+						lines.add(line.substring(0, line.lastIndexOf('|') + 1)); //to catch the out of boundaries for lines that dont have repeat
 						//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 					}
 				}else{
-					//System.out.println("ignore: "+line);
+					//System.out.println("ignore: "+line); // this is just to see what lines get ignored, for debugging.
 				}
 			}
 			input.close();
 		}
-//		for(int i = 0; i < lines.size(); i++)
-//		{	if(i%6 == 0){
-//			//System.out.println();
-//		}
-//		System.out.println(lines.get(i));
-//		}
-		lines = ProperLines(lines);
-		for(int i = 0; i < lines.size(); i++)
-		{	if(i%6 == 0){
-			System.out.println();
-		}
-		System.out.println(lines.get(i));
-		}
-		lines = whiteSpaceRemover(lines);
 
-		try{
-			lines = addDummyLines(lines, lines.get(lines.size()-1));
-		}catch(IndexOutOfBoundsException e){
-			System.out.println("empty file");
-		}
-		lines = changingNumToPipe(lines);
-		lines = sizeCutter(lines);
-		lines = Partitioning(lines);
-		
-
+		lines = whiteSpaceRemover(lines); // removes all the in line extra white spaces.
 //		for(int i = 0; i < lines.size(); i++)
 //		{	if(i%6 == 0){
 //			System.out.println();
 //		}
 //		System.out.println(lines.get(i));
 //		}
+		try{
+			lines = addDummyLines(lines, lines.get(lines.size()-1)); // adds empty lines to the input only if input has any lines, makes number of
+			lines = ProperLines(lines);
+			
+			lines = sizeCutter(lines);
+			
+			lines = changingNumToPipe(lines);
+			
+			lines = Partitioning(lines);																 // lines divisable by 6.
+		}catch(Exception e){
+			System.out.println("empty file");
+		}
+	
+	
+	
 
 		int temp = 0;
 		for (int z = 0; z < lines.size(); z = z + 6) {
@@ -163,7 +129,7 @@ public class DataToArray {
 			}
 			//			else
 			//			{
-			//				c = new char[lines2.size()-temp][];
+			//				c = new char[lines2.size()-temp][]; // assuming all the lines must have 6lines at this point.
 			//			}
 			//temp++;
 			for (int i = 0; i < 6 && temp < lines.size(); i++, temp++) 
@@ -178,81 +144,6 @@ public class DataToArray {
 			}
 			chars.add(c);
 		}
-
-		//	for (int t = 0; t < chars.size(); t++) // Check every element in the
-		//		// cars and split them up as
-		//		// needed
-		//	{
-		//		boolean alreadyBottomed = true;
-		//		char[][] d = new char[6][100]; // Make it as long
-		//		// as the old
-		//		// element, and
-		//		// we'll trim it
-		//		// later
-		//		int w=0;
-		//		for (int v = 0; v < chars.get(t)[w].length; v++) // Read every
-		//			// column
-		//		{
-		//
-		//			for (w=w ;w < chars.get(t).length; w++) // Then read every row
-		//			{	
-		//				
-		//				char currentChar = chars.get(t)[w][v];
-		//				//System.out.println(chars.get(t)[w].length);
-		//
-		//				 System.out.println("w: " + w + " v: " + v);
-		//				d[w][v] = currentChar;
-		//				if (w == 5 && currentChar == '|' && !alreadyBottomed) 
-		//				{
-		//					v--; // The last column should be printed in twice, so
-		//					// back up one and do this column again
-		//					newchars.add(d); // Add the new element to the list
-		//					d = new char[6][chars.get(t)[w].length]; // Reset the
-		//					// array we
-		//					// are
-		//					// writing
-		//					// so it is
-		//					// blank
-		//					alreadyBottomed = true;
-		//				}
-		//				if (w == 5 && currentChar != '|' && alreadyBottomed) 
-		//				{
-		//					alreadyBottomed = false;
-		//				}
-		//			}
-		//		}
-		//		/*
-		//			if (alreadyBottomed)
-		//			{
-		//				newchars.add(d);
-		//				d = new char[6][chars.get(t)[0].length];
-		//			}
-		//		 */
-		//	}
-		//
-		//		ArrayList<char[][]> finalChars = new ArrayList<char[][]>();
-		//
-		//		for (int p = 0; p < newchars.size(); p++) {
-		//			finalChars.add(TrimElement(newchars.get(p))); // Trim every element
-		//			// to remove extra
-		//			// white space, all
-		//			// elements should
-		//			// now only contain
-		//			// characters and be
-		//			// the proper length
-		//		}
-
-		// Test to see printed lines
-		//		for (int i = 0; i < chars.size(); i++) {
-		//			System.out.println(Arrays.deepToString(chars.get(i)));
-		//		}
-		//	
-		// Test to see if characters properly placed in 2-d array.
-		for (int i = 0; i < newchars.size(); i++) {
-			//] System.out.println(Arrays.deepToString(newchars.get(i)));
-		}
-
-		return chars;
 	}
 
 
@@ -273,41 +164,46 @@ public class DataToArray {
 
 
 
-	public static int getMaxColumnAmount() {
+	public int getMaxColumnAmount() {
 		return DataToArray.col;
 	}
 
-	public static int getTotalRowAmount() {
+	public int getTotalRowAmount() {
 		return DataToArray.lines.size();
 	}
 
-	public static int getBarAmount() {
+	public int getBarAmount() {
 		return DataToArray.lines.size() / 6;
 	}
 
-	public static String getTitle() {
+	public  String getTitle() {
 		return Title;
 	}
 
-	public static String getsubTitle() {
+	public String getsubTitle() {
 		return SubTitle;
 	}
 
-	public static float getSpacing() {
+	public float getSpacing() {
 		return Spacing;
 	}
 
 
 	public static void main(String[] args) throws DocumentException,
 	IOException {
-		File file[] = {new File("ExtraWhiteSpaces.txt")};
+		File file[] = {new File("Prose.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("elnegrito.txt")};
 		File file4[] = {new File("UnevenLines.txt")};
 		File file5[] = {new File("bohemianrhapsody.txt")};
 		
-		DataToArray.textToArray(file3);
+		new DataToArray(file);
 	}
+	public ArrayList<char[][]> getChars(){
+		return chars;
+	}
+	
+	
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
 		String dummy = "";
@@ -334,12 +230,17 @@ public class DataToArray {
 	private static ArrayList<String> ProperLines(ArrayList<String> lines){
 		ArrayList<String> a = new ArrayList<String>();
 		boolean pack =true;
-		try{
-			for(int i=0;i<lines.size();i++){
+		
+			for(int i=0;lines.size()-i>=6;i++){
 				pack =true;
-				if(lines.get(i).length() == lines.get(i+1).length()){
+				String a1 = lines.get(i).trim().substring(0, lines.get(i).indexOf('|',2)+1);
+				//System.out.println(a1);
+				String a2 = lines.get(i+1).trim().substring(0, lines.get(i+1).indexOf('|',2)+1);
+				if(a1.length() == a2.length()){
 					for(int j=i;j < i+6;j++){
-						if(!(lines.get(i).trim().length() == lines.get(j).trim().length())){
+						a1 = lines.get(i).trim().substring(0, lines.get(i).indexOf('|',3)+1);
+						a2 = lines.get(j).trim().substring(0, lines.get(j).indexOf('|',3)+1);
+						if(!(a1.length() == a2.length())){
 							pack = false;
 							//System.out.println("fail= "+lines.get(j));
 							//System.out.println("pack= "+pack);
@@ -359,9 +260,7 @@ public class DataToArray {
 					//System.out.println("first fail");
 					continue;
 				}
-			}
-		}catch(IndexOutOfBoundsException e){
-			return a;
+			//return a;
 		}
 		return a;
 	}
@@ -385,7 +284,7 @@ public class DataToArray {
 			for(int j=0;j<lines.get(i).length();j++){
 				if((lines.get(i).charAt(j)+"").matches("[0-9]")){
 					if(lines.get(i).charAt(j-1) == '|' && lines.get(i+1).charAt(j) == '|'){
-						//System.out.println("ok");
+						System.out.println("ok"+lines.get(i));
 					}else if(lines.get(i+1).charAt(j) == '|'){
 						lines.set(i, lines.get(i).replaceFirst(lines.get(i).charAt(j)+"", "|"));
 					}		
@@ -431,6 +330,9 @@ public class DataToArray {
 			lines2.add(lines1.get(i));
 		}
 		return lines2;
+	}
+	public static void setTitle(String s){
+		Title = s;
 	}
 
 

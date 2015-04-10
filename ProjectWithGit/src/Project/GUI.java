@@ -1,28 +1,13 @@
 package Project;
 
-import javax.annotation.processing.FilerException;
 import javax.swing.*;
-import javax.swing.Timer;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.tools.JavaFileManager;
-
 import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfDocument.Destination;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.TileObserver;
 import java.io.*;
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.util.*;
 import java.awt.*;
 
 public class GUI extends JFrame {
@@ -32,7 +17,7 @@ public class GUI extends JFrame {
 	public static void main(String[] args) {
 		new GUI();
 	}
-
+	public static DataToArray a = new DataToArray();
 	public static JTextField input = new JTextField();
 	public static JFrame frame = new JFrame(
 			"Convert Guitar Notes to PDF Format");
@@ -41,11 +26,10 @@ public class GUI extends JFrame {
 	private PreviewPan preview;
 	// JPanel body;
 	public static JTextField SGBSF = new JTextField("75");
-	public static JTextField SGSPF = new JTextField(Double.toString(DataToArray
-			.getSpacing()));
+	public static JTextField SGSPF = new JTextField(Float.toString(a.getSpacing()));
 	static JPanel EditorPanel = new JPanel(null);
-	public static JTextField STitleF = new JTextField(DataToArray.getsubTitle());
-	public static JTextField TitleF = new JTextField(DataToArray.getTitle());
+	public static JTextField STitleF = new JTextField(a.getsubTitle());
+	public static JTextField TitleF = new JTextField(a.getTitle());
 	public static String inputname;
 	public static String deskeeper;
 	public static JTextField SWSF = new JTextField("1.0");
@@ -56,6 +40,7 @@ public class GUI extends JFrame {
 	public static int index;
 	public static int DBLP = 2;
 	public static int DBLPO = 2;
+	
 
 	// private static JTextField source = new JTextField();
 
@@ -68,12 +53,12 @@ public class GUI extends JFrame {
 		PreviewPan preview;
 		// private JPanel body;
 		SGBSF = new JTextField("75");
-		SGSPF = new JTextField(Double.toString(DataToArray.getSpacing()));
-		STitleF = new JTextField(DataToArray.getsubTitle());
-		TitleF = new JTextField(DataToArray.getTitle());
+		SGSPF = new JTextField(Double.toString(a.getSpacing()));
+		STitleF = new JTextField(a.getsubTitle());
+		TitleF = new JTextField(a.getTitle());
 		EditorPanel = new JPanel(null);
-		STitleF = new JTextField(DataToArray.getsubTitle());
-		TitleF = new JTextField(DataToArray.getTitle());
+//		STitleF = new JTextField(DataToArray.getsubTitle());
+//		TitleF = new JTextField(DataToArray.getTitle());
 		SWSF = new JTextField("1.0");
 		SBSF = new JTextField("7");
 		SNFF = new JTextField("9");
@@ -120,6 +105,18 @@ public class GUI extends JFrame {
 						input.setText(fc.getSelectedFile().getPath());
 						name.setText(fc.getSelectedFile().getName());
 						destination.setText(list[0].getParent());
+						try {
+							a = new DataToArray(list);
+						} catch (DocumentException | IOException e1) {
+							JOptionPane.showMessageDialog(frame,
+									"There are no files selected.",
+									"ASCII Tablature to PDF Message",
+									JOptionPane.INFORMATION_MESSAGE, null);
+							EditorPanel.removeAll();
+							frame.removeAll();
+							frame.setVisible(false);
+							new GUI();
+						}
 						frame.setResizable(true);
 						OpenerPanel.removeAll();
 						frame.setSize(320, 200);
@@ -150,28 +147,15 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				try {
-					DataToArray.textToArray(list);
-				} catch (DocumentException | IOException | NullPointerException e2) {
-
-					JOptionPane.showMessageDialog(frame,
-							"There are no files selected.",
-							"ASCII Tablature to PDF Message",
-							JOptionPane.INFORMATION_MESSAGE, null);
-					EditorPanel.removeAll();
-					frame.removeAll();
-					frame.setVisible(false);
-					new GUI();
-				}
 				inputname = list[0].getName();
 				deskeeper = destination.getText();
 				StringBuffer buffer = new StringBuffer(list[0].getName()
 						.substring(0, list[0].getName().indexOf('.')));
 				System.out.println(buffer);
 				name.setText(buffer.toString());
-				SGSPF.setText(Double.toString(DataToArray.getSpacing()));
-				TitleF.setText(DataToArray.getTitle());
-				STitleF.setText(DataToArray.getsubTitle());
+				SGSPF.setText(Double.toString(a.getSpacing()));
+				TitleF.setText(a.getTitle());
+				STitleF.setText(a.getsubTitle());
 				try {
 					System.out.println(destination.getText() + "/" + name.getText() + ".pdf");
 					BarLinesPDF.convertPDF(list, (destination.getText() + "/" + name.getText() + ".pdf"));
@@ -284,10 +268,10 @@ public class GUI extends JFrame {
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
 				list[0].getName().indexOf('.')));
 		name.setText(buffer.toString());
-		DataToArray.textToArray(list);
-		SGSPF.setText(Float.toString(DataToArray.getSpacing()));
-		TitleF.setText(DataToArray.getTitle());
-		STitleF.setText(DataToArray.getsubTitle());
+		//DataToArray.textToArray(list);
+		SGSPF.setText(Double.toString(a.getSpacing()));
+		TitleF.setText(a.getTitle());
+		STitleF.setText(a.getsubTitle());
 		BarLinesPDF.convertPDF(list,
 				(destination.getText() + "/" + name.getText() + ".pdf"));
 		preview();
@@ -343,14 +327,14 @@ public class GUI extends JFrame {
 		EditorPanel.add(TitleL);
 
 		TitleF.setBounds(40, 110, 200, 30);
-		TitleF.setText(DataToArray.getTitle());
+		TitleF.setText(a.getTitle());
 		EditorPanel.add(TitleF);
 
 		JLabel STitleL = new JLabel("Subtitle:");
 		STitleL.setBounds(0, 150, 200, 30);
 		EditorPanel.add(STitleL);
 
-		STitleF.setText(DataToArray.getsubTitle());
+		STitleF.setText(a.getsubTitle());
 		STitleF.setBounds(65, 150, 255, 30);
 		EditorPanel.add(STitleF);
 
@@ -448,9 +432,9 @@ public class GUI extends JFrame {
 				// TODO Auto-generated method stub
 
 				SGBSF.setText("75");
-				SGSPF.setText(Float.toString(DataToArray.getSpacing()));
-				STitleF.setText(DataToArray.getsubTitle());
-				TitleF.setText(DataToArray.getTitle());
+				SGSPF.setText(Double.toString(a.getSpacing()));
+				STitleF.setText(a.getsubTitle());
+				TitleF.setText(a.getTitle());
 				SWSF.setText("1.0");
 				SBSF.setText("7");
 				SNFF.setText("9");
