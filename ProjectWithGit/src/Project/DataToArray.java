@@ -99,26 +99,30 @@ public class DataToArray {
 		}
 
 		lines = whiteSpaceRemover(lines); // removes all the in line extra white spaces.
-//		for(int i = 0; i < lines.size(); i++)
-//		{	if(i%6 == 0){
-//			System.out.println();
-//		}
-//		System.out.println(lines.get(i));
-//		}
-		try{
-			lines = addDummyLines(lines, lines.get(lines.size()-1)); // adds empty lines to the input only if input has any lines, makes number of
-			lines = ProperLines(lines);
-			
-			lines = sizeCutter(lines);
-			
-			lines = changingNumToPipe(lines);
-			
-			lines = Partitioning(lines);																 // lines divisable by 6.
-		}catch(Exception e){
-			System.out.println("empty file");
+		for(int i = 0; i < lines.size(); i++)
+		{	if(i%6 == 0){
+			System.out.println();
 		}
+		System.out.println(lines.get(i));
+		}
+		try{
+										 // lines divisable by 6.
+		}catch(Exception e){
+			lines.clear();
+		}
+		lines = addDummyLines(lines, lines.get(lines.size()-1));
+		// adds empty lines to the input only if input has any lines, makes number of
+		lines = ProperLines(lines);	
+		
+		
+		
+		lines = sizeCutter(lines);
+		
+		lines = changingNumToPipe(lines);
+		
+		lines = Partitioning(lines);
 	
-	
+		
 	
 
 		int temp = 0;
@@ -197,7 +201,7 @@ public class DataToArray {
 		File file4[] = {new File("UnevenLines.txt")};
 		File file5[] = {new File("bohemianrhapsody.txt")};
 		
-		new DataToArray(file);
+		new DataToArray(file5);
 	}
 	public ArrayList<char[][]> getChars(){
 		return chars;
@@ -227,6 +231,21 @@ public class DataToArray {
 		}
 		return list;
 	}
+
+	private static ArrayList<String> Dummy1(ArrayList<String> list, String lastLine) {
+		String dummy = lastLine;
+		StringBuffer a = new StringBuffer("|");
+		for (int i = 1; i < dummy.length() - 2; i++) {
+			a.append("-");
+		}
+		a.append("|");
+		while (list.size() % 6 != 0) {
+			list.add(a.toString());
+		}
+		return list;
+	}
+	
+	
 	private static ArrayList<String> ProperLines(ArrayList<String> lines){
 		ArrayList<String> a = new ArrayList<String>();
 		boolean pack =true;
