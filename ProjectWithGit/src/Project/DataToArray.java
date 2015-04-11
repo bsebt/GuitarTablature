@@ -21,7 +21,6 @@ public class DataToArray {
 	public static String SubTitle = "NO SUBTITLE";
 	public static float Spacing = 8.0f;
 	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9a-zA-Z]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9a-zA-Z]|\\|)";
-	//public static String starter = "([0-9]| |\\|)";
 
 	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
 
@@ -60,7 +59,7 @@ public class DataToArray {
 							line.length());
 				} else if (line.contains("TITLE")) {
 					setTitle(line.substring(line.indexOf('=') + 1, line.length()));
-					System.out.println(Title);
+					//System.out.println(Title);
 					
 					//Title = line.substring(line.indexOf('=') + 1, line.length());
 				}
@@ -80,16 +79,22 @@ public class DataToArray {
 				//	line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")
 				else if (line.matches(correctLine)) {
 
-					if((line.charAt(0)+"").matches("[0-9a-zA-Z]")){ 
+					if((line.charAt(0)+"").matches("[0-9]")){ 
 						//line = line.replace(line.charAt(0), '|');
 						line = "|" + line.substring(1);
+						System.out.println(line.charAt(0));
 					}
 					try{
+						if(line.substring(0, line.lastIndexOf('|') + 2).length() > 2){
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2)); //making sure to add repeat bars
-						//System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
+						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
+						}
 					}catch(StringIndexOutOfBoundsException e){
-						lines.add(line.substring(0, line.lastIndexOf('|') + 1)); //to catch the out of boundaries for lines that dont have repeat
-						//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+						if(line.substring(0, line.lastIndexOf('|') + 1).length() > 2){
+							lines.add(line.substring(0, line.lastIndexOf('|') + 1)); //making sure to add repeat bars
+							//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
+							}
+						 //to catch the out of boundaries for lines that dont have repeat
 					}
 				}else{
 					//System.out.println("ignore: "+line); // this is just to see what lines get ignored, for debugging.
@@ -97,31 +102,36 @@ public class DataToArray {
 			}
 			input.close();
 		}
-
+//		for(int i = 0; i < lines.size(); i++)
+//		{	if(i%6 == 0){
+//			System.out.println();
+//		}
+//		System.out.println(lines.get(i));
+//		}
+		
 		lines = whiteSpaceRemover(lines); // removes all the in line extra white spaces.
-		for(int i = 0; i < lines.size(); i++)
-		{	if(i%6 == 0){
-			System.out.println();
-		}
-		System.out.println(lines.get(i));
-		}
 		try{
-										 // lines divisable by 6.
+			lines = addDummyLines(lines, lines.get(lines.size()-1));
+			// adds empty lines to the input only if input has any lines, makes number of
+//			for(int i = 0; i < lines.size(); i++)
+//			{	if(i%6 == 0){
+//				System.out.println();
+//			}
+//			System.out.println(lines.get(i));
+//			}
+			lines = ProperLines(lines);	
+			
+			lines = sizeCutter(lines);
+			
+			lines = changingNumToPipe(lines);
+			
+			lines = Partitioning(lines);
+			
 		}catch(Exception e){
-			lines.clear();
+			
 		}
-		lines = addDummyLines(lines, lines.get(lines.size()-1));
-		// adds empty lines to the input only if input has any lines, makes number of
-		lines = ProperLines(lines);	
 		
 		
-		
-		lines = sizeCutter(lines);
-		
-		lines = changingNumToPipe(lines);
-		
-		lines = Partitioning(lines);
-	
 		
 	
 
@@ -195,13 +205,13 @@ public class DataToArray {
 
 	public static void main(String[] args) throws DocumentException,
 	IOException {
-		File file[] = {new File("Prose.txt")};
+		File file[] = {new File("IncompleteBar.txt")};
 		File file2[] = {new File("GarbageInLine.txt")};
 		File file3[] = {new File("elnegrito.txt")};
 		File file4[] = {new File("UnevenLines.txt")};
 		File file5[] = {new File("bohemianrhapsody.txt")};
 		
-		new DataToArray(file5);
+		new DataToArray(file2);
 	}
 	public ArrayList<char[][]> getChars(){
 		return chars;
@@ -231,20 +241,6 @@ public class DataToArray {
 		}
 		return list;
 	}
-
-	private static ArrayList<String> Dummy1(ArrayList<String> list, String lastLine) {
-		String dummy = lastLine;
-		StringBuffer a = new StringBuffer("|");
-		for (int i = 1; i < dummy.length() - 2; i++) {
-			a.append("-");
-		}
-		a.append("|");
-		while (list.size() % 6 != 0) {
-			list.add(a.toString());
-		}
-		return list;
-	}
-	
 	
 	private static ArrayList<String> ProperLines(ArrayList<String> lines){
 		ArrayList<String> a = new ArrayList<String>();
@@ -303,7 +299,7 @@ public class DataToArray {
 			for(int j=0;j<lines.get(i).length();j++){
 				if((lines.get(i).charAt(j)+"").matches("[0-9]")){
 					if(lines.get(i).charAt(j-1) == '|' && lines.get(i+1).charAt(j) == '|'){
-						System.out.println("ok"+lines.get(i));
+						//System.out.println("ok"+lines.get(i));
 					}else if(lines.get(i+1).charAt(j) == '|'){
 						lines.set(i, lines.get(i).replaceFirst(lines.get(i).charAt(j)+"", "|"));
 					}		
@@ -325,7 +321,7 @@ public class DataToArray {
 					if(lines1.get(z).charAt(lines1.get(z).length()-1) != '|'){
 						lines1.set(z, lines1.get(z).substring(0, min-1)+"|");
 					}
-					System.out.println(lines1.get(z).substring(0, min));
+					//System.out.println(lines1.get(z).substring(0, min));
 				}
 			}	
 		}

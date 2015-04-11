@@ -246,7 +246,8 @@ public class GUI extends JFrame {
 	}
 
 	private void editorpanel() throws DocumentException, IOException {
-
+		
+		//a=new DataToArray(list);
 		JLabel fontLabel = new JLabel("Select your font:");
 		final JComboBox<String> drop = new JComboBox<String>();
 		for(int i=0;i<=list1.length-1;i++)
@@ -268,7 +269,6 @@ public class GUI extends JFrame {
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
 				list[0].getName().indexOf('.')));
 		name.setText(buffer.toString());
-		//DataToArray.textToArray(list);
 		SGSPF.setText(Double.toString(a.getSpacing()));
 		TitleF.setText(a.getTitle());
 		STitleF.setText(a.getsubTitle());

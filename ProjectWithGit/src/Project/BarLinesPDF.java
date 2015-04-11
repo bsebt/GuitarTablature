@@ -89,8 +89,14 @@ public class BarLinesPDF {
 		// information
 		maxCol = a.getMaxColumnAmount();
 		totalRows = a.getTotalRowAmount();
-		TITLE_STRING = a.getTitle();
-		COMPOSER_STRING = a.getsubTitle();
+		//System.out.println(GUI.getTitle1());
+		if (!(GUI.getTitle1().equals("NO TITLE"))  && !(GUI.getsubTitle1().equals("NO SUBTITLE"))) {
+			TITLE_STRING = GUI.getTitle1();
+			COMPOSER_STRING = GUI.getsubTitle1();
+		} else {
+			TITLE_STRING = a.getTitle();
+			COMPOSER_STRING = a.getsubTitle();
+		}
 		titleFont = FontFactory.getFont(GUI.getFont1(), 30);
 		composerFont = FontFactory.getFont(GUI.getFont1(), 14);
 		numberFont = FontFactory.getFont(GUI.getFont1(), GUI.getnotefont());
