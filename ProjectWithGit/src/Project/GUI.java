@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class GUI extends JFrame {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; 
 
 	public static void main(String[] args) {
 		new GUI();
@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 		PreviewPan preview;
 		// private JPanel body;
 		SGBSF = new JTextField("75");
-		SGSPF = new JTextField(Float.toString(a.getSpacing()));
+		SGSPF = new JTextField(Double.toString(a.getSpacing()));
 		STitleF = new JTextField(a.getsubTitle());
 		TitleF = new JTextField(a.getTitle());
 		EditorPanel = new JPanel(null);
@@ -65,14 +65,13 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		list = new File[100];
 
-		final JButton OpenB = new JButton("Preview");
+		final JButton OpenB = new JButton("Preview and Convert");
 
-		final JButton QuickB = new JButton("Convert");
+		final JButton QuickB = new JButton("Convert Only");
 		final JButton ExitB = new JButton("Exit");
 		final JButton AboutB = new JButton("About");
 		final JPanel OpenerPanel = new JPanel(null);
 		final JButton opening = new JButton("Open");
-		final JButton MainMenuB = new JButton("Main Menu");
 
 		frame.setSize(315, 140);
 		opening.setBounds(5, 5, 150, 50);
@@ -85,7 +84,6 @@ public class GUI extends JFrame {
 
 		frame.setVisible(true);
 		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);	//Center the frame.
 
 		opening.addActionListener(new ActionListener() {
 
@@ -121,19 +119,21 @@ public class GUI extends JFrame {
 						}
 						frame.setResizable(true);
 						OpenerPanel.removeAll();
-						frame.setSize(320, 140);
+						frame.setSize(320, 200);
 						OpenB.setBounds(10, 5, 300, 50);
 						OpenerPanel.add(OpenB);
 						QuickB.setBounds(10, 55, 150, 50);
 						OpenerPanel.add(QuickB);
-						MainMenuB.setBounds(160, 55, 150, 50);
-						OpenerPanel.add(MainMenuB);
+						AboutB.setBounds(160, 55, 150, 50);
+						OpenerPanel.add(AboutB);
+						ExitB.setBounds(10, 105, 300, 50);
+						OpenerPanel.add(ExitB);
 						frame.add(OpenerPanel);
 						frame.setResizable(false);
 					}else{
 						JOptionPane.showMessageDialog(frame,
-								"This file cannot be opened since it contains no text.",
-								"Error",
+								"This file cannot be opened",
+								"Error: Not a text file",
 								JOptionPane.INFORMATION_MESSAGE, null);
 					}
 					
@@ -153,7 +153,7 @@ public class GUI extends JFrame {
 						.substring(0, list[0].getName().indexOf('.')));
 				System.out.println(buffer);
 				name.setText(buffer.toString());
-				SGSPF.setText(Float.toString(a.getSpacing()));
+				SGSPF.setText(Double.toString(a.getSpacing()));
 				TitleF.setText(a.getTitle());
 				STitleF.setText(a.getsubTitle());
 				try {
@@ -175,14 +175,6 @@ public class GUI extends JFrame {
 		ExitB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
-			}
-		});
-		MainMenuB.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					EditorPanel.removeAll();
-					frame.removeAll();
-					frame.setVisible(false);
-					new GUI();
 			}
 		});
 
@@ -277,7 +269,7 @@ public class GUI extends JFrame {
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
 				list[0].getName().indexOf('.')));
 		name.setText(buffer.toString());
-		SGSPF.setText(Float.toString(a.getSpacing()));
+		SGSPF.setText(Double.toString(a.getSpacing()));
 		TitleF.setText(a.getTitle());
 		STitleF.setText(a.getsubTitle());
 		BarLinesPDF.convertPDF(list,
@@ -301,7 +293,7 @@ public class GUI extends JFrame {
 		JLabel OUTDES = new JLabel("Output directory:");
 		OUTDES.setBounds(0, 70, 150, 30);
 		EditorPanel.add(OUTDES);
-		destination.setBounds(123, 70, 200, 30);
+		destination.setBounds(100, 70, 220, 30);
 		EditorPanel.add(destination);
 		JButton browse = new JButton("...");
 		browse.setBounds(323, 70, 30, 30);
@@ -334,7 +326,7 @@ public class GUI extends JFrame {
 		TitleL.setBounds(0, 110, 50, 30);
 		EditorPanel.add(TitleL);
 
-		TitleF.setBounds(40, 110, 200, 30);
+		TitleF.setBounds(100, 110, 220, 30);
 		TitleF.setText(a.getTitle());
 		EditorPanel.add(TitleF);
 
@@ -343,7 +335,7 @@ public class GUI extends JFrame {
 		EditorPanel.add(STitleL);
 
 		STitleF.setText(a.getsubTitle());
-		STitleF.setBounds(65, 150, 255, 30);
+		STitleF.setBounds(100, 150, 220, 30);
 		EditorPanel.add(STitleF);
 
 		JLabel SGBSL = new JLabel("Set Line Spacing (50-90)");
@@ -357,19 +349,18 @@ public class GUI extends JFrame {
 
 		SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 		SGBSF.setBounds(285, 220, 40, 30);
-		SGBSF.setEditable(false);
 		EditorPanel.add(SGBSF);
 
 		JLabel SGSPL = new JLabel("Set Note Spacing (2-10)");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
-		final FloatJSlider setGivenSpacing = new FloatJSlider(2.0f, 10.0f,Float.parseFloat(SGSPF.getText()));
+		final FloatJSlider setGivenSpacing = new FloatJSlider(2.0f, 10.0f,
+				Float.parseFloat(SGSPF.getText()));
 		setGivenSpacing.setBounds(5, 280, 280, 30);
 		setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 		EditorPanel.add(setGivenSpacing);
 		SGSPF.setBounds(285, 280, 40, 30);
-		SGSPF.setEditable(false);
 		EditorPanel.add(SGSPF);
 
 		// JLabel
@@ -394,7 +385,6 @@ public class GUI extends JFrame {
 				Float.parseFloat(SWSF.getText() + "f"));
 		// setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
 		SWSF.setBounds(285, 330, 40, 30);
-		SWSF.setEditable(false);
 		EditorPanel.add(SWSF);
 		setWhiteSpace.setBounds(5, 330, 280, 30);
 		EditorPanel.add(setWhiteSpace);
@@ -419,14 +409,13 @@ public class GUI extends JFrame {
 		});
 
 		final JSlider setBarSpacing = new JSlider(4, 10, 7);
-		JLabel SBSL = new JLabel("Set Bar Height (4-10)");
+		JLabel SBSL = new JLabel("Set Line Height (4-10)");
 		SBSL.setBounds(0, 360, 380, 30);
 		EditorPanel.add(SBSL);
 
 		setBarSpacing.setBounds(0, 390, 280, 30);
 		SBSF.setText(Integer.toString(setBarSpacing.getValue()));
 		SBSF.setBounds(285, 385, 40, 30);
-		SBSF.setEditable(false);
 		EditorPanel.add(SBSF);
 		EditorPanel.add(setBarSpacing);
 		final JSlider setNoteFontSize = new JSlider(9, 15,
@@ -455,9 +444,11 @@ public class GUI extends JFrame {
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
 				drop.setSelectedItem("HELVETICA");
+				// name.setText((String) input.getName());
+				// destination.setText(list[0].getParent());
 				modify();
 			}
-		}); 
+		});
 
 		setBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
@@ -496,7 +487,6 @@ public class GUI extends JFrame {
 		SNFF.setBounds(285, 445, 40, 30);
 		EditorPanel.add(setNoteFontSize);
 		EditorPanel.add(SNFL);
-		SNFF.setEditable(false);
 		EditorPanel.add(SNFF);
 
 		setNoteFontSize.addChangeListener(new ChangeListener() {
