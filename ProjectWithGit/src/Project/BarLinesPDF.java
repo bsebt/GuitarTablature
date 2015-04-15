@@ -244,40 +244,47 @@ public class BarLinesPDF {
 								
 							{
 								colPos++;
-								if (colPos == barLength) {
+								if (colPos == barLength)
+								{
 									colPos = 0;
 									barPos++;
-								}
-								if (barPos >= chars.size()) {
-									EOB = true;
-									if (rowPos == 5) {
-										if (!lastBarred) {
-											cb.moveTo(q, i + j);
-											cb.lineTo(q, i + j + barSpacing * 5);// draw
-											// the
-											// very
-											// last
-											// bar
-											// line
-											lastBarred = true;
+									if (barPos < chars.size()) 
+									{
+										if (((DataToArray.getLargestNumber(chars.get(barPos))+1) * givenSpacing) > (pageWidth - marginRight - q)) 
+										{
+											noSpaceAvailable = true;
+											if (rowPos != 5) 
+											{
+												//cb.moveTo(q + givenSpacing, i + j);
+												//cb.lineTo(q + givenSpacing, i + j - barSpacing);
+											}
 										}
-										doneWriting = true; // If there are no
-										// more bars to
-										// write, stop
 									}
 								}
-								if (!EOB) {
-									arrayChar = chars.get(barPos)[rowPos][colPos]; // Load
-									// the
-									// next
-									// char
-									// to
-									// write
+								if (barPos >= chars.size()) 
+								{
+									EOB = true;
+									if (rowPos == 5) 
+									{
+										if (!lastBarred) 
+										{
+											//cb.moveTo(q, i + j);
+											//cb.lineTo(q, i + j + barSpacing * 5);// draw the very
+											// last bar line
+											lastBarred = true;
+										}
+										doneWriting = true;
+										}
+								}
+								if (!EOB) 
+								{
+									arrayChar = chars.get(barPos)[rowPos][colPos];
 									barLength = chars.get(barPos)[rowPos].length;
 								}
 							}
 
-							if (noSpaceAvailable) {
+							if (noSpaceAvailable) 
+							{
 								// Do nothing, we are waiting until the end of
 								// the this line
 							} 
@@ -470,49 +477,44 @@ public class BarLinesPDF {
 										}
 									}
 								}
+								colPos++;
+								if (colPos == barLength)
 								{
-									colPos++;
-									if (colPos == barLength) {
 									colPos = 0;
 									barPos++;
-									if (barPos < chars.size()) {
-									if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) >= (pageWidth
-									- marginRight - q)) {
-									noSpaceAvailable = true;
-									if (rowPos != 5) {
-									//cb.moveTo(q + givenSpacing,
-									//i + j);
-									//cb.lineTo(q + givenSpacing,
-									//i + j - barSpacing);
+									if (barPos < chars.size()) 
+									{
+										if (((DataToArray.getLargestNumber(chars.get(barPos))+1) * givenSpacing) > (pageWidth - marginRight - q)) 
+										{
+											noSpaceAvailable = true;
+											if (rowPos != 5) 
+											{
+												//cb.moveTo(q + givenSpacing, i + j);
+												//cb.lineTo(q + givenSpacing, i + j - barSpacing);
+											}
+										}
 									}
-									}
-									}
-									}
-									if (barPos >= chars.size()) {
+								}
+								if (barPos >= chars.size()) 
+								{
 									EOB = true;
-									if (rowPos == 5) {
-									if (!lastBarred) {
-									cb.moveTo(q, i + j);
-									//cb.lineTo(q, i + j + barSpacing * 5);// draw the very
-									// last bar line
-									lastBarred = true;
-									}
-									doneWriting = true; // If there are
-									// no more bars
-									// to write,
-									// stop
-									}
-									}
-									if (!EOB) {
-									arrayChar = chars.get(barPos)[rowPos][colPos]; // Load
-									// the
-									// next
-									// char
-									// to
-									// write
+									if (rowPos == 5) 
+									{
+										if (!lastBarred) 
+										{
+											//cb.moveTo(q, i + j);
+											//cb.lineTo(q, i + j + barSpacing * 5);// draw the very
+											// last bar line
+											lastBarred = true;
+										}
+										doneWriting = true;
+										}
+								}
+								if (!EOB) 
+								{
+									arrayChar = chars.get(barPos)[rowPos][colPos];
 									barLength = chars.get(barPos)[rowPos].length;
-									}
-									}
+								}
 							}
 							else if (arrayChar == '-' || arrayChar == '<') 
 							{
@@ -1301,65 +1303,42 @@ public class BarLinesPDF {
 										// on
 										// its
 										// own.
-										if ((q - whiteSpace - noteFontSize)
-												- lineStart > 0) // Do not draw
-										// lines
-										// backwards,
-										// if there
-										// isn't
-										// enough
-										// space
-										// just draw
-										// no line
-										// at all.
-										// This
-										// should be
-										// used
-										// everywhere,
-										// but is
-										// most
-										// prominent
-										// here TO
-										// DO: Apply
-										// this
-										// change
-										// everywhere
-										// needed
+										if ((q - whiteSpace - noteFontSize) - lineStart > 0)
 										{
 											cb.moveTo(lineStart, i + j);
 											cb.lineTo(q - whiteSpace
 													- noteFontSize, i + j);
 										}
-
-										currentChar = new Phrase(
-												("" + arrayChar), numberFont); // Replace
-										// this
-										// with
-										// the
-										// character
-										// from
-										// the
-										// array
-										// we
-										// are
-										// currently
-										// proccessing.
-										column.setSimpleColumn(currentChar, q
-												- noteFontSize * (3f / 4f), i
-												+ j - noteFontSize * (1f / 4f),
-												q + noteFontSize * (1f / 4f), i
-														+ j + noteFontSize
-														* (3f / 4f),
-												noteFontSize,
-												Element.ALIGN_LEFT); // Writes
-										// the
-										// character
-										// curentChar
-										column.go();
-										lineStart = (int) (q + whiteSpace);
-
-										lastWriteX = (int) q;
-										lastWriteY = (int) (i + j);
+										
+											currentChar = new Phrase(
+													("" + arrayChar), numberFont); // Replace
+											// this
+											// with
+											// the
+											// character
+											// from
+											// the
+											// array
+											// we
+											// are
+											// currently
+											// proccessing.
+											column.setSimpleColumn(currentChar, q
+													- noteFontSize * (3f / 4f), i
+													+ j - noteFontSize * (1f / 4f),
+													q + noteFontSize * (1f / 4f), i
+															+ j + noteFontSize
+															* (3f / 4f),
+													noteFontSize,
+													Element.ALIGN_LEFT); // Writes
+											// the
+											// character
+											// curentChar
+											column.go();
+											lineStart = (int) (q + whiteSpace);
+	
+											lastWriteX = (int) q;
+											lastWriteY = (int) (i + j);
 									}
 								}
 

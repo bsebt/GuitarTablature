@@ -419,7 +419,7 @@ public class GUI extends JFrame {
 		});
 
 		final JSlider setBarSpacing = new JSlider(4, 10, 7);
-		JLabel SBSL = new JLabel("Set Line Height (4-10)");
+		JLabel SBSL = new JLabel("Set Bar Height (4-10)");
 		SBSL.setBounds(0, 360, 380, 30);
 		EditorPanel.add(SBSL);
 
