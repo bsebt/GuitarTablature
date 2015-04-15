@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 import com.itextpdf.text.DocumentException;
 
@@ -22,8 +21,6 @@ public class DataToArray {
 	public static float Spacing = 8.0f;
 	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9a-zA-Z]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9a-zA-Z]|\\|)";
 
-	private static ArrayList<char[][]> newchars = new ArrayList<char[][]>();
-
 	private static int col;
 
 
@@ -39,7 +36,6 @@ public class DataToArray {
 			throws DocumentException, IOException {
 		lines = new ArrayList<String>();
 		chars = new ArrayList<char[][]>();
-		newchars = new ArrayList<char[][]>();
 		partitionLength = new ArrayList<Integer>();
 		String name = null;
 		chars.clear();
@@ -73,10 +69,6 @@ public class DataToArray {
 				else if(line.trim().length() < 5){ //new 
 					continue;
 				}
-				//				else if (line.charAt(0) == ' '){ //new
-				//					continue;
-				//				}
-				//	line.trim().substring(0, line.lastIndexOf('|') + 1).matches(correctLine) && !line.trim().substring(0, line.lastIndexOf('|') + 1).contains("  |")
 				else if (line.matches(correctLine)) {
 
 					if((line.charAt(0)+"").matches("[0-9]")){ 
@@ -89,12 +81,11 @@ public class DataToArray {
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2)); //making sure to add repeat bars
 						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 						}
-					}catch(StringIndexOutOfBoundsException e){
+					}catch(StringIndexOutOfBoundsException e){ //to catch the out of boundaries for lines that dont have repeat
 						if(line.substring(0, line.lastIndexOf('|') + 1).length() > 2){
 							lines.add(line.substring(0, line.lastIndexOf('|') + 1)); //making sure to add repeat bars
 							//System.out.println(line.substring(0, line.lastIndexOf('|') + 1));
 							}
-						 //to catch the out of boundaries for lines that dont have repeat
 					}
 				}else{
 					//System.out.println("ignore: "+line); // this is just to see what lines get ignored, for debugging.
@@ -113,12 +104,6 @@ public class DataToArray {
 		try{
 			lines = addDummyLines(lines, lines.get(lines.size()-1));
 			// adds empty lines to the input only if input has any lines, makes number of
-//			for(int i = 0; i < lines.size(); i++)
-//			{	if(i%6 == 0){
-//				System.out.println();
-//			}
-//			System.out.println(lines.get(i));
-//			}
 			lines = ProperLines(lines);	
 			
 			lines = sizeCutter(lines);
@@ -131,10 +116,6 @@ public class DataToArray {
 			
 		}
 		
-		
-		
-	
-
 		int temp = 0;
 		for (int z = 0; z < lines.size(); z = z + 6) {
 			if(lines.size()-temp >= 6)
@@ -176,8 +157,6 @@ public class DataToArray {
 		}
 	}
 
-
-
 	public int getMaxColumnAmount() {
 		return DataToArray.col;
 	}
@@ -203,20 +182,19 @@ public class DataToArray {
 	}
 
 
-	public static void main(String[] args) throws DocumentException,
-	IOException {
-		File file[] = {new File("IncompleteBar.txt")};
-		File file2[] = {new File("GarbageInLine.txt")};
-		File file3[] = {new File("elnegrito.txt")};
-		File file4[] = {new File("UnevenLines.txt")};
-		File file5[] = {new File("bohemianrhapsody.txt")};
-		
-		new DataToArray(file2);
-	}
+//	public static void main(String[] args) throws DocumentException,
+//	IOException {
+//		File file[] = {new File("IncompleteBar.txt")};
+//		File file2[] = {new File("GarbageInLine.txt")};
+//		File file3[] = {new File("elnegrito.txt")};
+//		File file4[] = {new File("UnevenLines.txt")};
+//		File file5[] = {new File("bohemianrhapsody.txt")};
+//		
+//		new DataToArray(file2);
+//	}
 	public ArrayList<char[][]> getChars(){
 		return chars;
 	}
-	
 	
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
@@ -279,6 +257,7 @@ public class DataToArray {
 		}
 		return a;
 	}
+	
 	public static ArrayList<String> whiteSpaceRemover(ArrayList<String> list){
 		ArrayList<String> lines1 = new ArrayList<String>();
 		for(int i=0; i<list.size() ; i++){
@@ -293,6 +272,7 @@ public class DataToArray {
 		}
 		return lines1;
 	}
+	
 	public static ArrayList<String> changingNumToPipe(ArrayList<String> lines){
 		for(int i=0; i<lines.size() ; i=i+6){
 			//	System.out.println(i);
@@ -308,6 +288,7 @@ public class DataToArray {
 		}
 		return lines;
 	}
+	
 	public static ArrayList<String> sizeCutter(ArrayList<String> lines1){
 		for(int i=0; i<lines1.size() ; i=i+6){
 			int min=lines1.get(i).length();
@@ -327,6 +308,7 @@ public class DataToArray {
 		}
 		return lines1;
 	}
+	
 	public static ArrayList<String> Partitioning(ArrayList<String> lines1){
 		ArrayList<String> lines2 = new ArrayList<String>();
 		for(int i=0;i<lines1.size();i++){
@@ -346,10 +328,10 @@ public class DataToArray {
 		}
 		return lines2;
 	}
+	
 	public static void setTitle(String s){
 		Title = s;
 	}
-
 
 	public static int getLargestNumber(char[][] list)
 	{
