@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 		PreviewPan preview;
 		// private JPanel body;
 		SGBSF = new JTextField("75");
-		SGSPF = new JTextField(Double.toString(a.getSpacing()));
+		SGSPF = new JTextField(Float.toString(a.getSpacing()));
 		STitleF = new JTextField(a.getsubTitle());
 		TitleF = new JTextField(a.getTitle());
 		EditorPanel = new JPanel(null);
@@ -153,7 +153,7 @@ public class GUI extends JFrame {
 						.substring(0, list[0].getName().indexOf('.')));
 				System.out.println(buffer);
 				name.setText(buffer.toString());
-				SGSPF.setText(Double.toString(a.getSpacing()));
+				SGSPF.setText(Float.toString(a.getSpacing()));
 				TitleF.setText(a.getTitle());
 				STitleF.setText(a.getsubTitle());
 				try {
@@ -277,7 +277,7 @@ public class GUI extends JFrame {
 		StringBuffer buffer = new StringBuffer(list[0].getName().substring(0,
 				list[0].getName().indexOf('.')));
 		name.setText(buffer.toString());
-		SGSPF.setText(Double.toString(a.getSpacing()));
+		SGSPF.setText(Float.toString(a.getSpacing()));
 		TitleF.setText(a.getTitle());
 		STitleF.setText(a.getsubTitle());
 		BarLinesPDF.convertPDF(list,
@@ -357,18 +357,19 @@ public class GUI extends JFrame {
 
 		SGBSF.setText(Integer.toString(setGroupBarSpacing.getValue()));
 		SGBSF.setBounds(285, 220, 40, 30);
+		SGBSF.setEditable(false);
 		EditorPanel.add(SGBSF);
 
 		JLabel SGSPL = new JLabel("Set Note Spacing (2-10)");
 		SGSPL.setBounds(0, 250, 320, 30);
 		EditorPanel.add(SGSPL);
 
-		final FloatJSlider setGivenSpacing = new FloatJSlider(2.0f, 10.0f,
-				Float.parseFloat(SGSPF.getText()));
+		final FloatJSlider setGivenSpacing = new FloatJSlider(2.0f, 10.0f,Float.parseFloat(SGSPF.getText()));
 		setGivenSpacing.setBounds(5, 280, 280, 30);
 		setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 		EditorPanel.add(setGivenSpacing);
 		SGSPF.setBounds(285, 280, 40, 30);
+		SGSPF.setEditable(false);
 		EditorPanel.add(SGSPF);
 
 		// JLabel
@@ -393,6 +394,7 @@ public class GUI extends JFrame {
 				Float.parseFloat(SWSF.getText() + "f"));
 		// setWhiteSpace.setValue(Integer.parseInt(SWSF.getText()));
 		SWSF.setBounds(285, 330, 40, 30);
+		SWSF.setEditable(false);
 		EditorPanel.add(SWSF);
 		setWhiteSpace.setBounds(5, 330, 280, 30);
 		EditorPanel.add(setWhiteSpace);
@@ -424,6 +426,7 @@ public class GUI extends JFrame {
 		setBarSpacing.setBounds(0, 390, 280, 30);
 		SBSF.setText(Integer.toString(setBarSpacing.getValue()));
 		SBSF.setBounds(285, 385, 40, 30);
+		SBSF.setEditable(false);
 		EditorPanel.add(SBSF);
 		EditorPanel.add(setBarSpacing);
 		final JSlider setNoteFontSize = new JSlider(9, 15,
@@ -452,8 +455,6 @@ public class GUI extends JFrame {
 				setGivenSpacing.setFloatValue(Float.parseFloat(SGSPF.getText()));
 				setNoteFontSize.setValue(Integer.parseInt(SNFF.getText()));
 				drop.setSelectedItem("HELVETICA");
-				// name.setText((String) input.getName());
-				// destination.setText(list[0].getParent());
 				modify();
 			}
 		});
@@ -495,6 +496,7 @@ public class GUI extends JFrame {
 		SNFF.setBounds(285, 445, 40, 30);
 		EditorPanel.add(setNoteFontSize);
 		EditorPanel.add(SNFL);
+		SNFF.setEditable(false);
 		EditorPanel.add(SNFF);
 
 		setNoteFontSize.addChangeListener(new ChangeListener() {
