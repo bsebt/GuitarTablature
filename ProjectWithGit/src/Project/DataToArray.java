@@ -40,8 +40,8 @@ public class DataToArray {
 		String name = null;
 		chars.clear();
 		lines.clear();
-		Title = "NO TITLE";
-		SubTitle = "NO SUBTITLE"; 
+		Title = " ";
+		SubTitle = " "; 
 		BufferedReader input = null;
 		String line = "";
 		for (int i = 0; i < source.length; i++) {
