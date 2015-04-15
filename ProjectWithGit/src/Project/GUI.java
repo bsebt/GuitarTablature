@@ -457,7 +457,7 @@ public class GUI extends JFrame {
 				drop.setSelectedItem("HELVETICA");
 				modify();
 			}
-		});
+		}); 
 
 		setBarSpacing.addChangeListener(new ChangeListener() {
 			@Override
