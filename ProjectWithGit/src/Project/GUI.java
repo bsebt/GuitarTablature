@@ -65,13 +65,14 @@ public class GUI extends JFrame {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		list = new File[100];
 
-		final JButton OpenB = new JButton("Preview and Convert");
+		final JButton OpenB = new JButton("Preview");
 
-		final JButton QuickB = new JButton("Convert Only");
+		final JButton QuickB = new JButton("Convert");
 		final JButton ExitB = new JButton("Exit");
 		final JButton AboutB = new JButton("About");
 		final JPanel OpenerPanel = new JPanel(null);
 		final JButton opening = new JButton("Open");
+		final JButton MainMenuB = new JButton("Main Menu");
 
 		frame.setSize(315, 140);
 		opening.setBounds(5, 5, 150, 50);
@@ -84,6 +85,7 @@ public class GUI extends JFrame {
 
 		frame.setVisible(true);
 		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);	//Center the frame.
 
 		opening.addActionListener(new ActionListener() {
 
@@ -119,21 +121,19 @@ public class GUI extends JFrame {
 						}
 						frame.setResizable(true);
 						OpenerPanel.removeAll();
-						frame.setSize(320, 200);
+						frame.setSize(320, 140);
 						OpenB.setBounds(10, 5, 300, 50);
 						OpenerPanel.add(OpenB);
 						QuickB.setBounds(10, 55, 150, 50);
 						OpenerPanel.add(QuickB);
-						AboutB.setBounds(160, 55, 150, 50);
-						OpenerPanel.add(AboutB);
-						ExitB.setBounds(10, 105, 300, 50);
-						OpenerPanel.add(ExitB);
+						MainMenuB.setBounds(160, 55, 150, 50);
+						OpenerPanel.add(MainMenuB);
 						frame.add(OpenerPanel);
 						frame.setResizable(false);
 					}else{
 						JOptionPane.showMessageDialog(frame,
-								"This file cannot be opened",
-								"Error: Not a text file",
+								"This file cannot be opened since it contains no text.",
+								"Error",
 								JOptionPane.INFORMATION_MESSAGE, null);
 					}
 					
@@ -175,6 +175,14 @@ public class GUI extends JFrame {
 		ExitB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.exit(1);
+			}
+		});
+		MainMenuB.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					EditorPanel.removeAll();
+					frame.removeAll();
+					frame.setVisible(false);
+					new GUI();
 			}
 		});
 
