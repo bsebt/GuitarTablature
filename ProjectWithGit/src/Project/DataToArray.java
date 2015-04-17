@@ -55,12 +55,10 @@ public class DataToArray {
 
 					if((line.charAt(0)+"").matches("[0-9]")){ 
 						line = "|" + line.substring(1);
-						System.out.println(line.charAt(0));
 					}
 					try{
 						if(line.substring(0, line.lastIndexOf('|') + 2).length() > 2){
 						lines.add(line.substring(0, line.lastIndexOf('|') + 2)); //making sure to add repeat bars
-						System.out.println(line.substring(0, line.lastIndexOf('|') + 2));
 						}
 					}
 					catch(StringIndexOutOfBoundsException e){ //to catch the out of boundaries for lines that dont have repeat

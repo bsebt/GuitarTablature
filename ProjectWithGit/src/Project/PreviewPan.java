@@ -4,11 +4,6 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.Book;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -23,8 +18,6 @@ import javax.swing.JScrollPane;
 
 import com.sun.pdfview.PDFFile;
 import com.sun.pdfview.PDFPage;
-import com.sun.pdfview.PDFPrintPage;
-
 /**
  * This class allows for the creation of a JScrollPane that displays a PDF
  * @author

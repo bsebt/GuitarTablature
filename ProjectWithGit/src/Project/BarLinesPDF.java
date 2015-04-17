@@ -46,13 +46,9 @@ public class BarLinesPDF {
 	//Note, standard page is 620 units wide and 800 units tall.
 
 	private static ArrayList<char[][]> chars; // All chars from the text file
-	private static int maxCol; // The maximum # of the columns in the array.
-	private static int totalRows;
-	private static int bars;
 	
 	private static float singleBarLineWidth = 1;
 	private static LineSeparator line = new LineSeparator();
-	private static DataToArray data;
 	public static String destination1;
 	public static float doubleBarLineWidth = 2;
 	public static float doubleBarLinePreview = 2;
@@ -61,8 +57,6 @@ public class BarLinesPDF {
 	{
 		a = new DataToArray(textFile);
 		chars = a.getChars(); // Gets the array of information
-		maxCol = a.getMaxColumnAmount();
-		totalRows = a.getTotalRowAmount();
 		if (!(GUI.getTitle1().equals("NO TITLE"))  && !(GUI.getsubTitle1().equals("NO SUBTITLE"))) {
 			TITLE_STRING = GUI.getTitle1();
 			COMPOSER_STRING = GUI.getsubTitle1();
@@ -136,7 +130,6 @@ public class BarLinesPDF {
 					barLength = rowSave[rowPos][2]; // pull up the bar length, in case we changed bars at the very end of the last line
 					lastWriteX = rowSave[rowPos][3]; // Pull up the last write co-ords for this line of music
 					lastWriteY = rowSave[rowPos][4];
-					System.out.println("barpos = " + barPos);
 					if (barPos < chars.size())
 					{
 						arrayChar = chars.get(barPos)[rowPos][colPos];

@@ -2,7 +2,6 @@ package Project;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.junit.Before;
@@ -124,11 +123,27 @@ public class PDFTester
 			desktop.open(new File("GarbageInLine.pdf"));
 		}
 		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
-		public void testWhitespaceInLinePDF() throws DocumentException, IOException
+		public void testStairwayToHeavenPDF() throws DocumentException, IOException
 		{
-			File file[] = {new File("WhitespaceInLine.txt")};
-			BarLinesPDF.convertPDF(file, "WhitespaceInLine.pdf");
+			File file[] = {new File("StairwayToHeaven.txt")};
+			BarLinesPDF.convertPDF(file, "StairwayToHeaven.pdf");
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
-			desktop.open(new File("WhitespaceInLine.pdf"));
+			desktop.open(new File("StairwayToHeaven.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testHowDeepIsYourLovePDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("HowDeepIsYourLove.txt")};
+			BarLinesPDF.convertPDF(file, "HowDeepIsYourLove.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("HowDeepIsYourLove.pdf"));
+		}
+		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		public void testHeyJudePDF() throws DocumentException, IOException
+		{
+			File file[] = {new File("HeyJude.txt")};
+			BarLinesPDF.convertPDF(file, "HeyJude.pdf");
+			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
+			desktop.open(new File("HeyJude.pdf"));
 		}
 }

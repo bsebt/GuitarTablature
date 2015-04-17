@@ -3,11 +3,7 @@ package Project;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import com.itextpdf.text.DocumentException;
@@ -23,8 +19,9 @@ public class DataTester
 		{
 			File file[] = {new File("EmptyFile.txt")};
 			DataToArray EmptyFile = new DataToArray(file);
-			emptyResult = (EmptyFile.getLines().isEmpty()) ? true : false;
-			barResult = (EmptyFile.getLines().size() == 0) ? true : false;
+			emptyResult = (EmptyFile.getChars().isEmpty()) ? true : false;
+			System.out.println(EmptyFile.getChars().size());
+			barResult = (EmptyFile.getChars().size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the MoonlightSonata file.
@@ -32,17 +29,18 @@ public class DataTester
 		{
 			File file[] = {new File("MoonlightSonata.txt")};
 			DataToArray MoonlightSonata = new DataToArray(file);
-			emptyResult = (MoonlightSonata.getLines().isEmpty()) ? true : false;
-			barResult = (MoonlightSonata.getLines().size() == 35) ? true : false;
+			emptyResult = (MoonlightSonata.getChars().isEmpty()) ? false : true;
+			System.out.println(MoonlightSonata.getChars().size());
+			barResult = (MoonlightSonata.getChars().size() == 69) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-		//Tests to see if the conversion works for the IncompleteBar file.
+		@Test //Tests to see if the conversion works for the IncompleteBar file.
 		public void IncompleteBarData() throws DocumentException, IOException
 		{
 			File file[] = {new File("IncompleteBar.txt")};
 			DataToArray IncompleteBar = new DataToArray(file);
-			emptyResult = (IncompleteBar.getLines().isEmpty()) ? false : true;
-			barResult = (IncompleteBar.getLines().size() == 0) ? true : false;
+			emptyResult = (IncompleteBar.getChars().isEmpty()) ? false : true;
+			barResult = (IncompleteBar.getChars().size() == 2) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the RememberingRain file.
@@ -50,16 +48,19 @@ public class DataTester
 		{
 			File file[] = {new File("RememberingRain.txt")};
 			DataToArray RememberingRain = new DataToArray(file);
-			emptyResult = (RememberingRain.getLines().isEmpty()) ? false : true;
-			barResult = (RememberingRain.getLines().size() == 15) ? true : false;
+			emptyResult = (RememberingRain.getChars().isEmpty()) ? false : true;
+			System.out.println(RememberingRain.getChars().size());
+			barResult = (RememberingRain.getChars().size() == 32) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
+		@Test
 		public void UnevenLinesData() throws DocumentException, IOException
 		{
 			File file[] = {new File("UnevenLines.txt")};
 			DataToArray UnevenLines = new DataToArray(file);
-			emptyResult = (UnevenLines.getLines().isEmpty()) ? false : true;
-			barResult = (UnevenLines.getLines().size() == 1) ? true : false;
+			emptyResult = (UnevenLines.getChars().isEmpty()) ? false : true;
+			System.out.println(UnevenLines.getChars().size());
+			barResult = (UnevenLines.getChars().size() == 2) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the Prose file.
@@ -67,8 +68,9 @@ public class DataTester
 		{
 			File file[] = {new File("Prose.txt")};
 			DataToArray ProseFile = new DataToArray(file);
-			emptyResult = (ProseFile.getLines().isEmpty()) ? false : true;
-			barResult = (ProseFile.getLines().size() == 0) ? true : false;
+			emptyResult = (ProseFile.getChars().isEmpty()) ? true : false;
+			System.out.println(ProseFile.getChars().size());
+			barResult = (ProseFile.getChars().size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the ExtendedASCII file.
@@ -76,8 +78,9 @@ public class DataTester
 		{
 			File file[] = {new File("ExtendedASCII.txt")};
 			DataToArray ExtendedASCII = new DataToArray(file);
-			emptyResult = (ExtendedASCII.getLines().isEmpty()) ? false : true;
-			barResult = (ExtendedASCII.getLines().size() == 0) ? true : false;
+			emptyResult = (ExtendedASCII.getChars().isEmpty()) ? true : false;
+			System.out.println(ExtendedASCII.getChars().size());
+			barResult = (ExtendedASCII.getChars().size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
 		@Test //Tests to see if the conversion works for the EmptyFileWithInfoData file.
@@ -85,36 +88,9 @@ public class DataTester
 		{
 			File file[] = {new File("EmptyFileWithInfo.txt")};
 			DataToArray EmptyFileWithInfo = new DataToArray(file);
-			emptyResult = (EmptyFileWithInfo.getLines().isEmpty()) ? true : false;
-			barResult = (EmptyFileWithInfo.getLines().size() == 0) ? true : false;
+			emptyResult = (EmptyFileWithInfo.getChars().isEmpty()) ? true : false;
+			System.out.println(EmptyFileWithInfo.getChars().size());
+			barResult = (EmptyFileWithInfo.getChars().size() == 0) ? true : false;
 			assertTrue(emptyResult && barResult);
 		}
-//		@Test //Tests to see if the getter methods work for MoonlightSonata after conversion for the MoonlightSonata file.
-//		public void MSDataDecisionTable() throws DocumentException, IOException
-//		{
-//			File file[] = {new File("MoonlightSonata.txt")};
-//			MoonlightSonata = DataToArray.textToArray(file);
-//			emptyResult = (MoonlightSonata.isEmpty()) ? false : true;
-//			barResult = (MoonlightSonata.size() == 15) ? true : false;
-//			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
-//			boolean row = (DataToArray.getTotalRowAmount() == 90) ;
-//			boolean barAmount = (DataToArray.getBarAmount() == 15) ;
-//			boolean column = (DataToArray.getMaxColumnAmount() == 53) ;
-//			boolean subtitle = (DataToArray.getsubTitle().equalsIgnoreCase("Default")) ;
-//			assertTrue(emptyResult && barResult && spacing && column && row  && barAmount && subtitle);
-//		}
-//		
-//		@Test //Testing boundary values at empty file construction.
-//		public void DefaultCreationBoundaryTests() throws DocumentException, IOException
-//		{
-//			File file[] = {new File("EmptyFile.txt")};
-//			EmptyFile = DataToArray.textToArray(file);
-//			emptyResult = (EmptyFile.isEmpty()) ? false : true;
-//			barResult = (EmptyFile.size() == 0) ? true : false;
-//			boolean spacing = (DataToArray.getSpacing() == 8.0) ;
-//			boolean row = (DataToArray.getTotalRowAmount() == 0) ;
-//			boolean barAmount = (DataToArray.getBarAmount() == 0) ;
-//			boolean subtitle = (DataToArray.getsubTitle().equalsIgnoreCase("Default")) ;
-//			assertTrue(barResult  && !emptyResult && spacing && barAmount && row  && subtitle);			
-//		}
 }
