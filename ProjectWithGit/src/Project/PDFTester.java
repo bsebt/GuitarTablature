@@ -48,7 +48,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("RememberingRain.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for UnevenLines.txt. If it works, open it.
 		public void unevenLinesPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("UnevenLines.txt")};
@@ -56,7 +56,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("UnevenLines.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for IncompleteBar.txt. If it works, open it.
 		public void incompleteBarPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("IncompleteBar.txt")};
@@ -64,7 +64,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("IncompleteBar.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for Prose.txt. If it works, open it.
 		public void ProsePDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("Prose.txt")};
@@ -73,7 +73,7 @@ public class PDFTester
 			desktop.open(new File("Prose.pdf"));
 		}
 		
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for ExtendedASCII.txt. If it works, open it.
 		public void extendedASCIIPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("ExtendedASCII.txt")};
@@ -82,7 +82,7 @@ public class PDFTester
 			desktop.open(new File("ExtendedASCII.pdf"));
 		}
 		
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for EmptyFileWithInfo.txt. If it works, open it.
 		public void emptyFileWithInfo() throws DocumentException, IOException
 		{
 			File file[] = {new File("EmptyFileWithInfo.txt")};
@@ -90,7 +90,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("EmptyFileWithInfo.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for elnegrito.txt. If it works, open it.
 		public void testElNegritoPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("elnegrito.txt")};
@@ -98,7 +98,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("ElNegrito.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for bohemianrhapsody.txt. If it works, open it.
 		public void testBohemianRhapsodyPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("bohemianrhapsody.txt")};
@@ -106,7 +106,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("BohemianRhapsody.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for ExtraWhiteSpaces.txt. If it works, open it.
 		public void testExtraWhiteSpacesPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("ExtraWhiteSpaces.txt")};
@@ -114,7 +114,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("ExtraWhiteSpaces.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for GarbageInLine.txt. If it works, open it.
 		public void testGarbageInLine() throws DocumentException, IOException
 		{
 			File file[] = {new File("GarbageInLine.txt")};
@@ -122,7 +122,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("GarbageInLine.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for StairwayToHeaven.txt. If it works, open it.
 		public void testStairwayToHeavenPDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("StairwayToHeaven.txt")};
@@ -130,7 +130,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("StairwayToHeaven.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for HowDeepIsYourLove.txt. If it works, open it.
 		public void testHowDeepIsYourLovePDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("HowDeepIsYourLove.txt")};
@@ -138,7 +138,7 @@ public class PDFTester
 			desktop = (Desktop.isDesktopSupported()) ? Desktop.getDesktop() : null;
 			desktop.open(new File("HowDeepIsYourLove.pdf"));
 		}
-		@Test //Tests to see if the PDF creation was successful for RememberingRain.txt. If it works, open it.
+		@Test //Tests to see if the PDF creation was successful for HeyJude.txt. If it works, open it.
 		public void testHeyJudePDF() throws DocumentException, IOException
 		{
 			File file[] = {new File("HeyJude.txt")};
