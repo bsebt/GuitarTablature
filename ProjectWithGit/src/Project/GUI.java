@@ -159,7 +159,7 @@ public class GUI extends JFrame {
 				try {
 					System.out.println(destination.getText() + "/" + name.getText() + ".pdf");
 					BarLinesPDF.convertPDF(list, (destination.getText() + "/" + name.getText() + ".pdf"));
-					JOptionPane.showMessageDialog(frame, "Conversion Complete",
+					JOptionPane.showMessageDialog(frame, "Conversion Completed. Your converted file has been saved",
 							"ASCII Tablature to PDF Message",
 							JOptionPane.INFORMATION_MESSAGE, null);
 					EditorPanel.removeAll();
