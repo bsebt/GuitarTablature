@@ -191,11 +191,14 @@ public class GUI extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 
-				String detail = "Preview and Convert: Previews the expected PDF, and then converts it after modifications. \n"
-						+ "Convert Only: Converts the ASCII to PDF according to default settings. Output name is the same as the input name. \n"
-						+ "About: How to use the program. \n"
-						+ "Exit: The program is terminated. \n\n"
-						+ "Created by: \n"
+				String detail = "This app converts Guitar text manuscripts to PDF. "
+						+ "Below is a brief desciption to help you understand the functions of the buttons in this app \n" +
+						"Open: Lets you open your file system to choose an input guitar tablature \n" +
+						"Preview: Lets you preview the expected PDF, before converting it. It also lets you modify the expected PDF. \n"
+						+ "Convert: Converts the ASCII to PDF according to default settings. Output name is the same as the input name but carries the .pdf extension. \n"
+						+ "About: Tells you briefly how to use the buttons of the program. \n"
+						+ "Exit: Terminates the program. \n\n"
+						+ "Developers: \n"
 						+ "Kevin Arindaeng, Rami Abou-Nassar, Abasifreke James, Daniel McVicar, Behshad Sebthosseini";
 				JOptionPane.showMessageDialog(frame, detail,
 						"ASCII Tablature to PDF Manual",
