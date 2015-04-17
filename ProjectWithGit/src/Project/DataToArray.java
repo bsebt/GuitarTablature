@@ -9,34 +9,25 @@ import java.util.StringTokenizer;
 import com.itextpdf.text.DocumentException;
 
 public class DataToArray {
-
-	public static char[][] c;
-	public static char[][] c1;
-	public static ArrayList<String> lines = new ArrayList<String>();
-	private static ArrayList<char[][]> chars = new ArrayList<char[][]>();
-	public static ArrayList<Integer> partitionLength = new ArrayList<Integer>();
-	public static String textFile = "MoonlightSonata.txt";
-	public static String Title = "NO TITLE";
-	public static String SubTitle = "NO SUBTITLE";
-	public static float Spacing = 8.0f;
-	public static String correctLine = "^( |[0-9]|\\||[A-Z])([0-9a-zA-Z]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9a-zA-Z]|\\|)";
-
-	private static int col;
-
-
+	private char[][] c;
+	private ArrayList<String> lines = new ArrayList<String>();
+	private ArrayList<char[][]> chars = new ArrayList<char[][]>();
+	private String Title = "NO TITLE";
+	private String SubTitle = "NO SUBTITLE";
+	private float Spacing = 8.0f;
+	private String correctLine = "^( |[0-9]|\\||[A-Z])([0-9a-zA-Z]|<|>|s|h|x|\\||\\*|\\-|p| |\\^|g|\\[|\\]|\\(|\\)|\\=|\\\\|\\/|S)+( |[0-9a-zA-Z]|\\|)";
+	private int col;
 
 	public DataToArray(){
 		Title = "NO TITLE";
 		SubTitle = "NO SUBTITLE";
 		Spacing = 8.0f;
-			
 	}
 
 	public DataToArray(File[] source)
 			throws DocumentException, IOException {
 		lines = new ArrayList<String>();
 		chars = new ArrayList<char[][]>();
-		partitionLength = new ArrayList<Integer>();
 		String name = null;
 		chars.clear();
 		lines.clear();
@@ -140,45 +131,51 @@ public class DataToArray {
 			chars.add(c);
 		}
 	}
+//	public static void LengthOfPartition() {
+//		int length;
+//		String temp;
+//		for (int i = 0; i < lines.size(); i++) {
+//			String line = lines.get(i);
+//			StringTokenizer StrTkn = new StringTokenizer(line, "|");
+//			// System.out.println("NUMBER OF TOKENS = " + StrTkn.countTokens());
+//			while (StrTkn.hasMoreTokens()) {
+//				temp = StrTkn.nextToken();
+//				length = temp.length();
+//				partitionLength.add(length);
+//			}
+//		}
+//	}
 
-
-	public static void LengthOfPartition() {
-		int length;
-		String temp;
-		for (int i = 0; i < lines.size(); i++) {
-			String line = lines.get(i);
-			StringTokenizer StrTkn = new StringTokenizer(line, "|");
-			// System.out.println("NUMBER OF TOKENS = " + StrTkn.countTokens());
-			while (StrTkn.hasMoreTokens()) {
-				temp = StrTkn.nextToken();
-				length = temp.length();
-				partitionLength.add(length);
-			}
-		}
+	public ArrayList<String> getLines()
+	{
+		return this.lines;
 	}
-
+	public ArrayList<char[][]> getChars()
+	{
+		return this.chars;
+	}
 	public int getMaxColumnAmount() {
-		return DataToArray.col;
+		return this.col;
 	}
 
 	public int getTotalRowAmount() {
-		return DataToArray.lines.size();
+		return this.lines.size();
 	}
 
 	public int getBarAmount() {
-		return DataToArray.lines.size() / 6;
+		return this.lines.size() / 6;
 	}
 
-	public  String getTitle() {
-		return Title;
+	public String getTitle() {
+		return this.Title;
 	}
 
 	public String getsubTitle() {
-		return SubTitle;
+		return this.SubTitle;
 	}
 
 	public float getSpacing() {
-		return Spacing;
+		return this.Spacing;
 	}
 
 
@@ -192,9 +189,6 @@ public class DataToArray {
 //		
 //		new DataToArray(file2);
 //	}
-	public ArrayList<char[][]> getChars(){
-		return chars;
-	}
 	
 	private static ArrayList<String> addDummyLines(ArrayList<String> list, String lastLine)
 	{
@@ -329,8 +323,8 @@ public class DataToArray {
 		return lines2;
 	}
 	
-	public static void setTitle(String s){
-		Title = s;
+	public void setTitle(String s){
+		this.Title = s;
 	}
 
 	public static int getLargestNumber(char[][] list)
