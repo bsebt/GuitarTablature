@@ -513,15 +513,15 @@ public class BarLinesPDF {
 							{
 								if (i + j == lastWriteY) // if the 2 characters are on the same line
 								{
-									cb.moveTo(q, i + j + noteFontSize); // We draw the curve backwards
-									cb.curveTo((q + lastWriteX) / 2, i + j + (noteFontSize * 2), lastWriteX, lastWriteY + noteFontSize);
+									cb.moveTo(q, i + j + noteFontSize/2); // We draw the curve backwards
+									cb.curveTo((q + lastWriteX) / 2, i + j + (noteFontSize), lastWriteX, lastWriteY + noteFontSize/2);
 								} 
 								else // The characters are on seperate lines
 								{
-									cb.moveTo(q, i + j + noteFontSize); // We are drawing the curve backwards
-									cb.curveTo((q + marginLeft) / 2, i + j + (noteFontSize * 2), marginLeft, i + j + noteFontSize);
-									cb.moveTo(pageWidth - marginRight, lastWriteY + noteFontSize);
-									cb.curveTo((lastWriteX + (pageWidth - marginRight)) / 2, lastWriteY + (noteFontSize * 2), lastWriteX, lastWriteY + noteFontSize);
+									cb.moveTo(q, i + j + noteFontSize/2); // We are drawing the curve backwards
+									cb.curveTo((q + marginLeft) / 2, i + j + (noteFontSize * 2), marginLeft, i + j + noteFontSize/2);
+									cb.moveTo(pageWidth - marginRight, lastWriteY + noteFontSize/2);
+									cb.curveTo((lastWriteX + (pageWidth - marginRight)) / 2, lastWriteY + (noteFontSize * 2), lastWriteX, lastWriteY + noteFontSize/2);
 								}
 								colPos++;
 								if (colPos == barLength) {
@@ -532,6 +532,57 @@ public class BarLinesPDF {
 											noSpaceAvailable = true;
 											if (rowPos != 5) {
 												cb.moveTo(q + givenSpacing, i + j);
+												cb.lineTo(q + givenSpacing, i + j - barSpacing);
+											}
+										}
+									}
+								}
+								if (barPos >= chars.size()) {
+									EOB = true;
+									if (rowPos == 5) {
+										if (!lastBarred) {
+											cb.moveTo(q, i + j);
+											cb.lineTo(q, i + j + barSpacing * 5); // draw very last bar line
+											lastBarred = true;
+										}
+										doneWriting = true; 
+									}
+								}
+								if (!EOB) {
+									arrayChar = chars.get(barPos)[rowPos][colPos]; // Load next char to write
+									barLength = chars.get(barPos)[rowPos].length;
+								}
+							} 
+							else if (arrayChar == 'h') // Draw a phrasing line between this and the next one
+							{
+								if (i + j == lastWriteY) // if the 2 characters are on the same line
+								{
+									cb.moveTo(q, i + j + noteFontSize/2); // We draw the curve backwards
+									cb.curveTo((q + lastWriteX) / 2, i + j + (noteFontSize), lastWriteX, lastWriteY + noteFontSize/2);
+									currentChar = new Phrase(("h"), numberFont);
+									column.setSimpleColumn(currentChar, (q)-((noteFontSize*3)/4),  i + j + (noteFontSize*1), (q)+(noteFontSize/4),  i + j + (noteFontSize*2),noteFontSize, Element.ALIGN_LEFT);
+									column.go();
+								} 
+								else // The characters are on seperate lines
+								{
+									cb.moveTo(q, i + j + noteFontSize/2); // We are drawing the curve backwards
+									cb.curveTo((q + marginLeft) / 2, i + j + (noteFontSize * 2), marginLeft, i + j + noteFontSize/2);
+									cb.moveTo(pageWidth - marginRight, lastWriteY + noteFontSize/2);
+									cb.curveTo((lastWriteX + (pageWidth - marginRight)) / 2, lastWriteY + (noteFontSize * 2), lastWriteX, lastWriteY + noteFontSize/2);
+									
+									currentChar = new Phrase(("h"), numberFont);
+									column.setSimpleColumn(currentChar, (q)-((noteFontSize*3)/4),  i + j + (noteFontSize*2), (q)+(noteFontSize/4),  i + j + (noteFontSize/2 * 3),noteFontSize/2, Element.ALIGN_LEFT);
+									column.go();
+								}
+								colPos++;
+								if (colPos == barLength) {
+									colPos = 0;
+									barPos++;
+									if (barPos < chars.size()) {
+										if ((DataToArray.getLargestNumber(chars.get(barPos)) * givenSpacing) > (pageWidth - marginRight - q)) {
+											noSpaceAvailable = true;
+											if (rowPos != 5) {
+//												cb.moveTo(q + givenSpacing, i + j);
 												cb.lineTo(q + givenSpacing, i + j - barSpacing);
 											}
 										}
